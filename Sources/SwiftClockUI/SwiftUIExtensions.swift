@@ -7,7 +7,11 @@ extension Double {
 
 extension Color {
     static var background: Self {
-        Self(UIColor.systemBackground)
+        #if os(iOS)
+        return Self(UIColor.systemBackground)
+        #else
+        return Self(NSColor.windowBackgroundColor)
+        #endif
     }
 }
 
