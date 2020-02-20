@@ -103,8 +103,9 @@ struct ArtNouveauIndicators_Previews: PreviewProvider {
         ZStack {
             Circle().stroke()
             ArtNouveauIndicators()
-                .environmentObject(App.previewViewModel)
-        }.padding()
+        }
+        .padding()
+        .modifier(PreviewEnvironmentObject())
     }
 }
 #endif

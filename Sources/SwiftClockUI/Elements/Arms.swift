@@ -18,7 +18,7 @@ struct Arms_Previews: PreviewProvider {
             Arms()
         }
         .padding()
-        .environmentObject(App.previewViewModel.eraseToAnyArmViewModel())
+        .modifier(PreviewEnvironmentObject())
     }
 }
 #endif

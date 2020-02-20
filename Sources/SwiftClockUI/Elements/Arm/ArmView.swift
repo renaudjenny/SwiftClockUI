@@ -140,7 +140,7 @@ struct Arm_Previews: PreviewProvider {
             ArmView(type: .minute)
         }
         .padding()
-        .environmentObject(App.previewViewModel.eraseToAnyArmViewModel())
+        .modifier(PreviewEnvironmentObject())
     }
 }
 
@@ -151,7 +151,7 @@ struct BiggerArm_Previews: PreviewProvider {
             ArmView(type: .hour)
         }
         .padding()
-        .environmentObject(App.previewViewModel.eraseToAnyArmViewModel())
+        .modifier(PreviewEnvironmentObject())
     }
 }
 
@@ -162,9 +162,9 @@ struct ArmWithAnAngle_Previews: PreviewProvider {
             ArmView(type: .minute)
         }
         .padding()
-        .environmentObject(App.previewViewModel {
+        .modifier(PreviewEnvironmentObject {
             $0.minuteAngle = .degrees(20)
-        }.eraseToAnyArmViewModel())
+        })
     }
 }
 
@@ -175,9 +175,9 @@ struct ArtNouveauDesignArm_Previews: PreviewProvider {
             ArmView(type: .minute)
         }
         .padding()
-        .environmentObject(App.previewViewModel {
+        .modifier(PreviewEnvironmentObject {
             $0.clockStyle = .artNouveau
-        }.eraseToAnyArmViewModel())
+        })
     }
 }
 
@@ -188,9 +188,9 @@ struct DrawingDesignArm_Previews: PreviewProvider {
             ArmView(type: .minute)
         }
         .padding()
-        .environmentObject(App.previewViewModel {
+        .modifier(PreviewEnvironmentObject {
             $0.clockStyle = .drawing
-        }.eraseToAnyArmViewModel())
+        })
     }
 }
 #endif

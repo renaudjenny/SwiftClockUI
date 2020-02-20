@@ -88,10 +88,10 @@ struct ClassicIndicators_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
             ClassicIndicators()
-                .environmentObject(App.previewViewModel)
-            Circle()
-                .stroke()
-        }.padding()
+            Circle().stroke()
+        }
+        .padding()
+        .modifier(PreviewEnvironmentObject())
     }
 }
 #endif
