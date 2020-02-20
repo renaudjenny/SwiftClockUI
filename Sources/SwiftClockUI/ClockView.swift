@@ -4,6 +4,8 @@ public struct ClockView: View {
     @EnvironmentObject var viewModel: AnyClockViewModel
     static let borderWidthRatio: CGFloat = 1/70
 
+    public init() { }
+
     public var body: some View {
         GeometryReader { geometry in
             ZStack {
