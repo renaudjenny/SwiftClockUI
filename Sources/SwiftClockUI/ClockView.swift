@@ -26,7 +26,7 @@ public struct ClockView: View {
     }
 }
 
-protocol ClockViewModel {
+public protocol ClockViewModel {
     var isClockFaceShown: Bool { get }
     var showClockFace: () -> Void { get }
     var delayClockFaceHidding: () -> Void { get }

@@ -1,7 +1,20 @@
 import SwiftUI
 
-typealias ClockEnvironmentViewModel = ClockViewModel & ClockBorderViewModel & IndicatorsViewModel
+public typealias ClockEnvironmentViewModel = ClockViewModel & ClockBorderViewModel & IndicatorsViewModel
     & ClockFaceViewModel & ArmViewModel
+
+public struct ClockEnvironmentObject: ViewModifier {
+    let viewModel: ClockEnvironmentViewModel
+
+    public func body(content: Content) -> some View {
+        content
+            .environmentObject(viewModel.eraseToAnyClockViewModel())
+            .environmentObject(viewModel.eraseToAnyArmViewModel())
+            .environmentObject(viewModel.eraseToAnyClockFaceViewModel())
+            .environmentObject(viewModel.eraseToAnyIndicatorsViewModel())
+            .environmentObject(viewModel.eraseToAnyClockBorderViewModel())
+    }
+}
 
 enum App { }
 
@@ -37,11 +50,7 @@ struct PreviewEnvironmentObject: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .environmentObject(App.previewViewModel(modifyViewModel).eraseToAnyClockViewModel())
-            .environmentObject(App.previewViewModel(modifyViewModel).eraseToAnyArmViewModel())
-            .environmentObject(App.previewViewModel(modifyViewModel).eraseToAnyClockFaceViewModel())
-            .environmentObject(App.previewViewModel(modifyViewModel).eraseToAnyIndicatorsViewModel())
-            .environmentObject(App.previewViewModel(modifyViewModel).eraseToAnyClockBorderViewModel())
+            .modifier(ClockEnvironmentObject(viewModel: App.previewViewModel(modifyViewModel)))
     }
 }
 #endif

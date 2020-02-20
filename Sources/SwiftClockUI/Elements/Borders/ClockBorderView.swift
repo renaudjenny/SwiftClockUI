@@ -16,7 +16,7 @@ struct ClockBorderView: View {
     }
 }
 
-protocol ClockBorderViewModel {
+public protocol ClockBorderViewModel {
     var clockStyle: ClockStyle { get set }
 }
 

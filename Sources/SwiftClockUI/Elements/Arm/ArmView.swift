@@ -105,7 +105,7 @@ enum ArmType {
     }
 }
 
-protocol ArmViewModel {
+public protocol ArmViewModel {
     var date: Date { get }
     var hourAngle: Angle { get set }
     var minuteAngle: Angle { get set }

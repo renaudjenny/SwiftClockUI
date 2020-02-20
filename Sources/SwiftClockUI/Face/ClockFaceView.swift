@@ -33,7 +33,7 @@ struct ClockFaceView: View {
     }
 }
 
-protocol ClockFaceViewModel {
+public protocol ClockFaceViewModel {
     var isClockFaceShown: Bool { get }
 }
 

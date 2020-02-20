@@ -16,7 +16,7 @@ struct IndicatorsView: View {
     }
 }
 
-protocol IndicatorsViewModel {
+public protocol IndicatorsViewModel {
     var clockStyle: ClockStyle { get }
     var isLimitedHoursShown: Bool { get }
     var isMinuteIndicatorsShown: Bool { get }
