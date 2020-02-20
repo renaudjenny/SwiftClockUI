@@ -6,6 +6,10 @@ public typealias ClockEnvironmentViewModel = ClockViewModel & ClockBorderViewMod
 public struct ClockEnvironmentObject: ViewModifier {
     let viewModel: ClockEnvironmentViewModel
 
+    public init(viewModel: ClockEnvironmentViewModel) {
+        self.viewModel = viewModel
+    }
+
     public func body(content: Content) -> some View {
         content
             .environmentObject(viewModel.eraseToAnyClockViewModel())
