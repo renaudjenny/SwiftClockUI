@@ -1,10 +1,10 @@
 import SwiftUI
 
-struct ClockView: View {
+public struct ClockView: View {
     @EnvironmentObject var viewModel: AnyClockViewModel
     static let borderWidthRatio: CGFloat = 1/70
 
-    var body: some View {
+    public var body: some View {
         GeometryReader { geometry in
             ZStack {
                 ClockBorderView()
