@@ -34,8 +34,8 @@ extension App {
         @Published var isHourIndicatorsShown = true
         @Published var isMinuteIndicatorsShown = true
 
-        var showClockFace: () -> Void = { }
-        var delayClockFaceHidding: () -> Void = { }
+        var showClockFace: (() -> Void)?
+        var delayClockFaceHidding: (() -> Void)?
     }
 
     static func previewViewModel(_ modifyViewModel: (inout PreviewViewModel) -> Void) -> PreviewViewModel {

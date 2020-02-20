@@ -21,21 +21,21 @@ public struct ClockView: View {
     }
 
     private func showClockFace() {
-        viewModel.showClockFace()
-        viewModel.delayClockFaceHidding()
+        viewModel.showClockFace?()
+        viewModel.delayClockFaceHidding?()
     }
 }
 
 public protocol ClockViewModel {
     var isClockFaceShown: Bool { get }
-    var showClockFace: () -> Void { get }
-    var delayClockFaceHidding: () -> Void { get }
+    var showClockFace: (() -> Void)? { get }
+    var delayClockFaceHidding: (() -> Void)? { get }
 }
 
 final class AnyClockViewModel: ObservableObject, ClockViewModel {
     @Published private(set) var isClockFaceShown: Bool
-    let showClockFace: () -> Void
-    let delayClockFaceHidding: () -> Void
+    let showClockFace: (() -> Void)?
+    let delayClockFaceHidding: (() -> Void)?
 
     init<T: ClockViewModel>(_ viewModel: T) {
         self.isClockFaceShown = viewModel.isClockFaceShown
