@@ -42,11 +42,11 @@ struct ArmView: View {
         case .hour:
             let hour = positiveDegrees/Self.hourRelationship
             let minute = calendar.component(.minute, from: date.wrappedValue)
-            date.wrappedValue = calendar.date(bySettingHour: Int(hour.rounded()), minute: minute, second: 0, of: date.wrappedValue) ?? date.wrappedValue
+            date.wrappedValue = .init(hour: Int(hour.rounded()), minute: minute, calendar: calendar)
         case .minute:
             let minute = positiveDegrees/Self.minuteRelationsip
             let hour = calendar.component(.hour, from: date.wrappedValue)
-            date.wrappedValue = calendar.date(bySettingHour: hour, minute: Int(minute.rounded()), second: 0, of: date.wrappedValue) ?? date.wrappedValue
+            date.wrappedValue = .init(hour: hour, minute: Int(minute.rounded()), calendar: calendar)
         }
     }
 
@@ -84,7 +84,7 @@ extension ArmView {
         let radius = min(frame.size.width, frame.size.height)/2
         let location = (
             x: dragGestureValue.location.x - radius - frame.origin.x,
-            y: -(dragGestureValue.location.y - radius - frame.origin.y)
+            y: dragGestureValue.location.y - radius - frame.origin.y
         )
         let arctan = atan2(location.x, location.y)
         let positiveRadians = arctan > 0 ? arctan : arctan + 2 * .pi
