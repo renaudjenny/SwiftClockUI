@@ -36,7 +36,6 @@ struct ArmView: View {
     }
 
     private func setAngle(_ angle: Angle) {
-        print(date)
         let positiveDegrees = angle.degrees > 0 ? angle.degrees : angle.degrees + 360
         switch self.type {
         case .hour:
