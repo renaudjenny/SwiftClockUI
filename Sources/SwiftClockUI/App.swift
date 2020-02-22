@@ -1,7 +1,7 @@
 import SwiftUI
 
 public typealias ClockEnvironmentViewModel = ClockViewModel & ClockBorderViewModel & IndicatorsViewModel
-    & ClockFaceViewModel & ArmViewModel
+    & ClockFaceViewModel
 
 public struct ClockEnvironmentObject: ViewModifier {
     let viewModel: ClockEnvironmentViewModel
@@ -13,7 +13,6 @@ public struct ClockEnvironmentObject: ViewModifier {
     public func body(content: Content) -> some View {
         content
             .environmentObject(viewModel.eraseToAnyClockViewModel())
-            .environmentObject(viewModel.eraseToAnyArmViewModel())
             .environmentObject(viewModel.eraseToAnyClockFaceViewModel())
             .environmentObject(viewModel.eraseToAnyIndicatorsViewModel())
             .environmentObject(viewModel.eraseToAnyClockBorderViewModel())
@@ -28,6 +27,17 @@ public extension EnvironmentValues {
     var clockDate: Binding<Date> {
         get { self[ClockDateKey.self] }
         set { self[ClockDateKey.self] = newValue }
+    }
+}
+
+public struct ClockStyleKey: EnvironmentKey {
+    public static let defaultValue: ClockStyle = .classic
+}
+
+public extension EnvironmentValues {
+    var clockStyle: ClockStyle {
+        get { self[ClockStyleKey.self] }
+        set { self[ClockStyleKey.self] = newValue }
     }
 }
 

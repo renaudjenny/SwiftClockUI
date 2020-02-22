@@ -2,9 +2,9 @@ import SwiftUI
 import Combine
 
 struct ArmView: View {
-    @EnvironmentObject var viewModel: AnyArmViewModel
     @Environment(\.calendar) var calendar
     @Environment(\.clockDate) var date
+    @Environment(\.clockStyle) var style
     @GestureState private var dragAngle: Angle = .zero
     private static let widthRatio: CGFloat = 1/50
     private static let hourRelationship: Double = 360/12
@@ -39,12 +39,10 @@ struct ArmView: View {
         let positiveDegrees = angle.degrees > 0 ? angle.degrees : angle.degrees + 360
         switch self.type {
         case .hour:
-            viewModel.hourAngle = angle
             let hour = positiveDegrees/Self.hourRelationship
             let minute = calendar.component(.minute, from: date.wrappedValue)
             date.wrappedValue = calendar.date(bySettingHour: Int(hour.rounded()), minute: minute, second: 0, of: date.wrappedValue) ?? date.wrappedValue
         case .minute:
-            viewModel.minuteAngle = angle
             let minute = positiveDegrees/Self.minuteRelationsip
             let hour = calendar.component(.hour, from: date.wrappedValue)
             date.wrappedValue = calendar.date(bySettingHour: hour, minute: Int(minute.rounded()), second: 0, of: date.wrappedValue) ?? date.wrappedValue
@@ -53,9 +51,9 @@ struct ArmView: View {
 
     private var arm: some View {
         Group {
-            if viewModel.clockStyle == .artNouveau {
+            if style == .artNouveau {
                 ArtNouveauArm(type: self.type)
-            } else if viewModel.clockStyle == .drawing {
+            } else if style == .drawing {
                 DrawnArm(type: self.type)
             } else {
                 ClassicArm(type: self.type)
@@ -106,30 +104,6 @@ enum ArmType {
         case .hour: return Self.hourRatio
         case .minute: return Self.minuteRatio
         }
-    }
-}
-
-public protocol ArmViewModel {
-    var hourAngle: Angle { get set }
-    var minuteAngle: Angle { get set }
-    var clockStyle: ClockStyle { get }
-}
-
-final class AnyArmViewModel: ObservableObject, ArmViewModel {
-    @Published private(set) var clockStyle: ClockStyle
-    @Published var hourAngle: Angle
-    @Published var minuteAngle: Angle
-
-    init<T: ArmViewModel>(_ viewModel: T) {
-        self.hourAngle = viewModel.hourAngle
-        self.minuteAngle = viewModel.minuteAngle
-        self.clockStyle = viewModel.clockStyle
-    }
-}
-
-extension ArmViewModel {
-    func eraseToAnyArmViewModel() -> AnyArmViewModel {
-        AnyArmViewModel(self)
     }
 }
 
