@@ -8,17 +8,14 @@ public struct ClockView: View {
     public init() { }
 
     public var body: some View {
-        GeometryReader { geometry in
-            ZStack {
-                ClockBorderView()
-                IndicatorsView()
-                Arms()
-                ClockFaceView().environment(\.clockFaceShown, self.clockFaceShown)
-            }
-            .frame(width: geometry.diameter, height: geometry.diameter)
-            .fixedSize()
-            .onTapGesture(count: 3, perform: self.showClockFace)
+        ZStack {
+            ClockBorderView()
+            IndicatorsView()
+            Arms()
+            ClockFaceView().environment(\.clockFaceShown, self.clockFaceShown)
         }
+        .aspectRatio(1/1, contentMode: .fit)
+        .onTapGesture(count: 3, perform: self.showClockFace)
     }
 
     private func showClockFace() {
