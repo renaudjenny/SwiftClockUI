@@ -45,7 +45,7 @@ struct ArtNouveauIndicators: View {
         }
         
         private var width: CGFloat {
-            geometry.localDiameter * 3/2 * ArtNouveauIndicators.marginRatio
+            geometry.diameter * 3/2 * ArtNouveauIndicators.marginRatio
         }
         
         private var background: some View {
@@ -69,23 +69,24 @@ struct ArtNouveauIndicators: View {
     private struct Sun: Shape {
         func path(in rect: CGRect) -> Path {
             var path = Path()
+            let diameter = min(rect.width, rect.height)
             
             path.move(to: .pointInCircle(
                 from: .zero,
-                frame: rect,
+                diameter: diameter,
                 margin: rect.width/6
                 ))
             
             for minute in 1...60 {
                 let point: CGPoint = .pointInCircle(
                     from: Angle(degrees: Double(minute) * 6),
-                    frame: rect,
+                    diameter: diameter,
                     margin: rect.width/6
                 )
                 
                 let control: CGPoint = .pointInCircle(
                     from: Angle(degrees: Double(minute) * 6 - 3),
-                    frame: rect,
+                    diameter: diameter,
                     margin: rect.width/4
                 )
                 

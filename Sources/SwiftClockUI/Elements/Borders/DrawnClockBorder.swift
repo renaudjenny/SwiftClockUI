@@ -7,7 +7,7 @@ struct DrawnClockBorder: View {
     var body: some View {
         GeometryReader { geometry in
             DrawnCircle(draw: self.animate)
-                .stroke(lineWidth: geometry.localDiameter * Self.borderWidthRatio)
+                .stroke(lineWidth: geometry.diameter * Self.borderWidthRatio)
                 .onAppear(perform: { self.animate = true })
                 .animation(.easeInOut(duration: 1))
         }
@@ -33,21 +33,22 @@ struct DrawnCircle: Shape {
 
     func path(in rect: CGRect) -> Path {
         var path = Path()
+        let diameter = min(rect.width, rect.height)
 
-        path.move(to: .pointInCircle(from: .zero, frame: rect))
+        path.move(to: .pointInCircle(from: .zero, diameter: diameter))
 
         let margin = rect.width * self.maxMarginRatio
         for i in 1...Self.numberOfArcs {
             let angle = Angle(degrees: Double(i) * Self.angleRatio)
             let to: CGPoint = .pointInCircle(
                 from: angle,
-                frame: rect,
+                diameter: diameter,
                 margin: margin
             )
 
             let control: CGPoint = .pointInCircle(
                 from: Angle(degrees: angle.degrees - self.angleMarginRatio * Self.angleRatio),
-                frame: rect,
+                diameter: diameter,
                 margin: margin
             )
             path.addQuadCurve(to: to, control: control)

@@ -8,13 +8,13 @@ struct ArtNouveauClockBorder: View {
         GeometryReader { geometry in
             ZStack {
                 Circle()
-                    .stroke(lineWidth: geometry.localDiameter * Self.borderWidthRatio)
+                    .stroke(lineWidth: geometry.diameter * Self.borderWidthRatio)
                 Circle()
                     .scale(Self.innerCircleScale)
                     .transform(.init(
                         translationX: 0,
-                        y: geometry.localDiameter/2 * (1 - Self.innerCircleScale)))
-                    .stroke(lineWidth: geometry.localDiameter * Self.borderWidthRatio/4)
+                        y: geometry.diameter/2 * (1 - Self.innerCircleScale)))
+                    .stroke(lineWidth: geometry.diameter * Self.borderWidthRatio/4)
             }
         }
     }

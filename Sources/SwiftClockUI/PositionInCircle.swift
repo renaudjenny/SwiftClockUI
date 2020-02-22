@@ -8,8 +8,8 @@ struct PositionInCircle: ViewModifier {
         GeometryReader { geometry in
             content.position(.pointInCircle(
                 from: self.angle,
-                frame: geometry.localFrame,
-                margin: geometry.localDiameter * self.marginRatio
+                diameter: geometry.diameter,
+                margin: geometry.diameter * self.marginRatio
                 ))
         }
     }

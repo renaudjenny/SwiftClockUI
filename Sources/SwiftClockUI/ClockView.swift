@@ -15,7 +15,7 @@ public struct ClockView: View {
                 Arms()
                 ClockFaceView().environment(\.clockFaceShown, self.clockFaceShown)
             }
-            .frame(width: geometry.localDiameter, height: geometry.localDiameter)
+            .frame(width: geometry.diameter, height: geometry.diameter)
             .fixedSize()
             .onTapGesture(count: 3, perform: self.showClockFace)
         }

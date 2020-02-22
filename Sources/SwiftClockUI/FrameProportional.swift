@@ -7,8 +7,8 @@ struct FrameProportional: ViewModifier {
     func body(content: Content) -> some View {
         GeometryReader { geometry in
             content.frame(
-                width: geometry.localWidth * self.widthRatio,
-                height: geometry.localHeight * self.heightRatio
+                width: geometry.size.width * self.widthRatio,
+                height: geometry.size.width * self.heightRatio
             )
         }
     }

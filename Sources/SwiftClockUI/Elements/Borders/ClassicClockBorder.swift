@@ -6,7 +6,7 @@ struct ClassicClockBorder: View {
     var body: some View {
         GeometryReader { geometry in
             Circle()
-                .stroke(lineWidth: geometry.localDiameter * Self.borderWidthRatio)
+                .stroke(lineWidth: geometry.diameter * Self.borderWidthRatio)
         }
     }
 }

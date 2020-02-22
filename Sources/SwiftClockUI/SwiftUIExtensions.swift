@@ -24,10 +24,7 @@ extension Color {
 }
 
 extension GeometryProxy {
-    var localFrame: CGRect { self.frame(in: .local) }
-    var localWidth: CGFloat { self.localFrame.width }
-    var localHeight: CGFloat { self.localFrame.height }
-    var localDiameter: CGFloat { return min(self.localWidth, self.localHeight) }
+    var diameter: CGFloat { return min(self.size.width, self.size.height) }
 }
 
 extension Angle {
@@ -49,15 +46,13 @@ extension Angle {
 }
 
 extension CGPoint {
-    static func pointInCircle(from angle: Angle, frame: CGRect, margin: CGFloat = 0.0) -> Self {
-        let radius = (min(frame.width, frame.height) / 2) - margin
+    static func pointInCircle(from angle: Angle, diameter: CGFloat, margin: CGFloat = 0.0) -> Self {
+        let radius = diameter/2 - margin
 
         let radians = CGFloat(angle.radians) - CGFloat.pi/2
         let x = radius * cos(radians)
         let y = radius * sin(radians)
 
-        return CGPoint(x: x, y: y).applying(.init(
-            translationX: frame.width/2, y: frame.height/2
-        ))
+        return CGPoint(x: x + diameter/2, y: y + diameter/2)
     }
 }

@@ -55,7 +55,7 @@ private struct HourIndicators: View {
         GeometryReader { geometry in
             ForEach(1..<13) { hour in
                 Circle()
-                    .frame(width: geometry.localDiameter * Self.hourDotRatio)
+                    .frame(width: geometry.diameter * Self.hourDotRatio)
                     .modifier(PositionInCircle(
                         angle: .degrees(Double(hour) * .hourInDegree),
                         marginRatio: self.marginRatio/3
@@ -73,7 +73,7 @@ private struct MinuteIndicators: View {
         GeometryReader { geometry in
             ForEach(1..<61) { minute in
                 Circle()
-                    .frame(width: geometry.localDiameter * Self.minuteDotRatio)
+                    .frame(width: geometry.diameter * Self.minuteDotRatio)
                     .modifier(PositionInCircle(
                         angle: .degrees(Double(minute) * .minuteInDegree),
                         marginRatio: self.marginRatio/3
