@@ -9,7 +9,7 @@ extension Double {
 public extension Date {
     init(hour: Int, minute: Int, calendar: Calendar) {
         self.init()
-        self = calendar.date(from: .init(hour: hour, minute: minute)) ?? self
+        self = calendar.date(bySettingHour: hour, minute: minute, second: 0, of: self) ?? self
     }
 }
 
