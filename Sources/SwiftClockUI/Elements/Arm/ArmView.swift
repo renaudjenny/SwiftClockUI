@@ -1,10 +1,14 @@
 import SwiftUI
+import Combine
 
 struct ArmView: View {
     @EnvironmentObject var viewModel: AnyArmViewModel
     @Environment(\.calendar) var calendar
+    @Environment(\.clockDate) var date
     @GestureState private var dragAngle: Angle = .zero
     private static let widthRatio: CGFloat = 1/50
+    private static let hourRelationship: Double = 360/12
+    private static let minuteRelationsip: Double = 360/60
     let type: ArmType
 
     var body: some View {
@@ -22,22 +26,30 @@ struct ArmView: View {
         }
         .rotationEffect(self.rotationAngle)
         .animation(self.bumpFreeSpring)
-        .onAppear(perform: self.setupAngle)
     }
 
     private var angle: Angle {
         switch type {
-        case .hour: return viewModel.hourAngle
-        case .minute: return viewModel.minuteAngle
+        case .hour: return .fromHour(date: date.wrappedValue, calendar: calendar)
+        case .minute: return .fromMinute(date: date.wrappedValue, calendar: calendar)
         }
     }
 
     private func setAngle(_ angle: Angle) {
+        print(date)
+        let positiveDegrees = angle.degrees > 0 ? angle.degrees : angle.degrees + 360
         switch self.type {
-        case .hour: viewModel.hourAngle = angle
-        case .minute: viewModel.minuteAngle = angle
+        case .hour:
+            viewModel.hourAngle = angle
+            let hour = positiveDegrees/Self.hourRelationship
+            let minute = calendar.component(.minute, from: date.wrappedValue)
+            date.wrappedValue = calendar.date(bySettingHour: Int(hour.rounded()), minute: minute, second: 0, of: date.wrappedValue) ?? date.wrappedValue
+        case .minute:
+            viewModel.minuteAngle = angle
+            let minute = positiveDegrees/Self.minuteRelationsip
+            let hour = calendar.component(.hour, from: date.wrappedValue)
+            date.wrappedValue = calendar.date(bySettingHour: hour, minute: Int(minute.rounded()), second: 0, of: date.wrappedValue) ?? date.wrappedValue
         }
-        viewModel.setDateFromAngle(type: self.type, calendar: calendar)
     }
 
     private var arm: some View {
@@ -64,14 +76,6 @@ struct ArmView: View {
         switch type {
         case .hour: return (lineWidthRatio: 1/2, marginRatio: 2/5)
         case .minute: return (lineWidthRatio: 1/3, marginRatio: 1/8)
-        }
-    }
-
-    private func setupAngle() {
-        let date = viewModel.date
-        switch self.type {
-        case .hour: viewModel.hourAngle = .fromHour(date: date, calendar: calendar)
-        case .minute: viewModel.minuteAngle = .fromMinute(date: date, calendar: calendar)
         }
     }
 }
@@ -107,41 +111,20 @@ enum ArmType {
 }
 
 public protocol ArmViewModel {
-    var date: Date { get }
     var hourAngle: Angle { get set }
     var minuteAngle: Angle { get set }
     var clockStyle: ClockStyle { get }
 }
 
 final class AnyArmViewModel: ObservableObject, ArmViewModel {
-    @Published private(set) var date: Date
     @Published private(set) var clockStyle: ClockStyle
     @Published var hourAngle: Angle
     @Published var minuteAngle: Angle
 
     init<T: ArmViewModel>(_ viewModel: T) {
-        self.date = viewModel.date
         self.hourAngle = viewModel.hourAngle
         self.minuteAngle = viewModel.minuteAngle
         self.clockStyle = viewModel.clockStyle
-    }
-
-    private static let hourRelationship: Double = 360/12
-    private static let minuteRelationsip: Double = 360/60
-
-    func setDateFromAngle(type: ArmType, calendar: Calendar) {
-        switch type {
-        case .hour:
-            let positiveDegrees = hourAngle.degrees > 0 ? hourAngle.degrees : hourAngle.degrees + 360
-            let hour = positiveDegrees/Self.hourRelationship
-            let minute = calendar.component(.minute, from: date)
-            date = calendar.date(bySettingHour: Int(hour.rounded()), minute: minute, second: 0, of: date) ?? date
-        case .minute:
-            let positiveDegrees = minuteAngle.degrees > 0 ? minuteAngle.degrees : minuteAngle.degrees + 360
-            let minute = positiveDegrees/Self.minuteRelationsip
-            let hour = calendar.component(.hour, from: date)
-            date = calendar.date(bySettingHour: hour, minute: Int(minute.rounded()), second: 0, of: date) ?? date
-        }
     }
 }
 

@@ -20,12 +20,22 @@ public struct ClockEnvironmentObject: ViewModifier {
     }
 }
 
+public struct ClockDateKey: EnvironmentKey {
+    public static let defaultValue: Binding<Date> = .constant(Date())
+}
+
+public extension EnvironmentValues {
+    var clockDate: Binding<Date> {
+        get { self[ClockDateKey.self] }
+        set { self[ClockDateKey.self] = newValue }
+    }
+}
+
 enum App { }
 
 #if DEBUG
 extension App {
     final class PreviewViewModel: ObservableObject, ClockEnvironmentViewModel {
-        @Published var date = Date()
         @Published var clockStyle: ClockStyle = .classic
         @Published var hourAngle: Angle = .zero
         @Published var minuteAngle: Angle = .zero
