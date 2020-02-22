@@ -37,6 +37,7 @@ struct ArmView: View {
         case .hour: viewModel.hourAngle = angle
         case .minute: viewModel.minuteAngle = angle
         }
+        viewModel.setDateFromAngle(type: self.type, calendar: calendar)
     }
 
     private var arm: some View {
@@ -123,6 +124,24 @@ final class AnyArmViewModel: ObservableObject, ArmViewModel {
         self.hourAngle = viewModel.hourAngle
         self.minuteAngle = viewModel.minuteAngle
         self.clockStyle = viewModel.clockStyle
+    }
+
+    private static let hourRelationship: Double = 360/12
+    private static let minuteRelationsip: Double = 360/60
+
+    func setDateFromAngle(type: ArmType, calendar: Calendar) {
+        switch type {
+        case .hour:
+            let positiveDegrees = hourAngle.degrees > 0 ? hourAngle.degrees : hourAngle.degrees + 360
+            let hour = positiveDegrees/Self.hourRelationship
+            let minute = calendar.component(.minute, from: date)
+            date = calendar.date(bySettingHour: Int(hour.rounded()), minute: minute, second: 0, of: date) ?? date
+        case .minute:
+            let positiveDegrees = minuteAngle.degrees > 0 ? minuteAngle.degrees : minuteAngle.degrees + 360
+            let minute = positiveDegrees/Self.minuteRelationsip
+            let hour = calendar.component(.hour, from: date)
+            date = calendar.date(bySettingHour: hour, minute: Int(minute.rounded()), second: 0, of: date) ?? date
+        }
     }
 }
 
