@@ -2,6 +2,10 @@
 
 Clock UI for SwiftUI
 
+⚠️ It's very unstable right now. I'm currently highly working on it and changing the code. Don't use it now!
+
+TODO: add some pictures
+
 ## Bind a date
 
 ```swift
