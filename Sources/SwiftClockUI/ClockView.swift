@@ -1,7 +1,9 @@
 import SwiftUI
+import Combine
 
 public struct ClockView: View {
     static let borderWidthRatio: CGFloat = 1/70
+    @State private var clockFaceShown = false
 
     public init() { }
 
@@ -11,7 +13,7 @@ public struct ClockView: View {
                 ClockBorderView()
                 IndicatorsView()
                 Arms()
-                ClockFaceView()
+                ClockFaceView().environment(\.clockFaceShown, self.clockFaceShown)
             }
             .frame(width: geometry.localDiameter, height: geometry.localDiameter)
             .fixedSize()
@@ -20,7 +22,10 @@ public struct ClockView: View {
     }
 
     private func showClockFace() {
-        // FIXME: TODO ;)
+        clockFaceShown = true
+        _ = Just(false)
+            .delay(for: .seconds(3), scheduler: RunLoop.main)
+            .sink { self.clockFaceShown = $0 }
     }
 }
 
