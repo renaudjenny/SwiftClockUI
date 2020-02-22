@@ -1,14 +1,14 @@
 import SwiftUI
 
 struct DrawnIndicators: View {
-    @EnvironmentObject var viewModel: AnyIndicatorsViewModel
+    @Environment(\.clockConfiguration) var configuration
     
     var body: some View {
         ZStack {
-            if viewModel.isHourIndicatorsShown {
+            if configuration.isHourIndicatorsShown {
                 Hours()
             }
-            if viewModel.isMinuteIndicatorsShown {
+            if configuration.isMinuteIndicatorsShown {
                 Minutes()
             }
             DrawnNumbers()
@@ -39,7 +39,7 @@ private struct Hours: View {
 }
 
 private struct Minutes: View {
-    @EnvironmentObject var viewModel: AnyIndicatorsViewModel
+    @Environment(\.clockConfiguration) var configuration
     private static let widthRatio: CGFloat = 1/50
     private static let heightRatio: CGFloat = 1/30
     private static let marginRatio: CGFloat = 1/30
@@ -76,7 +76,7 @@ private struct Minutes: View {
     }
     
     private func isOverlapingHour(minute: Int) -> Bool {
-        guard viewModel.isHourIndicatorsShown else { return false }
+        guard configuration.isHourIndicatorsShown else { return false }
         return minute == 0 || minute % 5 == 0
     }
 }
@@ -143,7 +143,7 @@ struct DrawnIndicator: Shape {
 }
 
 struct DrawnNumbers: View {
-    @EnvironmentObject var viewModel: AnyIndicatorsViewModel
+    @Environment(\.clockConfiguration) var configuration
     private static let hours = [12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
     private static let limitedHours = [12, 3, 6, 9]
     private static let marginRatio: CGFloat = 1/7
@@ -166,20 +166,23 @@ struct DrawnNumbers: View {
     }
     
     private var marginRatio: CGFloat {
-        viewModel.isHourIndicatorsShown || viewModel.isMinuteIndicatorsShown
+        configuration.isHourIndicatorsShown || configuration.isMinuteIndicatorsShown
             ? Self.marginRatio
             : Self.marginRatio/2
     }
     
     private var configurationHours: [Int] {
-        viewModel.isLimitedHoursShown ? Self.limitedHours : Self.hours
+        configuration.isLimitedHoursShown ? Self.limitedHours : Self.hours
     }
 }
 
 #if DEBUG
 struct DrawnIndicators_Previews: PreviewProvider {
     static var previews: some View {
-        DrawnIndicators()
+        ZStack {
+            Circle().stroke()
+            DrawnIndicators()
+        }.padding()
     }
 }
 #endif

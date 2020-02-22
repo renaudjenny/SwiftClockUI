@@ -1,10 +1,7 @@
 import SwiftUI
 
 struct ClockFaceView: View {
-    @EnvironmentObject var viewModel: AnyClockFaceViewModel
-    var isShown: Bool {
-        viewModel.isClockFaceShown
-    }
+    @Environment(\.clockFaceShown) var isShown
 
     var body: some View {
         GeometryReader { geometry in
@@ -33,31 +30,10 @@ struct ClockFaceView: View {
     }
 }
 
-public protocol ClockFaceViewModel {
-    var isClockFaceShown: Bool { get }
-}
-
-final class AnyClockFaceViewModel: ObservableObject, ClockFaceViewModel {
-    @Published private(set) var isClockFaceShown: Bool
-
-    init<T: ClockFaceViewModel>(_ viewModel: T) {
-        self.isClockFaceShown = viewModel.isClockFaceShown
-    }
-}
-
-extension ClockFaceViewModel {
-    func eraseToAnyClockFaceViewModel() -> AnyClockFaceViewModel {
-        AnyClockFaceViewModel(self)
-    }
-}
-
 #if DEBUG
 struct ClockFaceSmiling_Previews: PreviewProvider {
     static var previews: some View {
-        ClockFaceView()
-            .environmentObject(App.previewViewModel {
-                $0.isClockFaceShown = true
-            })
+        ClockFaceView().environment(\.clockFaceShown, true)
     }
 }
 #endif

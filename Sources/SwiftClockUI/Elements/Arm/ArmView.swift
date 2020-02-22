@@ -28,6 +28,7 @@ struct ArmView: View {
         .animation(self.bumpFreeSpring)
     }
 
+    // TODO: clean-up, it's a mess here!
     private var angle: Angle {
         switch type {
         case .hour: return .fromHour(date: date.wrappedValue, calendar: calendar)
@@ -108,6 +109,7 @@ enum ArmType {
 }
 
 #if DEBUG
+// TODO: set a hardcoded date
 struct Arm_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
@@ -115,7 +117,6 @@ struct Arm_Previews: PreviewProvider {
             ArmView(type: .minute)
         }
         .padding()
-        .modifier(PreviewEnvironmentObject())
     }
 }
 
@@ -126,7 +127,6 @@ struct BiggerArm_Previews: PreviewProvider {
             ArmView(type: .hour)
         }
         .padding()
-        .modifier(PreviewEnvironmentObject())
     }
 }
 
@@ -137,9 +137,6 @@ struct ArmWithAnAngle_Previews: PreviewProvider {
             ArmView(type: .minute)
         }
         .padding()
-        .modifier(PreviewEnvironmentObject {
-            $0.minuteAngle = .degrees(20)
-        })
     }
 }
 
@@ -150,9 +147,7 @@ struct ArtNouveauDesignArm_Previews: PreviewProvider {
             ArmView(type: .minute)
         }
         .padding()
-        .modifier(PreviewEnvironmentObject {
-            $0.clockStyle = .artNouveau
-        })
+        .environment(\.clockStyle, .artNouveau)
     }
 }
 
@@ -163,9 +158,7 @@ struct DrawingDesignArm_Previews: PreviewProvider {
             ArmView(type: .minute)
         }
         .padding()
-        .modifier(PreviewEnvironmentObject {
-            $0.clockStyle = .drawing
-        })
+        .environment(\.clockStyle, .drawing)
     }
 }
 #endif

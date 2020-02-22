@@ -1,7 +1,6 @@
 import SwiftUI
 
 public struct ClockView: View {
-    @EnvironmentObject var viewModel: AnyClockViewModel
     static let borderWidthRatio: CGFloat = 1/70
 
     public init() { }
@@ -21,69 +20,47 @@ public struct ClockView: View {
     }
 
     private func showClockFace() {
-        viewModel.showClockFace?()
-        viewModel.delayClockFaceHidding?()
-    }
-}
-
-public protocol ClockViewModel {
-    var isClockFaceShown: Bool { get }
-    var showClockFace: (() -> Void)? { get }
-    var delayClockFaceHidding: (() -> Void)? { get }
-}
-
-final class AnyClockViewModel: ObservableObject, ClockViewModel {
-    @Published private(set) var isClockFaceShown: Bool
-    let showClockFace: (() -> Void)?
-    let delayClockFaceHidding: (() -> Void)?
-
-    init<T: ClockViewModel>(_ viewModel: T) {
-        self.isClockFaceShown = viewModel.isClockFaceShown
-        self.showClockFace = viewModel.showClockFace
-        self.delayClockFaceHidding = viewModel.delayClockFaceHidding
-    }
-}
-
-extension ClockViewModel {
-    func eraseToAnyClockViewModel() -> AnyClockViewModel {
-        AnyClockViewModel(self)
+        // FIXME: TODO ;)
     }
 }
 
 #if DEBUG
 struct ClockView_Previews: PreviewProvider {
+    @Environment(\.calendar) static var calendar
+
     static var previews: some View {
         ClockView().padding()
-            .modifier(PreviewEnvironmentObject())
+            .environment(\.clockDate, .constant(.init(hour: 10, minute: 10, calendar: calendar)))
     }
 }
 
 struct ClockViewWithFace_Previews: PreviewProvider {
+    @Environment(\.calendar) static var calendar
+
     static var previews: some View {
         ClockView().padding()
-            .modifier(PreviewEnvironmentObject {
-                $0.isClockFaceShown = true
-            })
+            .environment(\.clockDate, .constant(.init(hour: 8, minute: 17, calendar: calendar)))
+            .environment(\.clockFaceShown, true)
     }
 }
 
 struct ClockViewArtNouveauStyle_Previews: PreviewProvider {
+    @Environment(\.calendar) static var calendar
+
     static var previews: some View {
         ClockView().padding()
-            .modifier(PreviewEnvironmentObject {
-                $0.clockStyle = .artNouveau
-                $0.hourAngle = .degrees(20)
-            })
+            .environment(\.clockDate, .constant(.init(hour: 10, minute: 10, calendar: calendar)))
+            .environment(\.clockStyle, .artNouveau)
     }
 }
 
 struct ClockViewDrawingStyle_Previews: PreviewProvider {
+    @Environment(\.calendar) static var calendar
+
     static var previews: some View {
         ClockView().padding()
-            .modifier(PreviewEnvironmentObject {
-                $0.clockStyle = .drawing
-                $0.hourAngle = .degrees(20)
-            })
+            .environment(\.clockDate, .constant(.init(hour: 10, minute: 10, calendar: calendar)))
+            .environment(\.clockStyle, .drawing)
     }
 }
 #endif

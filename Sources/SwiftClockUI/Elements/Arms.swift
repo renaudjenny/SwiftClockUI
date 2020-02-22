@@ -16,9 +16,7 @@ struct Arms_Previews: PreviewProvider {
         ZStack {
             Circle().stroke()
             Arms()
-        }
-        .padding()
-        .modifier(PreviewEnvironmentObject())
+        }.padding()
     }
 }
 #endif

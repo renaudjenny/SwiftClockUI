@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ArtNouveauIndicators: View {
-    @EnvironmentObject var viewModel: AnyIndicatorsViewModel
+    @Environment(\.clockConfiguration) var configuration
     static let marginRatio: CGFloat = 1/12
     private static let hourInDegree: Double = 30
     private static let romanNumbers = ["XII", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI"]
@@ -13,7 +13,7 @@ struct ArtNouveauIndicators: View {
             ForEach(configurationRomanNumbers, id: \.self) { romanNumber in
                 self.romanHour(for: romanNumber)
             }
-            if viewModel.isMinuteIndicatorsShown {
+            if configuration.isMinuteIndicatorsShown {
                 Sun()
                     .stroke()
                     .modifier(ScaleUpOnAppear())
@@ -32,7 +32,7 @@ struct ArtNouveauIndicators: View {
     }
     
     private var configurationRomanNumbers: [String] {
-        viewModel.isLimitedHoursShown ? Self.limitedRomanNumbers : Self.romanNumbers
+        configuration.isLimitedHoursShown ? Self.limitedRomanNumbers : Self.romanNumbers
     }
     
     private struct NumberCircle: ViewModifier {
@@ -103,9 +103,7 @@ struct ArtNouveauIndicators_Previews: PreviewProvider {
         ZStack {
             Circle().stroke()
             ArtNouveauIndicators()
-        }
-        .padding()
-        .modifier(PreviewEnvironmentObject())
+        }.padding()
     }
 }
 #endif

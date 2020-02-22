@@ -1,8 +1,16 @@
 import SwiftUI
 
+// TODO: clean-up. All Extensions shouldn't be in the same file
 extension Double {
     static let hourInDegree: Double = 30
     static let minuteInDegree = 6.0
+}
+
+public extension Date {
+    init(hour: Int, minute: Int, calendar: Calendar) {
+        self.init()
+        self = calendar.date(from: .init(hour: hour, minute: minute)) ?? self
+    }
 }
 
 extension Color {
