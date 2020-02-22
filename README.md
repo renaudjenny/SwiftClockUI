@@ -27,7 +27,6 @@ If you want something constant (just for showing the time), you could pass `.con
 
 * 📷 Add some demo pictures
 * 📲 Add the link to the differnts apps who are using this library
-* 🐞 Fix the bug while dragging the arms it's moving in the opposite direction
 * 👆 Add a bigger zone for dragging arms, it's not easy with the mouse on macOS
 * 👾 Add a smooth animation while resizing the window
 * ⚠️  Address TODO and FIXME
