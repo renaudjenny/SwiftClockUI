@@ -2,8 +2,6 @@ import SwiftUI
 
 // TODO: I'm not satisfied of that, would rather have another EnvironmentObject or something instead
 struct World {
-    var isAnimationDisabled = false
-
     var randomControlRatio = (
         leftX: { CGFloat.random(in: 0.1...1) },
         leftY: { CGFloat.random(in: 0.1...1) },

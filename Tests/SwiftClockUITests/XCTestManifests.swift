@@ -2,7 +2,9 @@ import XCTest
 
 #if !canImport(ObjectiveC)
 public func allTests() -> [XCTestCaseEntry] {
-    return []
+    return [
+        ("ClockTests", ClockTests),
+    ]
 }
 #endif
 

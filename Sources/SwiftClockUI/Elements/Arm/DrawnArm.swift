@@ -12,22 +12,27 @@ struct DrawnArm: View {
 }
 
 private struct DrawnArmShape: Shape {
+    @Environment(\.clockConfiguration.isAnimationEnabled) static var isAnimationEnabled
     private static let widthRatio: CGFloat = 1/30
     let type: ArmType
     private var drawStep: CGFloat
     private static var controlRatios = DrawnControlRatios()
-    
+
     init(draw: Bool, type: ArmType) {
-        self.drawStep = draw || Current.isAnimationDisabled ? 1 : 0.1
+        if Self.isAnimationEnabled {
+            self.drawStep = draw ? 1 : 0.1
+        } else {
+            self.drawStep = 1
+        }
         self.type = type
         self.generateControlRatiosIfNeeded()
     }
-    
+
     var animatableData: CGFloat {
         get { self.drawStep }
         set { self.drawStep = newValue }
     }
-    
+
     func path(in rect: CGRect) -> Path {
         var path = Path()
         let center = CGPoint(x: rect.midX, y: rect.midY)
@@ -38,16 +43,16 @@ private struct DrawnArmShape: Shape {
             x: center.x + width/2,
             y: center.y
         )
-        
+
         let topY = center.y - diameter/2 * self.drawStep
         let topCenter = CGPoint(x: diameter/2, y: topY + margin + width/2)
         let topLeft = CGPoint(
             x: topCenter.x - width/2,
             y: topCenter.y
         )
-        
+
         path.move(to: bottomRight)
-        
+
         path.addArc(
             center: center,
             radius: width/2,
@@ -55,14 +60,14 @@ private struct DrawnArmShape: Shape {
             endAngle: .degrees(180),
             clockwise: false
         )
-        
+
         let controlLeft = CGPoint(
             x: diameter/2 - width/2 *  Self.controlRatios.leftX,
             y: topY + width/2 + diameter/2 * Self.controlRatios.leftY
         )
-        
+
         path.addQuadCurve(to: topLeft, control: controlLeft)
-        
+
         path.addArc(
             center: topCenter,
             radius: width/2,
@@ -70,17 +75,17 @@ private struct DrawnArmShape: Shape {
             endAngle: .zero,
             clockwise: false
         )
-        
+
         let controlRight = CGPoint(
             x: diameter/2 + width/2 *  Self.controlRatios.rightX,
             y: topY + width/2 + diameter/2 * Self.controlRatios.rightY
         )
-        
+
         path.addQuadCurve(to: bottomRight, control: controlRight)
-        
+
         return path
     }
-    
+
     func generateControlRatiosIfNeeded() {
         if self.drawStep <= 0 {
             Self.controlRatios = DrawnControlRatios()

@@ -15,6 +15,7 @@ struct DrawnClockBorder: View {
 }
 
 struct DrawnCircle: Shape {
+    @Environment(\.clockConfiguration.isAnimationEnabled) static var isAnimationEnabled
     private static let marginRatio: CGFloat = 1/80
     private static let numberOfArcs = 26
     private static let angleRatio: Double = 360/Double(Self.numberOfArcs - 1)
@@ -23,7 +24,11 @@ struct DrawnCircle: Shape {
     private var circleStep: CGFloat
 
     init(draw: Bool) {
-        self.circleStep = draw || Current.isAnimationDisabled ? 1 : 0
+        if Self.isAnimationEnabled {
+            self.circleStep = draw ? 1 : 0
+        } else {
+            self.circleStep = 1
+        }
     }
 
     var animatableData: CGFloat {

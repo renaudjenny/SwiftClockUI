@@ -82,11 +82,16 @@ private struct Minutes: View {
 }
 
 struct DrawnIndicator: Shape {
+    @Environment(\.clockConfiguration.isAnimationEnabled) static var isAnimationEnabled
     private var drawStep: CGFloat
     private var controlRatios = DrawnControlRatios()
     
     init(draw: Bool) {
-        self.drawStep = draw || Current.isAnimationDisabled ? 1 : 0
+        if Self.isAnimationEnabled {
+            self.drawStep = draw ? 1 : 0
+        } else {
+            self.drawStep = 1
+        }
     }
     
     var animatableData: CGFloat {

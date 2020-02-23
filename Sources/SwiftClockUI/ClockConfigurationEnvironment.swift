@@ -4,6 +4,7 @@ public struct ClockConfiguration {
     var isLimitedHoursShown = false
     var isMinuteIndicatorsShown = true
     var isHourIndicatorsShown = true
+    var isAnimationEnabled = true
 }
 
 public struct ClockConfigurationEnvironmentKey: EnvironmentKey {
