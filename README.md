@@ -4,6 +4,10 @@ Clock UI for SwiftUI
 
 ⚠️ It's very unstable right now. I'm currently highly working on it and changing the code. Don't use it now!
 
+This library has been tested
+* ✅💻 macOS Catalina 10.15.3
+* ✅📱 iOS 13.3
+
 ## Bind a date
 
 ```swift
