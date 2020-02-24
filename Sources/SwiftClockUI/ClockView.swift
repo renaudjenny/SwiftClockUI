@@ -2,6 +2,7 @@ import SwiftUI
 import Combine
 
 public struct ClockView: View {
+    @Environment(\.clockFaceShown) var initialClockFaceShown
     static let borderWidthRatio: CGFloat = 1/70
     @State private var clockFaceShown = false
 
@@ -12,8 +13,9 @@ public struct ClockView: View {
             ClockBorderView()
             IndicatorsView()
             Arms()
-            ClockFaceView().environment(\.clockFaceShown, self.clockFaceShown)
+            ClockFaceView()
         }
+        .environment(\.clockFaceShown, initialClockFaceShown || clockFaceShown)
         .aspectRatio(1/1, contentMode: .fit)
         .onTapGesture(count: 3, perform: self.showClockFace)
     }

@@ -10,4 +10,10 @@ class ClockTests: XCTestCase {
         let hostingController = UIHostingController(rootView: clockViews)
         assertSnapshot(matching: hostingController, as: .image(on: .iPhoneSe))
     }
+
+    func testClockViewWithFace() {
+        let clockViews = ClockViewWithFace_Previews.previews.environment(\.clockConfiguration.isAnimationEnabled, false)
+        let hostingController = UIHostingController(rootView: clockViews)
+        assertSnapshot(matching: hostingController, as: .image(on: .iPhoneSe))
+    }
 }
