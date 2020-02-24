@@ -84,7 +84,7 @@ private struct Minutes: View {
 struct DrawnIndicator: Shape {
     @Environment(\.clockConfiguration.isAnimationEnabled) static var isAnimationEnabled
     private var drawStep: CGFloat
-    private var controlRatios = DrawnControlRatios()
+    private var controlRatios = Random.ControlRatio()
     
     init(draw: Bool) {
         if Self.isAnimationEnabled {
@@ -149,6 +149,7 @@ struct DrawnIndicator: Shape {
 
 struct DrawnNumbers: View {
     @Environment(\.clockConfiguration) var configuration
+    @Environment(\.clockRandom) var random
     private static let hours = [12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
     private static let limitedHours = [12, 3, 6, 9]
     private static let marginRatio: CGFloat = 1/7
@@ -163,8 +164,8 @@ struct DrawnNumbers: View {
     private func hourText(_ hour: Int) -> some View {
         Text("\(hour)")
             .modifier(FontProportional(ratio: Self.fontSizeRatio))
-            .rotationEffect(Current.randomAngle() ?? .zero, anchor: .center)
-            .scaleEffect(Current.randomScale() ?? 1, anchor: .center)
+            .rotationEffect(random.angle() ?? .zero, anchor: .center)
+            .scaleEffect(random.scale() ?? 1, anchor: .center)
             .modifier(PositionInCircle(
                 angle: .degrees(Double(hour) * .hourInDegree), marginRatio: self.marginRatio
             ))

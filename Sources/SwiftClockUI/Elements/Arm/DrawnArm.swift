@@ -16,7 +16,7 @@ private struct DrawnArmShape: Shape {
     private static let widthRatio: CGFloat = 1/30
     let type: ArmType
     private var drawStep: CGFloat
-    private static var controlRatios = DrawnControlRatios()
+    private static var controlRatios = Random.ControlRatio()
 
     init(draw: Bool, type: ArmType) {
         if Self.isAnimationEnabled {
@@ -88,7 +88,7 @@ private struct DrawnArmShape: Shape {
 
     func generateControlRatiosIfNeeded() {
         if self.drawStep <= 0 {
-            Self.controlRatios = DrawnControlRatios()
+            Self.controlRatios = Random.ControlRatio()
         }
     }
 }

@@ -16,11 +16,12 @@ struct DrawnClockBorder: View {
 
 struct DrawnCircle: Shape {
     @Environment(\.clockConfiguration.isAnimationEnabled) static var isAnimationEnabled
+    @Environment(\.clockRandom) static var random
     private static let marginRatio: CGFloat = 1/80
     private static let numberOfArcs = 26
     private static let angleRatio: Double = 360/Double(Self.numberOfArcs - 1)
-    private let maxMarginRatio = Current.randomBorderMarginRatio.maxMargin(Self.marginRatio)
-    private let angleMarginRatio = Current.randomBorderMarginRatio.angleMargin()
+    private let maxMarginRatio = random.borderMarginRatio.maxMargin(Self.marginRatio)
+    private let angleMarginRatio = random.borderMarginRatio.angleMargin()
     private var circleStep: CGFloat
 
     init(draw: Bool) {
