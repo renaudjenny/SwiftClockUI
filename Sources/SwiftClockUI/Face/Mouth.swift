@@ -49,28 +49,17 @@ extension ClockFaceView {
 #if DEBUG
 struct Mouth_Previews: PreviewProvider {
     static var previews: some View {
-        Group {
+        VStack {
             ClockFaceView.Mouth(shape: .smile)
                 .stroke(style: .init(lineWidth: 6.0, lineCap: .round, lineJoin: .round))
-                .padding()
-                .frame(width: 100, height: 50)
-                .previewDevice(PreviewDevice(rawValue: "iPhone SE"))
-                .previewDisplayName("Smile")
-            
+                .aspectRatio(3/1, contentMode: .fit)
             ClockFaceView.Mouth(shape: .neutral)
                 .stroke(style: .init(lineWidth: 6.0, lineCap: .round, lineJoin: .round))
-                .padding()
-                .frame(width: 100, height: 50)
-                .previewDevice(PreviewDevice(rawValue: "iPhone SE"))
-                .previewDisplayName("Neutral")
-            
+                .aspectRatio(3/1, contentMode: .fit)
             ClockFaceView.Mouth(shape: .sad)
                 .stroke(style: .init(lineWidth: 6.0, lineCap: .round, lineJoin: .round))
-                .padding()
-                .frame(width: 100, height: 50)
-                .previewDevice(PreviewDevice(rawValue: "iPhone SE"))
-                .previewDisplayName("Sad")
-        }
+                .aspectRatio(3/1, contentMode: .fit)
+        }.padding()
     }
 }
 #endif

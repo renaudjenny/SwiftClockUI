@@ -33,7 +33,13 @@ struct ClockFaceView: View {
 #if DEBUG
 struct ClockFaceSmiling_Previews: PreviewProvider {
     static var previews: some View {
-        ClockFaceView().environment(\.clockFaceShown, true)
+        ZStack {
+            Circle().stroke()
+            ClockFaceView()
+        }
+        .aspectRatio(1/1, contentMode: .fit)
+        .padding()
+        .environment(\.clockFaceShown, true)
     }
 }
 #endif

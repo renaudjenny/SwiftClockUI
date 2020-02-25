@@ -7,11 +7,10 @@ extension ClockFaceView {
         
         var body: some View {
             ZStack {
-                Circle()
-                    .stroke(lineWidth: 4)
-                ClockFaceView.Iris(move: self.move, position: self.position)
-                    .fill()
-            }
+                // Iris should be proportional of the size instead of hardcoded value
+                Circle().stroke(lineWidth: 4)
+                ClockFaceView.Iris(move: self.move, position: self.position).fill()
+            }.aspectRatio(1/1, contentMode: .fit)
         }
     }
     
@@ -65,25 +64,11 @@ extension ClockFaceView {
 #if DEBUG
 struct Eye_Previews: PreviewProvider {
     static var previews: some View {
-        Group {
+        VStack {
             ClockFaceView.Eye(move: false, position: .left)
-                .padding()
-                .frame(width: 150, height: 150)
-                .previewDevice(PreviewDevice(rawValue: "iPhone SE"))
-                .previewDisplayName("Eye (not moved)")
-            
             ClockFaceView.Eye(move: true, position: .left)
-                .padding()
-                .frame(width: 150, height: 150)
-                .previewDevice(PreviewDevice(rawValue: "iPhone SE"))
-                .previewDisplayName("Left eye")
-            
             ClockFaceView.Eye(move: true, position: .right)
-                .padding()
-                .frame(width: 150, height: 150)
-                .previewDevice(PreviewDevice(rawValue: "iPhone SE"))
-                .previewDisplayName("Right eye")
-        }
+        }.padding()
     }
 }
 #endif
