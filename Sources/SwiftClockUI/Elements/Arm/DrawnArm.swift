@@ -1,31 +1,29 @@
 import SwiftUI
 
 struct DrawnArm: View {
+    @Environment(\.clockConfiguration.isAnimationEnabled) var isAnimationEnabled
+    @Environment(\.clockRandom) var random
     private static let widthRatio: CGFloat = 1/20
     let type: ArmType
     @State private var showIndicator = false
     
     var body: some View {
-        DrawnArmShape(draw: self.showIndicator, type: type)
+        DrawnArmShape(draw: !isAnimationEnabled || showIndicator, type: type, random: random)
             .onAppear(perform: { self.showIndicator = true })
+            .aspectRatio(1/1, contentMode: .fit)
     }
 }
 
 private struct DrawnArmShape: Shape {
-    @Environment(\.clockConfiguration.isAnimationEnabled) static var isAnimationEnabled
     private static let widthRatio: CGFloat = 1/30
     let type: ArmType
     private var drawStep: CGFloat
-    private static var controlRatios = Random.ControlRatio()
+    private static var controlRatios = Random.ControlRatio(random: .fixed)
 
-    init(draw: Bool, type: ArmType) {
-        if Self.isAnimationEnabled {
-            self.drawStep = draw ? 1 : 0.1
-        } else {
-            self.drawStep = 1
-        }
+    init(draw: Bool, type: ArmType, random: Random) {
+        self.drawStep = draw ? 1 : 0.1
         self.type = type
-        self.generateControlRatiosIfNeeded()
+        self.generateControlRatiosIfNeeded(random: random)
     }
 
     var animatableData: CGFloat {
@@ -86,9 +84,9 @@ private struct DrawnArmShape: Shape {
         return path
     }
 
-    func generateControlRatiosIfNeeded() {
+    func generateControlRatiosIfNeeded(random: Random) {
         if self.drawStep <= 0 {
-            Self.controlRatios = Random.ControlRatio()
+            Self.controlRatios = Random.ControlRatio(random: random)
         }
     }
 }

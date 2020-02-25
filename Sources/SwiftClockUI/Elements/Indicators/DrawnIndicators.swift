@@ -13,11 +13,14 @@ struct DrawnIndicators: View {
             }
             DrawnNumbers()
         }
+        .aspectRatio(1/1, contentMode: .fit)
         .animation(.easeOut)
     }
 }
 
 private struct Hours: View {
+    @Environment(\.clockConfiguration.isAnimationEnabled) var isAnimationEnabled
+    @Environment(\.clockRandom) var random
     private static let widthRatio: CGFloat = 1/40
     private static let heightRatio: CGFloat = 1/20
     private static let marginRatio: CGFloat = 1/20
@@ -25,7 +28,7 @@ private struct Hours: View {
     
     var body: some View {
         ForEach(1...12, id: \.self) { hour in
-            DrawnIndicator(draw: self.animate)
+            DrawnIndicator(draw: !self.isAnimationEnabled || self.animate, random: self.random)
                 .rotation(Angle(degrees: Double(hour) * .hourInDegree))
                 .fill()
                 .modifier(FrameProportional(widthRatio: Self.widthRatio, heightRatio: Self.heightRatio))
@@ -40,6 +43,8 @@ private struct Hours: View {
 
 private struct Minutes: View {
     @Environment(\.clockConfiguration) var configuration
+    @Environment(\.clockConfiguration.isAnimationEnabled) var isAnimationEnabled
+    @Environment(\.clockRandom) var random
     private static let widthRatio: CGFloat = 1/50
     private static let heightRatio: CGFloat = 1/30
     private static let marginRatio: CGFloat = 1/30
@@ -62,7 +67,7 @@ private struct Minutes: View {
             if self.isOverlapingHour(minute: minute) {
                 EmptyView()
             } else {
-                DrawnIndicator(draw: self.animate)
+                DrawnIndicator(draw: !isAnimationEnabled || animate, random: random)
                     .rotation(Angle(degrees: Double(minute) * .minuteInDegree))
                     .fill()
                     .modifier(FrameProportional(widthRatio: Self.widthRatio, heightRatio: Self.heightRatio))
@@ -82,16 +87,12 @@ private struct Minutes: View {
 }
 
 struct DrawnIndicator: Shape {
-    @Environment(\.clockConfiguration.isAnimationEnabled) static var isAnimationEnabled
     private var drawStep: CGFloat
-    private var controlRatios = Random.ControlRatio()
+    private var controlRatios: Random.ControlRatio
     
-    init(draw: Bool) {
-        if Self.isAnimationEnabled {
-            self.drawStep = draw ? 1 : 0
-        } else {
-            self.drawStep = 1
-        }
+    init(draw: Bool, random: Random) {
+        self.drawStep = draw ? 1 : 0
+        self.controlRatios = Random.ControlRatio(random: random)
     }
     
     var animatableData: CGFloat {

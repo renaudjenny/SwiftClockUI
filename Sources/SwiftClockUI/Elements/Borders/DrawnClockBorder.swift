@@ -1,35 +1,34 @@
 import SwiftUI
 
 struct DrawnClockBorder: View {
+    @Environment(\.clockConfiguration.isAnimationEnabled) var isAnimationEnabled
+    @Environment(\.clockRandom) var random
     static let borderWidthRatio: CGFloat = 1/70
     @State private var animate = false
 
     var body: some View {
         GeometryReader { geometry in
-            DrawnCircle(draw: self.animate)
+            DrawnCircle(draw: !self.isAnimationEnabled || self.animate, random: self.random)
                 .stroke(lineWidth: geometry.diameter * Self.borderWidthRatio)
                 .onAppear(perform: { self.animate = true })
                 .animation(.easeInOut(duration: 1))
+                .aspectRatio(1/1, contentMode: .fit)
         }
     }
 }
 
 struct DrawnCircle: Shape {
-    @Environment(\.clockConfiguration.isAnimationEnabled) static var isAnimationEnabled
-    @Environment(\.clockRandom) static var random
     private static let marginRatio: CGFloat = 1/80
     private static let numberOfArcs = 26
     private static let angleRatio: Double = 360/Double(Self.numberOfArcs - 1)
-    private let maxMarginRatio = random.borderMarginRatio.maxMargin(Self.marginRatio)
-    private let angleMarginRatio = random.borderMarginRatio.angleMargin()
+    private let maxMarginRatio: CGFloat
+    private let angleMarginRatio: Double
     private var circleStep: CGFloat
 
-    init(draw: Bool) {
-        if Self.isAnimationEnabled {
-            self.circleStep = draw ? 1 : 0
-        } else {
-            self.circleStep = 1
-        }
+    init(draw: Bool, random: Random) {
+        self.circleStep = draw ? 1 : 0
+        self.maxMarginRatio = random.borderMarginRatio.maxMargin(Self.marginRatio)
+        self.angleMarginRatio = random.borderMarginRatio.angleMargin()
     }
 
     var animatableData: CGFloat {

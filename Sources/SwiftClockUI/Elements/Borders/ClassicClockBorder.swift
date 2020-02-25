@@ -7,6 +7,7 @@ struct ClassicClockBorder: View {
         GeometryReader { geometry in
             Circle()
                 .stroke(lineWidth: geometry.diameter * Self.borderWidthRatio)
+                .aspectRatio(1/1, contentMode: .fit)
         }
     }
 }

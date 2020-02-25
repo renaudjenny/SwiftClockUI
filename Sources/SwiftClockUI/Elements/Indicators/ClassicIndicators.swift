@@ -14,6 +14,7 @@ struct ClassicIndicators: View {
                 MinuteIndicators(marginRatio: Self.marginRatio)
             }
         }
+        .aspectRatio(1/1, contentMode: .fit)
         .modifier(ScaleUpOnAppear())
     }
 }

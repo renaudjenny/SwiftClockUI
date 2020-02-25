@@ -20,7 +20,7 @@ public struct Random {
 }
 
 public struct ClockRandomKey: EnvironmentKey {
-    public static let defaultValue: Random = Random()
+    public static let defaultValue: Random = .random
 }
 
 public extension EnvironmentValues {
@@ -31,17 +31,23 @@ public extension EnvironmentValues {
 }
 
 public extension Random {
-    @Environment(\.clockRandom) static var random
-
     struct ControlRatio {
-        let leftX = random.controlRatio.leftX()
-        let leftY = random.controlRatio.leftY()
-        let rightX = random.controlRatio.rightX()
-        let rightY = random.controlRatio.rightY()
+        let leftX: CGFloat
+        let leftY: CGFloat
+        let rightX: CGFloat
+        let rightY: CGFloat
+
+        init(random: Random) {
+            self.leftX = random.controlRatio.leftX()
+            self.leftY = random.controlRatio.leftY()
+            self.rightX = random.controlRatio.rightX()
+            self.rightY = random.controlRatio.rightY()
+        }
     }
 }
 
 extension Random {
+    static var random = Random()
     static var fixed: Random {
         Random(
             controlRatio: (

@@ -22,4 +22,12 @@ class ClockTests: XCTestCase {
         let hostingController = UIHostingController(rootView: clockViews)
         assertSnapshot(matching: hostingController, as: .image(on: .iPhoneSe))
     }
+
+    func testClockViewDrawingStyle() {
+        let clockViews = ClockViewDrawingStyle_Previews.previews
+            .environment(\.clockConfiguration.isAnimationEnabled, false)
+            .environment(\.clockRandom, .fixed)
+        let hostingController = UIHostingController(rootView: clockViews)
+        assertSnapshot(matching: hostingController, as: .image(on: .iPhoneSe))
+    }
 }
