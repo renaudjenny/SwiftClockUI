@@ -1,10 +1,22 @@
 import SwiftUI
 
 public struct ClockConfiguration {
-    var isLimitedHoursShown = false
-    var isMinuteIndicatorsShown = true
-    var isHourIndicatorsShown = true
-    var isAnimationEnabled = true
+    public var isLimitedHoursShown = false
+    public var isMinuteIndicatorsShown = true
+    public var isHourIndicatorsShown = true
+    public var isAnimationEnabled = true
+
+    public init(
+        isLimitedHoursShown: Bool = false,
+        isMinuteIndicatorsShown: Bool = true,
+        isHourIndicatorsShown: Bool = true,
+        isAnimationEnabled: Bool = true
+    ) {
+        self.isLimitedHoursShown = isLimitedHoursShown
+        self.isMinuteIndicatorsShown = isMinuteIndicatorsShown
+        self.isHourIndicatorsShown = isHourIndicatorsShown
+        self.isAnimationEnabled = isAnimationEnabled
+    }
 }
 
 public struct ClockConfigurationEnvironmentKey: EnvironmentKey {
