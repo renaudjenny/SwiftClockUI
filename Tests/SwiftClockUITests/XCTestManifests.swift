@@ -4,8 +4,10 @@ import XCTest
 public func allTests() -> [XCTestCaseEntry] {
     return [
         ("ClockTests", ClockTests),
+        ("ArmTests", ArmTests),
+        ("ClockFaceTests", ClockFaceTests),
+        ("EyeTests", EyeTests),
+        ("MouthTests", MouthTests),
     ]
 }
 #endif
-
-// TODO: Import all Clock related tests from telltime
