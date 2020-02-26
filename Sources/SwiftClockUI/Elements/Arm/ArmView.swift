@@ -86,7 +86,11 @@ extension ArmView {
             x: dragGestureValue.location.x - radius - frame.origin.x,
             y: dragGestureValue.location.y - radius - frame.origin.y
         )
+        #if os(macOS)
         let arctan = atan2(location.x, location.y)
+        #else
+        let arctan = atan2(location.x, -location.y)
+        #endif
         let positiveRadians = arctan > 0 ? arctan : arctan + 2 * .pi
         return Angle(radians: Double(positiveRadians))
     }

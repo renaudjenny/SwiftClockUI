@@ -19,8 +19,8 @@ struct OnHover: ViewModifier {
         #if os(macOS)
         return content
             .onHover { self.isHover = $0 }
-            .shadow(color: Color(.sRGBLinear, white: 0, opacity: 0.44), radius: isDragShadowShown ? 6 : 0)
-            .scaleEffect(isDragShadowShown ? 1.1 : 1)
+            .shadow(color: Color(.sRGBLinear, white: 0, opacity: 0.44), radius: isHover ? 6 : 0)
+            .scaleEffect(isHover ? 1.1 : 1)
         #else
         return content
         #endif
