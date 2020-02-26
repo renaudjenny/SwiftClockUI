@@ -24,8 +24,9 @@ struct ArmView: View {
                     })
             )
         }
-        .rotationEffect(self.rotationAngle)
-        .animation(self.bumpFreeSpring)
+        .rotationEffect(rotationAngle)
+        // TODO: fix this bumping animation on iOS
+        .animation(bumpFreeSpring)
     }
 
     // TODO: clean-up, it's a mess here!
@@ -67,7 +68,7 @@ struct ArmView: View {
     }
 
     private var bumpFreeSpring: Animation? {
-        return dragAngle == .zero ? .spring() : nil
+        dragAngle == .zero ? .spring() : nil
     }
 
     private func ratios(for type: ArmType) -> (lineWidthRatio: CGFloat, marginRatio: CGFloat) {
@@ -83,8 +84,8 @@ extension ArmView {
     private func angle(dragGestureValue: DragGesture.Value, frame: CGRect) -> Angle {
         let radius = min(frame.size.width, frame.size.height)/2
         let location = (
-            x: dragGestureValue.location.x - radius - frame.origin.x,
-            y: dragGestureValue.location.y - radius - frame.origin.y
+            x: dragGestureValue.predictedEndLocation.x - radius - frame.origin.x,
+            y: dragGestureValue.predictedEndLocation.y - radius - frame.origin.y
         )
         #if os(macOS)
         let arctan = atan2(location.x, location.y)
