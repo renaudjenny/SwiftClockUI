@@ -2,26 +2,25 @@ import SwiftUI
 import Combine
 
 struct Arms: View {
-    @State var isDragShadowShown = false
-
     var body: some View {
         ZStack {
             ArmView(type: .hour)
             ArmView(type: .minute)
         }
-        .modifier(OnHover(isHover: $isDragShadowShown))
-        .scaleEffect(isDragShadowShown ? 1.1 : 1)
-        .shadow(color: Color(.sRGBLinear, white: 0, opacity: 0.44), radius: isDragShadowShown ? 6 : 0)
+        .modifier(OnHover())
         .animation(.easeInOut)
     }
 }
 
 struct OnHover: ViewModifier {
-    @Binding var isHover: Bool
+    @State var isHover: Bool = false
 
     func body(content: Content) -> some View {
         #if os(macOS)
-        return content.onHover { self.isHover = $0 }
+        return content
+            .onHover { self.isHover = $0 }
+            .shadow(color: Color(.sRGBLinear, white: 0, opacity: 0.44), radius: isDragShadowShown ? 6 : 0)
+            .scaleEffect(isDragShadowShown ? 1.1 : 1)
         #else
         return content
         #endif
