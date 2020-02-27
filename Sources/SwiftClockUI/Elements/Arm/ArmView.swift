@@ -5,28 +5,19 @@ struct ArmView: View {
     @Environment(\.calendar) var calendar
     @Environment(\.clockDate) var date
     @Environment(\.clockStyle) var style
-    @GestureState private var dragAngle: Angle = .zero
+    @State private var isDragging: Bool = false
+    @State private var dragAngle: Angle = .zero
     private static let widthRatio: CGFloat = 1/50
     private static let hourRelationship: Double = 360/12
     private static let minuteRelationsip: Double = 360/60
     let type: ArmType
 
     var body: some View {
-        GeometryReader { geometry in
-            self.arm
-                .gesture(
-                    DragGesture(coordinateSpace: .global).updating(self.$dragAngle) { value, state, _ in
-                        state = self.angle(dragGestureValue: value, frame: geometry.frame(in: .global))
-                    }
-                    .onEnded({
-                        let angle = self.angle(dragGestureValue: $0, frame: geometry.frame(in: .global))
-                        self.setAngle(angle)
-                    })
-            )
-        }
-        .rotationEffect(rotationAngle)
-        // TODO: fix this bumping animation on iOS
-        .animation(bumpFreeSpring)
+        arm
+            .modifier(ArmDragGesture(dragAngle: $dragAngle, setAngle: setAngle))
+            .rotationEffect(rotationAngle)
+            // TODO: fix this bumping animation on iOS
+            .animation(bumpFreeSpring)
     }
 
     // TODO: clean-up, it's a mess here!
@@ -38,6 +29,8 @@ struct ArmView: View {
     }
 
     private func setAngle(_ angle: Angle) {
+        dragAngle = .zero
+
         let positiveDegrees = angle.degrees > 0 ? angle.degrees : angle.degrees + 360
         switch self.type {
         case .hour:
@@ -80,12 +73,33 @@ struct ArmView: View {
 }
 
 // MARK: - Drag Gesture
-extension ArmView {
+// TODO: put this Modifier in its own file
+struct ArmDragGesture: ViewModifier {
+    @Binding var dragAngle: Angle
+    let setAngle: (Angle) -> Void
+
+    func body(content: Content) -> some View {
+        GeometryReader { geometry in
+            content.gesture(self.dragGesture(geometry: geometry))
+        }
+    }
+
+    private func dragGesture(geometry: GeometryProxy) -> some Gesture {
+        DragGesture(coordinateSpace: .global)
+            .onChanged({
+                self.dragAngle = self.angle(dragGestureValue: $0, frame: geometry.frame(in: .global))
+            })
+            .onEnded({
+                let angle = self.angle(dragGestureValue: $0, frame: geometry.frame(in: .global))
+                self.setAngle(angle)
+            })
+    }
+
     private func angle(dragGestureValue: DragGesture.Value, frame: CGRect) -> Angle {
         let radius = min(frame.size.width, frame.size.height)/2
         let location = (
-            x: dragGestureValue.predictedEndLocation.x - radius - frame.origin.x,
-            y: dragGestureValue.predictedEndLocation.y - radius - frame.origin.y
+            x: dragGestureValue.location.x - radius - frame.origin.x,
+            y: dragGestureValue.location.y - radius - frame.origin.y
         )
         #if os(macOS)
         let arctan = atan2(location.x, location.y)
@@ -97,6 +111,7 @@ extension ArmView {
     }
 }
 
+// TODO: move ArmType to its own file
 enum ArmType {
     case hour
     case minute
