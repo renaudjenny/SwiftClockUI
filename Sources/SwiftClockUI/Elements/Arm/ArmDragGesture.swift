@@ -18,11 +18,16 @@ struct ArmDragGesture: ViewModifier {
     private func dragGesture(geometry: GeometryProxy) -> some Gesture {
         DragGesture(coordinateSpace: .global)
             .updating($dragAngle, body: { value, state, transaction in
-                state = self.angle(dragGestureValue: value, frame: geometry.frame(in: .global))
+                let extraRotationAngle = self.angle(dragGestureValue: value, frame: geometry.frame(in: .global))
+                state = extraRotationAngle - self.currentAngle
             })
             .onEnded({
                 self.setAngle(self.angle(dragGestureValue: $0, frame: geometry.frame(in: .global)))
             })
+    }
+
+    private var currentAngle: Angle {
+        type.angle(date: date.wrappedValue, calendar: calendar)
     }
 
     private func angle(dragGestureValue: DragGesture.Value, frame: CGRect) -> Angle {
