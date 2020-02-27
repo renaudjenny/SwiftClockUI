@@ -1,9 +1,14 @@
 import SwiftUI
 
 struct ArmDragGesture: ViewModifier {
-    @Binding var dragAngle: Angle
-    @Binding var isDragging: Bool
-    let setAngle: (Angle) -> Void
+    private static let hourRelationship: Double = 360/12
+    private static let minuteRelationsip: Double = 360/60
+
+    @Environment(\.calendar) var calendar
+    @Environment(\.clockDate) var date
+    let type: ArmType
+    @State var dragAngle: Angle = .zero
+    @State var isDragging = false
 
     func body(content: Content) -> some View {
         GeometryReader { geometry in
@@ -18,8 +23,7 @@ struct ArmDragGesture: ViewModifier {
                 self.dragAngle = self.angle(dragGestureValue: $0, frame: geometry.frame(in: .global))
             })
             .onEnded({
-                let angle = self.angle(dragGestureValue: $0, frame: geometry.frame(in: .global))
-                self.setAngle(angle)
+                self.setAngle(self.angle(dragGestureValue: $0, frame: geometry.frame(in: .global)))
                 self.isDragging = false
             })
     }
@@ -37,5 +41,19 @@ struct ArmDragGesture: ViewModifier {
         #endif
         let positiveRadians = arctan > 0 ? arctan : arctan + 2 * .pi
         return Angle(radians: Double(positiveRadians))
+    }
+
+    private func setAngle(_ angle: Angle) {
+        let positiveDegrees = angle.degrees > 0 ? angle.degrees : angle.degrees + 360
+        switch type {
+        case .hour:
+            let hour = positiveDegrees/Self.hourRelationship
+            let minute = calendar.component(.minute, from: date.wrappedValue)
+            date.wrappedValue = .init(hour: Int(hour.rounded()), minute: minute, calendar: calendar)
+        case .minute:
+            let minute = positiveDegrees/Self.minuteRelationsip
+            let hour = calendar.component(.hour, from: date.wrappedValue)
+            date.wrappedValue = .init(hour: hour, minute: Int(minute.rounded()), calendar: calendar)
+        }
     }
 }

@@ -4,7 +4,7 @@ import Combine
 struct Arms: View {
     var body: some View {
         ZStack {
-            //ArmView(type: .hour)
+            ArmView(type: .hour)
             ArmView(type: .minute)
         }
         .modifier(OnHover())
