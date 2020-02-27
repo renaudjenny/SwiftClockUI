@@ -3,28 +3,25 @@ import SwiftUI
 struct ArmDragGesture: ViewModifier {
     private static let hourRelationship: Double = 360/12
     private static let minuteRelationsip: Double = 360/60
-
     @Environment(\.calendar) var calendar
     @Environment(\.clockDate) var date
     let type: ArmType
-    @State var dragAngle: Angle = .zero
-    @State var isDragging = false
+    @GestureState var dragAngle: Angle = .zero
 
     func body(content: Content) -> some View {
         GeometryReader { geometry in
             content.gesture(self.dragGesture(geometry: geometry))
         }
+        .rotationEffect(dragAngle)
     }
 
     private func dragGesture(geometry: GeometryProxy) -> some Gesture {
         DragGesture(coordinateSpace: .global)
-            .onChanged({
-                self.isDragging = true
-                self.dragAngle = self.angle(dragGestureValue: $0, frame: geometry.frame(in: .global))
+            .updating($dragAngle, body: { value, state, transaction in
+                state = self.angle(dragGestureValue: value, frame: geometry.frame(in: .global))
             })
             .onEnded({
                 self.setAngle(self.angle(dragGestureValue: $0, frame: geometry.frame(in: .global)))
-                self.isDragging = false
             })
     }
 

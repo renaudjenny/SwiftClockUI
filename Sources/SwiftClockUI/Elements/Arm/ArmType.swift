@@ -14,4 +14,11 @@ enum ArmType {
         case .minute: return Self.minuteRatio
         }
     }
+
+    func angle(date: Date, calendar: Calendar) -> Angle {
+        switch self {
+        case .hour: return .fromHour(date: date, calendar: calendar)
+        case .minute: return .fromMinute(date: date, calendar: calendar)
+        }
+    }
 }

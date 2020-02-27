@@ -18,14 +18,7 @@ struct ArmView: View {
             }
         }
         .modifier(ArmDragGesture(type: type))
-        .rotationEffect(angle)
-    }
-
-    private var angle: Angle {
-        switch type {
-        case .hour: return .fromHour(date: date.wrappedValue, calendar: calendar)
-        case .minute: return .fromMinute(date: date.wrappedValue, calendar: calendar)
-        }
+        .rotationEffect(type.angle(date: date.wrappedValue, calendar: calendar))
     }
 }
 
