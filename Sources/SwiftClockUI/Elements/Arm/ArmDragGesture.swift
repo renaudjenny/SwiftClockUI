@@ -5,14 +5,15 @@ struct ArmDragGesture: ViewModifier {
     private static let minuteRelationsip: Double = 360/60
     @Environment(\.calendar) var calendar
     @Environment(\.clockDate) var date
+    @GestureState private var dragAngle: Angle = .zero
     let type: ArmType
-    @GestureState var dragAngle: Angle = .zero
 
     func body(content: Content) -> some View {
         GeometryReader { geometry in
             content.gesture(self.dragGesture(geometry: geometry))
         }
         .rotationEffect(dragAngle)
+        .animation(nil)
     }
 
     private func dragGesture(geometry: GeometryProxy) -> some Gesture {
