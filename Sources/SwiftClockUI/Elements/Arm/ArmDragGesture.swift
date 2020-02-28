@@ -13,7 +13,7 @@ struct ArmDragGesture: ViewModifier {
             content.gesture(self.dragGesture(geometry: geometry))
         }
         .rotationEffect(dragAngle)
-        .animation(nil)
+        .animation(.interactiveSpring())
     }
 
     private func dragGesture(geometry: GeometryProxy) -> some Gesture {
