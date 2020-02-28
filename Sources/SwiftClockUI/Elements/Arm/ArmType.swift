@@ -17,8 +17,17 @@ enum ArmType {
 
     func angle(date: Date, calendar: Calendar) -> Angle {
         switch self {
-        case .hour: return .fromHour(date: date, calendar: calendar)
-        case .minute: return .fromMinute(date: date, calendar: calendar)
+        case .hour: return date.hourAngle(calendar: calendar)
+        case .minute: return date.minuteAngle(calendar: calendar)
+        }
+    }
+
+    func setAngle(_ angle: Angle, date: inout Date, calendar: Calendar) {
+        switch self {
+        case .hour:
+            date.setHour(angle: angle, calendar: calendar)
+        case .minute:
+            date.setMinute(angle: angle, calendar: calendar)
         }
     }
 }
