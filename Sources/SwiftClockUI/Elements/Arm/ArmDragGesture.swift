@@ -6,7 +6,6 @@ struct ArmDragGesture: ViewModifier {
     @Environment(\.calendar) var calendar
     @Environment(\.clockDate) var date
     @GestureState private var dragAngle: Angle = .zero
-    @State private var previousAngle: Angle = .zero
     let type: ArmType
 
     func body(content: Content) -> some View {
@@ -14,7 +13,7 @@ struct ArmDragGesture: ViewModifier {
             content.gesture(self.dragGesture(geometry: geometry))
         }
         .rotationEffect(dragAngle)
-        .animation(.interactiveSpring())
+        .animation(nil)
     }
 
     private func dragGesture(geometry: GeometryProxy) -> some Gesture {
@@ -24,7 +23,6 @@ struct ArmDragGesture: ViewModifier {
                 state = extraRotationAngle - self.currentAngle
             })
             .onEnded({
-                self.previousAngle = .zero
                 self.setAngle(self.angle(dragGestureValue: $0, frame: geometry.frame(in: .global)))
             })
     }
@@ -44,11 +42,8 @@ struct ArmDragGesture: ViewModifier {
         #else
         let arctan = atan2(location.x, -location.y)
         #endif
-        let currentRadians = Double(arctan)
-        let rotatingClockwise = currentRadians > previousAngle.radians
-        let radians = rotatingClockwise ? currentRadians + 2 * .pi : currentRadians - 2 * .pi
-        previousAngle = .init(radians: radians)
-        return Angle(radians: radians)
+        let radians = arctan - 2 * .pi
+        return Angle(radians: Double(radians))
     }
 
     private func setAngle(_ angle: Angle) {
