@@ -42,8 +42,7 @@ struct ArmDragGesture: ViewModifier {
         #else
         let arctan = atan2(location.x, -location.y)
         #endif
-        let radians = arctan - 2 * .pi
-        return Angle(radians: Double(radians))
+        return Angle(radians: Double(arctan))
     }
 
     private func setAngle(_ angle: Angle) {
