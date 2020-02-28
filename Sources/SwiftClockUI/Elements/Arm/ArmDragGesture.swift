@@ -37,13 +37,20 @@ struct ArmDragGesture: ViewModifier {
             x: dragGestureValue.location.x - radius - frame.origin.x,
             y: dragGestureValue.location.y - radius - frame.origin.y
         )
+        let predictedEndLocation = (
+            x: dragGestureValue.predictedEndLocation.x - radius - frame.origin.x,
+            y: dragGestureValue.predictedEndLocation.y - radius - frame.origin.y
+        )
         #if os(macOS)
         let arctan = atan2(location.x, location.y)
+        let predictedArctan = atan2(predictedEndLocation.x, predictedEndLocation.y)
         #else
         let arctan = atan2(location.x, -location.y)
+        let predictedArctan = atan2(predictedEndLocation.x, -predictedEndLocation.y)
         #endif
-        let positiveRadians = arctan > 0 ? arctan : arctan + 2 * .pi
-        return Angle(radians: Double(positiveRadians))
+        let rotatingClockwise = predictedArctan > arctan
+        let radians = rotatingClockwise ? arctan + 2 * .pi : arctan - 2 * .pi
+        return Angle(radians: Double(radians))
     }
 
     private func setAngle(_ angle: Angle) {
