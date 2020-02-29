@@ -43,19 +43,6 @@ struct ArmDragGesture: ViewModifier {
         return Angle(radians: Double(arctan))
     }
 
-//    private func setAngle(_ angle: Angle) {
-//        let positiveDegrees = angle.degrees > 0 ? angle.degrees : angle.degrees + 360
-//        switch type {
-//        case .hour:
-//            let hour = positiveDegrees/Self.hourRelationship
-//            let minute = calendar.component(.minute, from: date.wrappedValue)
-//            date.wrappedValue = .init(hour: Int(hour.rounded()), minute: minute, calendar: calendar)
-//        case .minute:
-//            let minute = positiveDegrees/Self.minuteRelationsip
-//            let hour = calendar.component(.hour, from: date.wrappedValue)
-//            date.wrappedValue = .init(hour: hour, minute: Int(minute.rounded()), calendar: calendar)
-//        }
-//    }
     private func setAngle(_ angle: Angle) {
         type.setAngle(angle, date: &date.wrappedValue, calendar: calendar)
     }
