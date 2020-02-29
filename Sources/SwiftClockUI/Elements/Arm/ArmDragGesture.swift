@@ -5,7 +5,6 @@ struct ArmDragGesture: ViewModifier {
     @Environment(\.clockDate) var date
     @GestureState private var dragAngle: Angle = .zero
     let type: ArmType
-    @Binding var isDragging: Bool
 
     func body(content: Content) -> some View {
         GeometryReader { geometry in
@@ -22,13 +21,8 @@ struct ArmDragGesture: ViewModifier {
                 state = extraRotationAngle - self.currentAngle
                 transaction.disablesAnimations = true
             })
-            .onChanged({
-                self.isDragging = true
-                self.setAngle(self.angle(dragGestureValue: $0, frame: geometry.frame(in: .global)))
-            })
             .onEnded({
                 self.setAngle(self.angle(dragGestureValue: $0, frame: geometry.frame(in: .global)))
-                self.isDragging = false
             })
     }
 
