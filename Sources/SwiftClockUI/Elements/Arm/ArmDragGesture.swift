@@ -22,8 +22,9 @@ struct ArmDragGesture: ViewModifier {
                 state = extraRotationAngle - self.currentAngle
                 transaction.disablesAnimations = true
             })
-            .onChanged({ _ in
+            .onChanged({
                 self.isDragging = true
+                self.setAngle(self.angle(dragGestureValue: $0, frame: geometry.frame(in: .global)))
             })
             .onEnded({
                 self.setAngle(self.angle(dragGestureValue: $0, frame: geometry.frame(in: .global)))
