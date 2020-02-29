@@ -20,7 +20,7 @@ struct ArmView: View {
         }
         .modifier(ArmDragGesture(type: type))
         .rotationEffect(type.angle(date: date.wrappedValue, calendar: calendar))
-        .animation(nil)
+        .animation(.spring())
     }
 }
 
