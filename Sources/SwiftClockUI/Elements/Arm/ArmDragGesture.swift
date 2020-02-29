@@ -44,6 +44,7 @@ struct ArmDragGesture: ViewModifier {
     }
 
     private func setAngle(_ angle: Angle) {
+        print(angle.degrees)
         type.setAngle(angle, date: &date.wrappedValue, calendar: calendar)
     }
 }
