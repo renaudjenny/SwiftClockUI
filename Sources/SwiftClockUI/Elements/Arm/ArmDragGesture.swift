@@ -5,11 +5,11 @@ struct ArmDragGesture: ViewModifier {
     @Environment(\.clockDate) var date
     @GestureState private var dragAngle: Angle = .zero
     let type: ArmType
+    @Binding var isDragging: Bool
 
     func body(content: Content) -> some View {
         GeometryReader { geometry in
-            content
-                .gesture(self.dragGesture(geometry: geometry))
+            content.gesture(self.dragGesture(geometry: geometry))
         }
         .rotationEffect(dragAngle)
         .animation(nil)
@@ -20,9 +20,14 @@ struct ArmDragGesture: ViewModifier {
             .updating($dragAngle, body: { value, state, transaction in
                 let extraRotationAngle = self.angle(dragGestureValue: value, frame: geometry.frame(in: .global))
                 state = extraRotationAngle - self.currentAngle
+                transaction.disablesAnimations = true
+            })
+            .onChanged({ _ in
+                self.isDragging = true
             })
             .onEnded({
                 self.setAngle(self.angle(dragGestureValue: $0, frame: geometry.frame(in: .global)))
+                self.isDragging = false
             })
     }
 

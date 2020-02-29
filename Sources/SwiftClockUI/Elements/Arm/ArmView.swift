@@ -18,9 +18,9 @@ struct ArmView: View {
                 ClassicArm(type: self.type)
             }
         }
-        .modifier(ArmDragGesture(type: type))
+        .modifier(ArmDragGesture(type: type, isDragging: $isDragging))
         .rotationEffect(type.angle(date: date.wrappedValue, calendar: calendar))
-        .animation(.spring())
+        .animation(isDragging ? nil : .spring())
     }
 }
 
