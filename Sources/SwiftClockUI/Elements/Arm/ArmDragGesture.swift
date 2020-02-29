@@ -40,11 +40,11 @@ struct ArmDragGesture: ViewModifier {
         #else
         let arctan = atan2(location.x, -location.y)
         #endif
-        return Angle(radians: Double(arctan))
+        let positiveRadians = arctan >= 0 ? arctan : arctan + 2 * .pi
+        return Angle(radians: Double(positiveRadians))
     }
 
     private func setAngle(_ angle: Angle) {
-        print(angle.degrees)
         type.setAngle(angle, date: &date.wrappedValue, calendar: calendar)
     }
 }
