@@ -33,5 +33,4 @@ If you want something constant (just for showing the time), you could pass `.con
 * 👆 Add a bigger zone for dragging arms, it's not easy with the mouse on macOS
 * 👾 Add a smooth animation while resizing the window on macOS
 * ⚠️  Address TODO and FIXME
-* 🐞 Fix ugly bumping effect after dragging a clock arm
 * 🧽 Add Linter rules

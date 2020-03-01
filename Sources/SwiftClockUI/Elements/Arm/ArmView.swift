@@ -19,7 +19,6 @@ struct ArmView: View {
         }
         .modifier(ArmDragGesture(type: type))
         .rotationEffect(type.angle(date: date.wrappedValue, calendar: calendar))
-        // TODO: there is still this bump after dragging due to this animation.
         .animation(.spring())
     }
 }
