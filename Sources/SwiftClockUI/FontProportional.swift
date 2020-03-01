@@ -5,7 +5,9 @@ struct FontProportional: ViewModifier {
 
     func body(content: Content) -> some View {
         GeometryReader { geometry in
-            content.font(.system(size: (geometry.diameter * self.ratio).rounded()))
+            content
+                .font(.system(size: (geometry.diameter * self.ratio).rounded()))
+                .minimumScaleFactor(0.5)
         }
     }
 }
