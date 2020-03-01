@@ -154,7 +154,7 @@ struct DrawnNumbers: View {
     private static let hours = [12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
     private static let limitedHours = [12, 3, 6, 9]
     private static let marginRatio: CGFloat = 1/7
-    private static let textScaleRatio: CGFloat = 1/160
+    private static let textFontRatio: CGFloat = 1/10
     
     var body: some View {
         ForEach(self.configurationHours, id: \.self) { hour in
@@ -164,7 +164,7 @@ struct DrawnNumbers: View {
     
     private func hourText(_ hour: Int) -> some View {
         Text("\(hour)")
-            .modifier(ScaleProportional(ratio: Self.textScaleRatio))
+            .modifier(FontProportional(ratio: Self.textFontRatio))
             .rotationEffect(random.angle() ?? .zero, anchor: .center)
             .scaleEffect(random.scale() ?? 1, anchor: .center)
             .modifier(PositionInCircle(

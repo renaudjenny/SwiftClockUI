@@ -23,13 +23,13 @@ private struct HourTexts: View {
     @Environment(\.clockConfiguration) var configuration
     private static let hours = [12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
     private static let limitedHours = [12, 3, 6, 9]
-    private static let textScaleRatio: CGFloat = 1/160
+    private static let textFontRatio: CGFloat = 1/10
     let marginRatio: CGFloat
 
     var body: some View {
         ForEach(self.configurationHours, id: \.self) { hour in
             Text("\(hour)")
-                .modifier(ScaleProportional(ratio: Self.textScaleRatio))
+                .modifier(FontProportional(ratio: Self.textFontRatio))
                 .modifier(PositionInCircle(
                     angle: .degrees(Double(hour) * .hourInDegree),
                     marginRatio: self.dynamicMarginRatio

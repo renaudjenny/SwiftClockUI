@@ -1,11 +1,11 @@
 import SwiftUI
 
-struct ScaleProportional: ViewModifier {
+struct FontProportional: ViewModifier {
     let ratio: CGFloat
 
     func body(content: Content) -> some View {
         GeometryReader { geometry in
-            content.scaleEffect(geometry.diameter * self.ratio)
+            content.font(.system(size: (geometry.diameter * self.ratio).rounded()))
         }
     }
 }
