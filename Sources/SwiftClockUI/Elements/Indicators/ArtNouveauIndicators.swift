@@ -6,7 +6,7 @@ struct ArtNouveauIndicators: View {
     private static let hourInDegree: Double = 30
     private static let romanNumbers = ["XII", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI"]
     private static let limitedRomanNumbers = ["XII", "III", "VI", "IX"]
-    private static let fontSizeRatio: CGFloat = 1/16
+    private static let fontSizeRatio: CGFloat = 1/256
     
     var body: some View {
         ZStack {
@@ -24,7 +24,7 @@ struct ArtNouveauIndicators: View {
     func romanHour(for romanNumber: String) -> some View {
         GeometryReader { geometry in
             Text(romanNumber)
-                .modifier(FontProportional(ratio: Self.fontSizeRatio))
+                .scaleEffect(geometry.diameter * Self.fontSizeRatio)
                 .modifier(NumberCircle(geometry: geometry))
                 .modifier(ScaleUpOnAppear())
                 .modifier(PositionInCircle(angle: self.angle(for: romanNumber), marginRatio: Self.marginRatio))
