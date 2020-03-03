@@ -19,15 +19,3 @@ extension Color {
 extension GeometryProxy {
     var diameter: CGFloat { return min(self.size.width, self.size.height) }
 }
-
-extension CGPoint {
-    static func pointInCircle(from angle: Angle, diameter: CGFloat, margin: CGFloat = 0.0) -> Self {
-        let radius = diameter/2 - margin
-
-        let radians = CGFloat(angle.radians) - CGFloat.pi/2
-        let x = radius * cos(radians)
-        let y = radius * sin(radians)
-
-        return CGPoint(x: x + diameter/2, y: y + diameter/2)
-    }
-}
