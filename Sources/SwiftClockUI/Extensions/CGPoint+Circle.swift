@@ -1,7 +1,6 @@
 import SwiftUI
 
 extension CGPoint {
-    // TODO: import tests from telltime
     static func pointInCircle(from angle: Angle, diameter: CGFloat, margin: CGFloat = 0.0) -> Self {
         let radius = diameter/2 - margin
 
