@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ScaleUpOnAppear: ViewModifier {
-    @Environment(\.clockConfiguration.isAnimationEnabled) var isAnimationEnabled
+    @Environment(\.clockIsAnimationEnabled) var isAnimationEnabled
     @State private var isShown = false
 
     func body(content: Content) -> some View {

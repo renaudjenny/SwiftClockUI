@@ -19,7 +19,7 @@ struct DrawnIndicators: View {
 }
 
 private struct Hours: View {
-    @Environment(\.clockConfiguration.isAnimationEnabled) var isAnimationEnabled
+    @Environment(\.clockIsAnimationEnabled) var isAnimationEnabled
     @Environment(\.clockRandom) var random
     private static let widthRatio: CGFloat = 1/40
     private static let heightRatio: CGFloat = 1/20
@@ -43,7 +43,7 @@ private struct Hours: View {
 
 private struct Minutes: View {
     @Environment(\.clockConfiguration) var configuration
-    @Environment(\.clockConfiguration.isAnimationEnabled) var isAnimationEnabled
+    @Environment(\.clockIsAnimationEnabled) var isAnimationEnabled
     @Environment(\.clockRandom) var random
     private static let widthRatio: CGFloat = 1/50
     private static let heightRatio: CGFloat = 1/30

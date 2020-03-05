@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct DrawnClockBorder: View {
-    @Environment(\.clockConfiguration.isAnimationEnabled) var isAnimationEnabled
+    @Environment(\.clockIsAnimationEnabled) var isAnimationEnabled
     @Environment(\.clockRandom) var random
     static let borderWidthRatio: CGFloat = 1/70
     @State private var animate = false

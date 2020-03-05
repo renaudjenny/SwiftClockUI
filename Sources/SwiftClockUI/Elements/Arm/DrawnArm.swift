@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct DrawnArm: View {
-    @Environment(\.clockConfiguration.isAnimationEnabled) var isAnimationEnabled
+    @Environment(\.clockIsAnimationEnabled) var isAnimationEnabled
     @Environment(\.clockRandom) var random
     private static let widthRatio: CGFloat = 1/20
     let type: ArmType

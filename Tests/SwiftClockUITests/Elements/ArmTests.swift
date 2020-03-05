@@ -5,32 +5,32 @@ import SwiftUI
 
 class ArmTests: XCTestCase {
   func testMinuteArms() {
-    let arms = ArmMinute_Previews.previews.environment(\.clockConfiguration.isAnimationEnabled, false)
+    let arms = ArmMinute_Previews.previews.environment(\.clockIsAnimationEnabled, false)
     let hostingController = UIHostingController(rootView: arms)
     assertSnapshot(matching: hostingController, as: .image(on: .iPhoneSe))
   }
 
   func testHourArm() {
-    let arms = ArmHour_Previews.previews.environment(\.clockConfiguration.isAnimationEnabled, false)
+    let arms = ArmHour_Previews.previews.environment(\.clockIsAnimationEnabled, false)
     let hostingController = UIHostingController(rootView: arms)
     assertSnapshot(matching: hostingController, as: .image(on: .iPhoneSe))
   }
 
   func testArmWith25MinuteAngle() {
-    let arms = ArmWith25MinuteAngle_Previews.previews.environment(\.clockConfiguration.isAnimationEnabled, false)
+    let arms = ArmWith25MinuteAngle_Previews.previews.environment(\.clockIsAnimationEnabled, false)
     let hostingController = UIHostingController(rootView: arms)
     assertSnapshot(matching: hostingController, as: .image(on: .iPhoneSe))
   }
 
   func testArtNouveauArm() {
-    let arms = ArtNouveauDesignArm_Previews.previews.environment(\.clockConfiguration.isAnimationEnabled, false)
+    let arms = ArtNouveauDesignArm_Previews.previews.environment(\.clockIsAnimationEnabled, false)
     let hostingController = UIHostingController(rootView: arms)
     assertSnapshot(matching: hostingController, as: .image(on: .iPhoneSe))
   }
 
   func testDrawningArm() {
     let arms = DrawingDesignArm_Previews.previews
-        .environment(\.clockConfiguration.isAnimationEnabled, false)
+        .environment(\.clockIsAnimationEnabled, false)
         .environment(\.clockRandom, .fixed)
     let hostingController = UIHostingController(rootView: arms)
     assertSnapshot(matching: hostingController, as: .image(on: .iPhoneSe))
@@ -38,7 +38,7 @@ class ArmTests: XCTestCase {
 
   func testDrawnArms() {
     let arms = DrawnArm_Previews.previews
-        .environment(\.clockConfiguration.isAnimationEnabled, false)
+        .environment(\.clockIsAnimationEnabled, false)
         .environment(\.clockRandom, .fixed)
     let hostingController = UIHostingController(rootView: arms)
     assertSnapshot(matching: hostingController, as: .image(on: .iPhoneSe))
