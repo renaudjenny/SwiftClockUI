@@ -33,7 +33,8 @@ struct ClockView_Previews: PreviewProvider {
     @Environment(\.calendar) static var calendar
 
     static var previews: some View {
-        ClockView().padding()
+        ClockView()
+            .padding()
             .environment(\.clockDate, .constant(.init(hour: 10, minute: 10, calendar: calendar)))
     }
 }
@@ -42,7 +43,8 @@ struct ClockViewWithFace_Previews: PreviewProvider {
     @Environment(\.calendar) static var calendar
 
     static var previews: some View {
-        ClockView().padding()
+        ClockView()
+            .padding()
             .environment(\.clockDate, .constant(.init(hour: 8, minute: 17, calendar: calendar)))
             .environment(\.clockFaceShown, true)
     }
@@ -52,7 +54,8 @@ struct ClockViewArtNouveauStyle_Previews: PreviewProvider {
     @Environment(\.calendar) static var calendar
 
     static var previews: some View {
-        ClockView().padding()
+        ClockView()
+            .padding()
             .environment(\.clockDate, .constant(.init(hour: 10, minute: 10, calendar: calendar)))
             .environment(\.clockStyle, .artNouveau)
     }
@@ -62,7 +65,8 @@ struct ClockViewDrawingStyle_Previews: PreviewProvider {
     @Environment(\.calendar) static var calendar
 
     static var previews: some View {
-        ClockView().padding()
+        ClockView()
+            .padding()
             .environment(\.clockDate, .constant(.init(hour: 10, minute: 10, calendar: calendar)))
             .environment(\.clockStyle, .drawing)
     }
