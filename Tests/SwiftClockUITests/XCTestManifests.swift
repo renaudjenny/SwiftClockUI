@@ -8,7 +8,9 @@ public func allTests() -> [XCTestCaseEntry] {
         ("ClockFaceTests", ClockFaceTests),
         ("EyeTests", EyeTests),
         ("MouthTests", MouthTests),
-        // TODO: Add tests for extensions. Could copy them from telltime project
+        ("EnvironmentTests", EnvironmentTests),
+        ("CGPointExtensionCircleTests", CGPointExtensionCircleTests),
+        ("DateExtensionClockTests", DateExtensionClockTests),
     ]
 }
 #endif
