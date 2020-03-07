@@ -58,7 +58,6 @@ struct ArtNouveauArm: Shape {
 
 #if DEBUG
 struct ArtNouveauArm_Previews: PreviewProvider {
-    // TODO: get something nice and relevant here and add a snapshot test!
     static var previews: some View {
         ZStack {
             Circle().stroke()
