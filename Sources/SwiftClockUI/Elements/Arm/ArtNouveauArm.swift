@@ -64,6 +64,7 @@ struct ArtNouveauArm_Previews: PreviewProvider {
             Circle().stroke()
             ArtNouveauArm(type: .minute)
         }
+        .aspectRatio(contentMode: .fit)
         .padding()
     }
 }
