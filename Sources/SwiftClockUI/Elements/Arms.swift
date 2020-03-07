@@ -29,12 +29,16 @@ struct OnHover: ViewModifier {
 
 #if DEBUG
 struct Arms_Previews: PreviewProvider {
-    // TODO: get something nice and relevant here and add a snapshot test!
+    @Environment(\.calendar) static var calendar
+
     static var previews: some View {
         ZStack {
             Circle().stroke()
             Arms()
-        }.padding()
+        }
+        .aspectRatio(contentMode: .fit)
+        .padding()
+        .environment(\.clockDate, .constant(.init(hour: 10, minute: 10, calendar: calendar)))
     }
 }
 #endif
