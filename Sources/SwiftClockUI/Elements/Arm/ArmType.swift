@@ -22,7 +22,6 @@ enum ArmType {
         }
     }
 
-    // TODO: unit test this function
     func setAngle(_ angle: Angle, date: inout Date, calendar: Calendar) {
         switch self {
         case .hour:
