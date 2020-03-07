@@ -100,6 +100,7 @@ struct ArtNouveauIndicators: View {
 
 #if DEBUG
 struct ArtNouveauIndicators_Previews: PreviewProvider {
+    // TODO: get something nice and relevant here and add a snapshot test!
     static var previews: some View {
         ZStack {
             Circle().stroke()

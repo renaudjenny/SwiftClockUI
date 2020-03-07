@@ -65,6 +65,7 @@ struct DrawnCircle: Shape {
 
 #if DEBUG
 struct DrawnClockBorder_Previews: PreviewProvider {
+    // TODO: get something nice and relevant here and add a snapshot test!
     static var previews: some View {
         DrawnClockBorder()
             .padding()

@@ -14,6 +14,7 @@ struct ClassicClockBorder: View {
 
 #if DEBUG
 struct ClassicClockBorder_Previews: PreviewProvider {
+    // TODO: get something nice and relevant here and add a snapshot test!
     static var previews: some View {
         ClassicClockBorder().padding()
     }
