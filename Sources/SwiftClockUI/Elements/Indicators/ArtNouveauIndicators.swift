@@ -18,7 +18,7 @@ struct ArtNouveauIndicators: View {
                     .stroke()
                     .modifier(ScaleUpOnAppear())
             }
-        }.aspectRatio(1/1, contentMode: .fit)
+        }.aspectRatio(contentMode: .fit)
     }
     
     func romanHour(for romanNumber: String) -> some View {
@@ -100,7 +100,6 @@ struct ArtNouveauIndicators: View {
 
 #if DEBUG
 struct ArtNouveauIndicators_Previews: PreviewProvider {
-    // TODO: get something nice and relevant here and add a snapshot test!
     static var previews: some View {
         ZStack {
             Circle().stroke()
