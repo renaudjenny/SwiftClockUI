@@ -12,7 +12,7 @@ struct DrawnClockBorder: View {
                 .stroke(lineWidth: geometry.diameter * Self.borderWidthRatio)
                 .onAppear(perform: { self.animate = true })
                 .animation(.easeInOut(duration: 1))
-                .aspectRatio(1/1, contentMode: .fit)
+                .aspectRatio(contentMode: .fit)
         }
     }
 }
@@ -65,10 +65,10 @@ struct DrawnCircle: Shape {
 
 #if DEBUG
 struct DrawnClockBorder_Previews: PreviewProvider {
-    // TODO: get something nice and relevant here and add a snapshot test!
     static var previews: some View {
         DrawnClockBorder()
             .padding()
+            .environment(\.clockIsAnimationEnabled, false)
     }
 }
 #endif
