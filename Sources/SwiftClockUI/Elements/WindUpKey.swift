@@ -2,21 +2,22 @@ import SwiftUI
 
 struct WindUpKey: Shape {
     func path(in rect: CGRect) -> Path {
-        let thickness = rect.width * 1/20
+        let width = min(rect.width, rect.height)
+        let thickness = width * 1/20
 
         var path = Path()
 
-        let holeCenterY = rect.height/3 + thickness
-        let holeRadius = rect.width/5
-        let leftHoleCenter = CGPoint(x: rect.width * 1/4, y: holeCenterY)
-        let rightHoldeCenter = CGPoint(x: rect.width * 3/4, y: holeCenterY)
-        let upperHolerCenter = CGPoint(x: rect.width/2, y:  holeRadius/2 + thickness)
+        let holeCenterY = width/3 + thickness
+        let holeRadius = width/5
+        let leftHoleCenter = CGPoint(x: width * 1/4, y: holeCenterY)
+        let rightHoldeCenter = CGPoint(x: width * 3/4, y: holeCenterY)
+        let upperHolerCenter = CGPoint(x: width/2, y:  holeRadius/2 + thickness)
 
         // Outline
 
-        path.move(to: CGPoint(x: rect.width * 1/3, y: rect.maxY))
+        path.move(to: CGPoint(x: width * 1/3, y: rect.maxY))
 
-        path.addLine(to: CGPoint(x: rect.width * 1/3, y: holeCenterY + holeRadius + thickness))
+        path.addLine(to: CGPoint(x: width * 1/3, y: holeCenterY + holeRadius + thickness))
 
         path.addArc(center: leftHoleCenter, radius: holeRadius + thickness, startAngle: .radians(.pi/2), endAngle: .radians(.pi * 11/7), clockwise: false)
 
@@ -24,11 +25,11 @@ struct WindUpKey: Shape {
 
         path.addArc(center: rightHoldeCenter, radius: holeRadius + thickness, startAngle: .radians(.pi * 11/8), endAngle: .radians(.pi/2), clockwise: false)
 
-        path.addLine(to: CGPoint(x: rect.width * 2/3, y: holeCenterY + holeRadius + thickness))
+        path.addLine(to: CGPoint(x: width * 2/3, y: holeCenterY + holeRadius + thickness))
 
-        path.addLine(to: CGPoint(x: rect.width * 2/3, y: rect.height))
+        path.addLine(to: CGPoint(x: width * 2/3, y: rect.maxY))
 
-        path.addLine(to: CGPoint(x: rect.width * 1/3, y: rect.height))
+        path.closeSubpath()
 
         // Holes
 
@@ -52,7 +53,6 @@ struct WindUpKey_Previews: PreviewProvider {
     static var previews: some View {
         WindUpKey()
             .stroke()
-            .aspectRatio(contentMode: .fit)
             .padding()
     }
 }

@@ -9,6 +9,8 @@ struct ClockBorderView: View {
                 ArtNouveauClockBorder()
             } else if style == .drawing {
                 DrawnClockBorder()
+            } else if style == .steampunk {
+                SteampunkClockBorder()
             } else {
                 ClassicClockBorder()
             }
