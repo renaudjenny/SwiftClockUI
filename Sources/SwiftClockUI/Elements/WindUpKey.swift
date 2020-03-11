@@ -7,8 +7,8 @@ struct WindUpKey: Shape {
 
         var path = Path()
 
-        let holeRadius = width/5
-        let holeCenterY = holeRadius/2 + width/3 + thickness
+        let holeRadius = width/6
+        let holeCenterY = holeRadius/2 + width/4 + thickness
         let leftHoleCenter = CGPoint(x: width * 1/4, y: holeCenterY)
         let rightHoldeCenter = CGPoint(x: width * 3/4, y: holeCenterY)
         let upperHolerCenter = CGPoint(x: width/2, y:  holeRadius/2 + thickness)
