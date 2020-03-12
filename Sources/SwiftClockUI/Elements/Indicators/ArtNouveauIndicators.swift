@@ -3,7 +3,6 @@ import SwiftUI
 struct ArtNouveauIndicators: View {
     @Environment(\.clockConfiguration) var configuration
     static let marginRatio: CGFloat = 1/12
-    private static let hourInDegree: Double = 30
     private static let romanNumbers = ["XII", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI"]
     private static let limitedRomanNumbers = ["XII", "III", "VI", "IX"]
     private static let textFontRatio: CGFloat = 1/16
@@ -63,7 +62,7 @@ struct ArtNouveauIndicators: View {
     
     private func angle(for romanNumber: String) -> Angle {
         guard let index = Self.romanNumbers.firstIndex(of: romanNumber) else { return .zero }
-        return Angle(degrees: Double(index) * Self.hourInDegree)
+        return Angle(degrees: Double(index) * .hourInDegree)
     }
     
     private struct Sun: Shape {

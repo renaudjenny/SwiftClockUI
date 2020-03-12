@@ -10,4 +10,9 @@ extension CGPoint {
 
         return CGPoint(x: x + diameter/2, y: y + diameter/2)
     }
+
+    func recenteredCircle(center: CGPoint, diameter: CGFloat) -> Self {
+        let transform = CGAffineTransform(translationX: center.x - diameter/2, y: center.y - diameter/2)
+        return self.applying(transform)
+    }
 }
