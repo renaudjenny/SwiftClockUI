@@ -52,9 +52,10 @@ struct Cogwheel: Shape {
         for tooth in 0...toothCount {
             let tooth = Double(tooth)
             let diameter = width
-            // TODO: refactor a bit here to have the same shape as arm loop
-            path.addArc(center: center, radius: diameter/2, startAngle: .degrees(tooth * degreesByTooth), endAngle: .degrees(tooth * degreesByTooth + degreesByTooth/2), clockwise: false)
-            path.addArc(center: center, radius: diameter/2.2, startAngle: .degrees(tooth * degreesByTooth + degreesByTooth/2), endAngle: .degrees((tooth + 1) * degreesByTooth), clockwise: false)
+            let angle = Angle.degrees(degreesByTooth * tooth)
+
+            path.addArc(center: center, radius: diameter/2, startAngle: angle, endAngle: angle + .degrees(degreesByTooth/2), clockwise: false)
+            path.addArc(center: center, radius: diameter/2.2, startAngle: angle + .degrees(degreesByTooth/2), endAngle: .degrees((tooth + 1) * degreesByTooth), clockwise: false)
         }
 
         return path
