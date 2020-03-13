@@ -25,13 +25,25 @@ struct Cogwheel: Shape {
         let degreesByArm = 360/Double(armCount)
         for arm in 1...armCount {
             let arm = Double(arm)
+            let angle = Angle.degrees(degreesByArm * arm)
+            let startAngle = angle + .degrees(90)
             let startPoint = CGPoint
-                .pointInCircle(from: .degrees(degreesByArm * arm + 90), diameter: holeDiameter)
+                .pointInCircle(from: startAngle, diameter: holeDiameter)
                 .recenteredCircle(center: center, diameter: holeDiameter)
             path.move(to: startPoint)
-            path.addArc(center: center, radius: holeRadius, startAngle: .degrees(arm * degreesByArm), endAngle: .degrees(arm * degreesByArm - armThickness), clockwise: true)
-            path.addArc(center: center, radius: holeRadius * 3, startAngle: .degrees(arm * degreesByArm - armThickness), endAngle: .degrees(arm * degreesByArm), clockwise: false)
+            path.addArc(center: center, radius: holeRadius, startAngle: angle, endAngle: angle - .degrees(armThickness), clockwise: true)
+            path.addArc(center: center, radius: holeRadius * 3, startAngle: angle - .degrees(armThickness), endAngle: angle, clockwise: false)
             path.closeSubpath()
+
+            let extraHoleMargin = width * 1/10
+            let extraHoleAngle = startAngle - .degrees(degreesByArm/3)
+            let extraHoleRadius = holeRadius * 1/6
+            let extraHoleCenter = CGPoint
+                .pointInCircle(from: extraHoleAngle, diameter: width, margin: extraHoleMargin)
+                .recenteredCircle(center: center, diameter: width)
+                .applying(.init(translationX: -extraHoleRadius/2, y: -extraHoleRadius/2))
+            let extraHoleSize = CGSize(width: extraHoleRadius, height: extraHoleRadius)
+            path.addEllipse(in: CGRect(origin: extraHoleCenter, size: extraHoleSize))
         }
 
         path.move(to: CGPoint(x: rect.maxX, y: rect.midY))
@@ -40,6 +52,7 @@ struct Cogwheel: Shape {
         for tooth in 0...toothCount {
             let tooth = Double(tooth)
             let diameter = width
+            // TODO: refactor a bit here to have the same shape as arm loop
             path.addArc(center: center, radius: diameter/2, startAngle: .degrees(tooth * degreesByTooth), endAngle: .degrees(tooth * degreesByTooth + degreesByTooth/2), clockwise: false)
             path.addArc(center: center, radius: diameter/2.2, startAngle: .degrees(tooth * degreesByTooth + degreesByTooth/2), endAngle: .degrees((tooth + 1) * degreesByTooth), clockwise: false)
         }
