@@ -1,7 +1,7 @@
 import SwiftUI
 
-struct HourCog: Shape {
-    var cogCount: Int = 30
+struct Cogwheel: Shape {
+    var toothCount: Int = 30
     var armCount: Int = 10
 
     func path(in rect: CGRect) -> Path {
@@ -36,21 +36,21 @@ struct HourCog: Shape {
 
         path.move(to: CGPoint(x: rect.maxX, y: rect.midY))
 
-        let degreesByCog = 360/Double(cogCount)
-        for cog in 0...cogCount {
-            let cog = Double(cog)
+        let degreesByTooth = 360/Double(toothCount)
+        for tooth in 0...toothCount {
+            let tooth = Double(tooth)
             let diameter = width
-            path.addArc(center: center, radius: diameter/2, startAngle: .degrees(cog * degreesByCog), endAngle: .degrees(cog * degreesByCog + degreesByCog/2), clockwise: false)
-            path.addArc(center: center, radius: diameter/2.2, startAngle: .degrees(cog * degreesByCog + degreesByCog/2), endAngle: .degrees((cog + 1) * degreesByCog), clockwise: false)
+            path.addArc(center: center, radius: diameter/2, startAngle: .degrees(tooth * degreesByTooth), endAngle: .degrees(tooth * degreesByTooth + degreesByTooth/2), clockwise: false)
+            path.addArc(center: center, radius: diameter/2.2, startAngle: .degrees(tooth * degreesByTooth + degreesByTooth/2), endAngle: .degrees((tooth + 1) * degreesByTooth), clockwise: false)
         }
 
         return path
     }
 }
 
-struct HourCog_Previews: PreviewProvider {
+struct Cogwheel_Previews: PreviewProvider {
     static var previews: some View {
-        HourCog()
+        Cogwheel()
             .stroke()
             .padding()
     }
