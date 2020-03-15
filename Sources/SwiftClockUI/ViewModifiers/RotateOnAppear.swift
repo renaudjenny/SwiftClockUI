@@ -8,7 +8,7 @@ struct RotateOnAppear: ViewModifier {
     func body(content: Content) -> some View {
         content
             .rotationEffect(rotationAngle)
-            .animation(Animation.easeInOut(duration: 4).repeatForever(autoreverses: true))
+            .animation(Animation.linear(duration: 4).repeatForever(autoreverses: false))
             .onAppear { self.animate = true }
     }
 
