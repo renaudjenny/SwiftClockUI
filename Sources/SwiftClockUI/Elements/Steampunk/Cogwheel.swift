@@ -5,6 +5,7 @@ struct Cogwheel: Shape {
     var armCount = 10
     var addExtraHoles = true
 
+    // TODO: refactor - split this too long function (take example of WindUpKey)
     func path(in rect: CGRect) -> Path {
         let width = min(rect.width, rect.height)
         let center = CGPoint(x: rect.midX, y: rect.midY)
