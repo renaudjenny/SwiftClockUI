@@ -1,8 +1,8 @@
 import SwiftUI
 
-struct Plate<Content>: View where Content: View {
+struct Plate: View {
     let type: PlateType
-    let content: () -> Content
+    let text: String
 
     var body: some View {
         ZStack {
@@ -13,7 +13,7 @@ struct Plate<Content>: View where Content: View {
                 Circle().stroke()
             }
             rivets.aspectRatio(contentMode: .fit)
-            content()
+            Text(text).modifier(FontProportional(ratio: 1/2, design: .serif))
         }
     }
 
@@ -60,14 +60,8 @@ extension Plate {
 struct Plate_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
-            Plate(type: .soft) {
-                Text("I")
-                    .modifier(FontProportional(ratio: 1/2, design: .serif))
-            }
-            Plate(type: .hard) {
-                Text("XII")
-                    .modifier(FontProportional(ratio: 1/2, design: .serif))
-            }
+            Plate(type: .soft, text: "I")
+            Plate(type: .hard, text: "XII")
         }.padding()
     }
 }
