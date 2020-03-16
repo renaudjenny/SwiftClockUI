@@ -9,6 +9,8 @@ struct IndicatorsView: View {
                 ArtNouveauIndicators()
             } else if style == .drawing {
                 DrawnIndicators()
+            } else if style == .steampunk {
+                SteampunkIndicators()
             } else {
                 ClassicIndicators()
             }
