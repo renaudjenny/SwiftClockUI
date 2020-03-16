@@ -28,25 +28,21 @@ struct Plate: View {
     }
 
     private var softRivets: some View {
-        GeometryReader { geometry in
+        ZStack {
             Circle()
                 .scale(1/20)
-                .position(.pointInCircle(from: .degrees(-45), diameter: geometry.diameter, margin: geometry.diameter * 1/5))
+                .modifier(PositionInCircle(angle: .degrees(-45), marginRatio: 1/5))
             Circle()
                 .scale(1/20)
-                .position(.pointInCircle(from: .degrees(135), diameter: geometry.diameter, margin: geometry.diameter * 1/5))
+                .modifier(PositionInCircle(angle: .degrees(135), marginRatio: 1/5))
         }
     }
 
     private var hardRivets: some View {
-        GeometryReader { geometry in
-            ZStack {
-                ForEach(0..<20) { rivet in
-                    Circle()
-                        .scale(1/20)
-                        .position(.pointInCircle(from: .degrees(Double(rivet) * 360/20), diameter: geometry.diameter, margin: geometry.diameter * 1/22))
-                }
-            }
+        ForEach(0..<20) { rivet in
+            Circle()
+                .scale(1/20)
+            .modifier(PositionInCircle(angle: .degrees(Double(rivet) * 360/20), marginRatio: 1/22))
         }
     }
 }
