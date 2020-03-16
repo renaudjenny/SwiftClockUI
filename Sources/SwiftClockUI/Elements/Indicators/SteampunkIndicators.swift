@@ -3,14 +3,30 @@ import SwiftUI
 struct SteampunkIndicators: View {
     var body: some View {
         ZStack() {
-            Cogwheel()
-                .stroke()
-                .scale(0.8)
-                .modifier(RotateOnAppear())
+            mainCogwheel
+            circles
             moon
             gears.mask(moon)
         }
         .aspectRatio(1/1, contentMode: .fit)
+    }
+
+    private var mainCogwheel: some View {
+        Cogwheel()
+            .stroke()
+            .scale(0.8)
+            .modifier(RotateOnAppear())
+    }
+
+    private var circles: some View {
+        ZStack() {
+            Circle()
+                .stroke()
+                .scale(29/30)
+            Circle()
+                .scale(28/30)
+                .stroke()
+        }
     }
 
     private var moon: some View {
@@ -38,24 +54,6 @@ struct SteampunkIndicators: View {
                 .modifier(RotateOnAppear(clockwise: false))
                 .position(x: geometry.diameter * 2/5, y: geometry.diameter * 9/10)
         }
-    }
-}
-
-struct BalanceOnAppear: ViewModifier {
-    @Environment(\.clockIsAnimationEnabled) var isAnimationEnabled
-    @State var animate = false
-    var clockwise = true
-
-    func body(content: Content) -> some View {
-        content
-            .rotationEffect(rotationAngle)
-            .animation(Animation.linear(duration: 4).repeatForever(autoreverses: true))
-            .onAppear { self.animate = true }
-    }
-
-    var rotationAngle: Angle {
-        guard isAnimationEnabled else { return .zero }
-        return animate ? .degrees(20) : -.degrees(20)
     }
 }
 
