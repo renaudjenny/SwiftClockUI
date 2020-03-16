@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct SteampunkClockBorder: View {
-    static let borderWidthRatio: CGFloat = 1/80
+    static let borderWidthRatio: CGFloat = 1/160
 
 
     var body: some View {
