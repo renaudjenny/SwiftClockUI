@@ -84,15 +84,6 @@ struct SteampunkIndicators: View {
     }
 }
 
-// TODO: Extract this into it's own extension
-extension Shape {
-    func strokeProportionaly(_ ratio: CGFloat) -> some View {
-        GeometryReader { geometry in
-            self.stroke(lineWidth: geometry.diameter * ratio)
-        }
-    }
-}
-
 struct SteampunkIndicators_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
