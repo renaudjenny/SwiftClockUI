@@ -24,7 +24,7 @@ struct SteampunkIndicators: View {
     private var mainCogwheel: some View {
         Cogwheel()
             .scale(0.8)
-            .strokeProportionaly(Self.decorationLineWidthRatio)
+            .strokeProportionally(Self.decorationLineWidthRatio)
             .modifier(RotateOnAppear())
     }
 
@@ -32,17 +32,17 @@ struct SteampunkIndicators: View {
         ZStack() {
             Circle()
                 .scale(21/25)
-                .strokeProportionaly(Self.lineWidthRatio)
+                .strokeProportionally(Self.lineWidthRatio)
             Circle()
                 .scale(20/25)
-                .strokeProportionaly(Self.lineWidthRatio)
+                .strokeProportionally(Self.lineWidthRatio)
         }
     }
 
     private var moon: some View {
         ZStack {
             Moon().fill(Color.background)
-            Moon().strokeProportionaly(Self.decorationLineWidthRatio)
+            Moon().strokeProportionally(Self.decorationLineWidthRatio)
         }.modifier(BalanceOnAppear())
     }
 
@@ -50,7 +50,7 @@ struct SteampunkIndicators: View {
         GeometryReader { geometry in
             Cogwheel(toothCount: 12, armCount: 3, addExtraHoles: false)
                 .scale(1/5)
-                .strokeProportionaly(Self.decorationLineWidthRatio)
+                .strokeProportionally(Self.decorationLineWidthRatio)
                 .modifier(RotateOnAppear(clockwise: false))
                 .position(x: geometry.diameter * 1/10, y: geometry.diameter * 10/15)
             Cogwheel(toothCount: 8, armCount: 5, addExtraHoles: false)
@@ -60,7 +60,7 @@ struct SteampunkIndicators: View {
                 .position(x: geometry.diameter * 7/29, y: geometry.diameter * 7/9)
             Cogwheel(toothCount: 12, armCount: 8, addExtraHoles: false)
                 .scale(1/4)
-                .strokeProportionaly(Self.decorationLineWidthRatio)
+                .strokeProportionally(Self.decorationLineWidthRatio)
                 .modifier(RotateOnAppear(clockwise: false))
                 .position(x: geometry.diameter * 2/5, y: geometry.diameter * 9/10)
         }
