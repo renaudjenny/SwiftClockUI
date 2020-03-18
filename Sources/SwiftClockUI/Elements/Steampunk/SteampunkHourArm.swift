@@ -6,10 +6,10 @@ struct SteampunkHourArm: Shape {
         let thickness = width * 1/60
         let startRadius = width * 1/30
         let center = CGPoint(x: rect.midX, y: rect.midY)
-        let holeBottomY = center.y - width * 1/6
+        let holeBottomY = center.y - width * 1/8
         let holeRadius = startRadius * 1/2
         let holeCenter = CGPoint(x: center.x, y: holeBottomY - holeRadius)
-        let bottomArrowY = center.y - width * 2/7
+        let bottomArrowY = center.y - width * 2/9
         let arrowWidth = width * 1/4
 
         var path = Path()
