@@ -2,6 +2,7 @@ import SwiftUI
 
 struct SteampunkIndicators: View {
     // TODO: refactor this because there is lot of similarities with ArtNouveauIndicators
+    @Environment(\.clockConfiguration) var configuration
     private static let romanNumbers = ["XII", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI"]
     private static let limitedRomanNumbers = ["XII", "III", "VI", "IX"]
     static let marginRatio: CGFloat = 1/10
@@ -67,11 +68,15 @@ struct SteampunkIndicators: View {
     }
 
     private var numbers: some View {
-        ForEach(Self.romanNumbers, id: \.self) { romanNumber in
+        ForEach(self.configurationRomanNumbers, id: \.self) { romanNumber in
             Plate(type: self.plateType(for: romanNumber), text: romanNumber)
                 .scaleEffect(3/19)
                 .modifier(PositionInCircle(angle: self.angle(for: romanNumber), marginRatio: Self.marginRatio))
         }
+    }
+
+    private var configurationRomanNumbers: [String] {
+        configuration.isLimitedHoursShown ? Self.limitedRomanNumbers : Self.romanNumbers
     }
 
     private func angle(for romanNumber: String) -> Angle {
@@ -89,6 +94,15 @@ struct SteampunkIndicators_Previews: PreviewProvider {
         ZStack {
             Circle().stroke()
             SteampunkIndicators()
+        }.padding()
+    }
+}
+
+struct SteampunkIndicatorsWithLimitedHours_Previews: PreviewProvider {
+    static var previews: some View {
+        ZStack {
+            Circle().stroke()
+            SteampunkIndicators().environment(\.clockConfiguration, .init(isLimitedHoursShown: true, isMinuteIndicatorsShown: true, isHourIndicatorsShown: true))
         }.padding()
     }
 }
