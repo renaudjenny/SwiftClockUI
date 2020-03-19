@@ -143,7 +143,6 @@ extension Path {
 }
 
 struct SteampunkMinuteArm_Previews: PreviewProvider {
-    // TODO: add snapshot test
     static var previews: some View {
         ZStack {
             Circle().stroke()

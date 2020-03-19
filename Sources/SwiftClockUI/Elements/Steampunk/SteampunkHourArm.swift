@@ -75,7 +75,6 @@ struct SteampunkHourArm: Shape {
 }
 
 struct SteampunkHourArm_Previews: PreviewProvider {
-    // TODO: add snapshot test
     static var previews: some View {
         ZStack {
             Circle().stroke()
