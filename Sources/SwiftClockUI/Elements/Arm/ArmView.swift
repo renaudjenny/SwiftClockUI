@@ -13,6 +13,8 @@ struct ArmView: View {
                 ArtNouveauArm(type: self.type)
             } else if style == .drawing {
                 DrawnArm(type: self.type)
+            } else if style == .steampunk {
+                SteampunkArm(type: self.type)
             } else {
                 ClassicArm(type: self.type)
             }

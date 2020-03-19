@@ -4,12 +4,14 @@ public enum ClockStyle: Identifiable, CaseIterable {
     case classic
     case artNouveau
     case drawing
+    case steampunk
 
     public var description: String {
         switch self {
         case .classic: return "Classic"
         case .artNouveau: return "Art Nouveau"
         case .drawing: return "Drawing"
+        case .steampunk: return "Steampunk"
         }
     }
 
@@ -18,6 +20,7 @@ public enum ClockStyle: Identifiable, CaseIterable {
         case .classic: return 0
         case .artNouveau: return 1
         case .drawing: return 2
+        case .steampunk: return 3
         }
     }
 }
