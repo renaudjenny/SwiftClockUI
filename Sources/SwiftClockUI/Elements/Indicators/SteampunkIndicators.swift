@@ -1,10 +1,7 @@
 import SwiftUI
 
 struct SteampunkIndicators: View {
-    // TODO: refactor this because there is lot of similarities with ArtNouveauIndicators
     @Environment(\.clockConfiguration) var configuration
-    private static let romanNumbers = ["XII", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI"]
-    private static let limitedRomanNumbers = ["XII", "III", "VI", "IX"]
     static let marginRatio: CGFloat = 1/10
     static let decorationScale: CGFloat = 7/10
     static let lineWidthRatio: CGFloat = 1/200
@@ -68,24 +65,15 @@ struct SteampunkIndicators: View {
     }
 
     private var numbers: some View {
-        ForEach(self.configurationRomanNumbers, id: \.self) { romanNumber in
+        ForEach(RomanNumber.numbers(configuration: configuration), id: \.self) { romanNumber in
             Plate(type: self.plateType(for: romanNumber), text: romanNumber)
                 .scaleEffect(3/19)
-                .modifier(PositionInCircle(angle: self.angle(for: romanNumber), marginRatio: Self.marginRatio))
+                .modifier(PositionInCircle(angle: RomanNumber.angle(for: romanNumber), marginRatio: Self.marginRatio))
         }
     }
 
-    private var configurationRomanNumbers: [String] {
-        configuration.isLimitedHoursShown ? Self.limitedRomanNumbers : Self.romanNumbers
-    }
-
-    private func angle(for romanNumber: String) -> Angle {
-        guard let index = Self.romanNumbers.firstIndex(of: romanNumber) else { return .zero }
-        return Angle(degrees: Double(index) * .hourInDegree)
-    }
-
     private func plateType(for romanNumber: String) -> Plate.PlateType {
-        Self.limitedRomanNumbers.contains(romanNumber) ? .hard : .soft
+        RomanNumber.limitedNumbers.contains(romanNumber) ? .hard : .soft
     }
 }
 

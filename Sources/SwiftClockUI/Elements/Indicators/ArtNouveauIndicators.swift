@@ -3,13 +3,11 @@ import SwiftUI
 struct ArtNouveauIndicators: View {
     @Environment(\.clockConfiguration) var configuration
     static let marginRatio: CGFloat = 1/12
-    private static let romanNumbers = ["XII", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI"]
-    private static let limitedRomanNumbers = ["XII", "III", "VI", "IX"]
     private static let textFontRatio: CGFloat = 1/16
     
     var body: some View {
         ZStack {
-            ForEach(configurationRomanNumbers, id: \.self) { romanNumber in
+            ForEach(RomanNumber.numbers(configuration: configuration), id: \.self) { romanNumber in
                 self.romanHour(for: romanNumber)
             }
             if configuration.isMinuteIndicatorsShown {
@@ -26,14 +24,10 @@ struct ArtNouveauIndicators: View {
                 .modifier(FontProportional(ratio: Self.textFontRatio))
                 .modifier(NumberCircle(geometry: geometry))
                 .modifier(ScaleUpOnAppear())
-                .modifier(PositionInCircle(angle: self.angle(for: romanNumber), marginRatio: Self.marginRatio))
+                .modifier(PositionInCircle(angle: RomanNumber.angle(for: romanNumber), marginRatio: Self.marginRatio))
         }
     }
-    
-    private var configurationRomanNumbers: [String] {
-        configuration.isLimitedHoursShown ? Self.limitedRomanNumbers : Self.romanNumbers
-    }
-    
+
     private struct NumberCircle: ViewModifier {
         let geometry: GeometryProxy
         
@@ -59,12 +53,7 @@ struct ArtNouveauIndicators: View {
                 .frame(width: width, height: width)
         }
     }
-    
-    private func angle(for romanNumber: String) -> Angle {
-        guard let index = Self.romanNumbers.firstIndex(of: romanNumber) else { return .zero }
-        return Angle(degrees: Double(index) * .hourInDegree)
-    }
-    
+
     private struct Sun: Shape {
         func path(in rect: CGRect) -> Path {
             var path = Path()
