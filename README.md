@@ -26,6 +26,38 @@ If you want something constant (just for showing the time), you could pass `.con
 * Arms move when date are set (take hour and minute in account)
 * Move the Arms change the date (hour and minute depending on wich arm you've moved)
 
+## Change Clock style
+
+There is 4 different clock style:
+
+Style | Picture
+------------ | -------------
+Classic | ![docs/assets/ClockViewClassic.png]
+Art Nouveau | ![docs/assets/ClockViewClassic.png]
+Drawing | ![docs/assets/ClockViewDrawing.png]
+Steampunk | ![docs/assets/ClockViewSteampunk]
+
+To set the style: `.environment(\.clockStyle, .steampunk)` for Steampunk style for instance.
+
+`\.clockStyle` is typed as `enum ClockStyle`  which is `Identifiable`, `CaseIterable`, and has a convenient method to get the description (in English): `public var description: String`
+
+It's very useful when you want to iterate over this to let the use choose the clock style, for instance you can easily do something like this:
+
+```swift
+struct StylePicker: View {
+    @Binding var clockStyle: ClockStyle
+
+    var body: some View {
+        Picker("Style", selection: clockStyle) {
+            ForEach(ClockStyle.allCases) { style in
+                Text(style.description).tag(style)
+            }
+        }
+        .pickerStyle(SegmentedPickerStyle())
+    }
+}
+```
+
 ## TODO
 
 * 📷 Add some demo pictures
