@@ -32,10 +32,10 @@ There is 4 different clock style:
 
 Style | Picture
 ------------ | -------------
-Classic | ![docs/assets/ClockViewClassic.png]
-Art Nouveau | ![docs/assets/ClockViewClassic.png]
-Drawing | ![docs/assets/ClockViewDrawing.png]
-Steampunk | ![docs/assets/ClockViewSteampunk]
+Classic | ![Clock View with Classic style](docs/assets/ClockViewClassic.png)
+Art Nouveau | ![Clock View with Art Nouveau style](docs/assets/ClockViewArtNouveau.png)
+Drawing | ![Clock View with Darwing style](docs/assets/ClockViewDrawing.png)
+Steampunk | ![Clock View with Steampunk style](docs/assets/ClockViewSteampunk)
 
 To set the style: `.environment(\.clockStyle, .steampunk)` for Steampunk style for instance.
 
