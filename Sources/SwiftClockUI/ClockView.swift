@@ -71,4 +71,15 @@ struct ClockViewDrawingStyle_Previews: PreviewProvider {
             .environment(\.clockStyle, .drawing)
     }
 }
+
+struct ClockViewSteampunkStyle_Previews: PreviewProvider {
+    @Environment(\.calendar) static var calendar
+
+    static var previews: some View {
+        ClockView()
+            .padding()
+            .environment(\.clockDate, .constant(.init(hour: 10, minute: 10, calendar: calendar)))
+            .environment(\.clockStyle, .steampunk)
+    }
+}
 #endif
