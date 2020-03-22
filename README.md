@@ -35,7 +35,7 @@ Style | Picture
 Classic | ![Clock View with Classic style](docs/assets/ClockViewClassic.png)
 Art Nouveau | ![Clock View with Art Nouveau style](docs/assets/ClockViewArtNouveau.png)
 Drawing | ![Clock View with Darwing style](docs/assets/ClockViewDrawing.png)
-Steampunk | ![Clock View with Steampunk style](docs/assets/ClockViewSteampunk)
+Steampunk | ![Clock View with Steampunk style](docs/assets/ClockViewSteampunk.png)
 
 To set the style: `.environment(\.clockStyle, .steampunk)` for Steampunk style for instance.
 
