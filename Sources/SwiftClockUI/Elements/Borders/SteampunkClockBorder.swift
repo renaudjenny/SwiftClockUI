@@ -21,10 +21,10 @@ struct SteampunkClockBorder: View {
     var windUpKey: some View {
         GeometryReader { geometry in
             WindUpKey()
-                .scale(1/5)
+                .scale(1/8)
                 .stroke(lineWidth: geometry.diameter * Self.borderWidthRatio)
                 .rotation(.radians(.pi * 7/4))
-                .position(.pointInCircle(from: .radians(.pi * 7/4), diameter: geometry.diameter, margin: -geometry.diameter * 1/12))
+                .position(.pointInCircle(from: .radians(.pi * 7/4), diameter: geometry.diameter, margin: -geometry.diameter * 1/20))
                 .animation(nil)
                 .modifier(FlipOnAppear())
         }
