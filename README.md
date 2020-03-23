@@ -39,6 +39,19 @@ Steampunk | ![Clock View with Steampunk style](docs/assets/ClockViewSteampunk.pn
 
 To set the style: `.environment(\.clockStyle, .steampunk)` for Steampunk style for instance.
 
+struct ContentView: View {
+@State private var date = Date()
+
+```swift
+struct ContentView: View {
+    @State private var clockStyle: ClockStyle = .classic
+
+    var body: some View {
+        ClockView().environment(\.clockStyle, clockStyle)
+    }
+}
+```
+
 `\.clockStyle` is typed as `enum ClockStyle`  which is `Identifiable`, `CaseIterable`, and has a convenient method to get the description (in English): `public var description: String`
 
 It's very useful when you want to iterate over this to let the use choose the clock style, for instance you can easily do something like this:
