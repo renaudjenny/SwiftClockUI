@@ -55,12 +55,12 @@ struct SteampunkIndicators: View {
                 .scale(1/6)
                 .fill(style: .init(eoFill: true, antialiased: true))
                 .modifier(RotateOnAppear(clockwise: true))
-                .position(x: geometry.diameter * 7/29, y: geometry.diameter * 7/9)
+                .position(x: geometry.diameter * 7/27, y: geometry.diameter * 9/12)
             Cogwheel(toothCount: 12, armCount: 8, addExtraHoles: false)
                 .scale(1/4)
                 .strokeProportionally(Self.decorationLineWidthRatio)
                 .modifier(RotateOnAppear(clockwise: false))
-                .position(x: geometry.diameter * 2/5, y: geometry.diameter * 9/10)
+                .position(x: geometry.diameter * 2/6, y: geometry.diameter * 14/15)
         }
     }
 
