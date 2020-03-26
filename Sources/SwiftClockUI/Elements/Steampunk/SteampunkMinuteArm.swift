@@ -25,6 +25,8 @@ struct SteampunkMinuteArm: Shape {
         return path
     }
 
+    // TODO: improve conventions of private functions to set addSomething(to path: inout path, ...)
+
     private func startCircle(path: inout Path, center: CGPoint, radius: CGFloat, thickness: CGFloat) {
         path.addArc(center: center, radius: radius, startAngle: .zero, endAngle: .fullRound, clockwise: false)
 
@@ -45,27 +47,35 @@ struct SteampunkMinuteArm: Shape {
 
         let topY = bottomY - radius - thickness * 4
         path.addLine(to: CGPoint(x: center.x + thickness/2, y: topY))
+        addRightBottomRectangle(to: &path, center: center, radius: radius, thickness: thickness, topY: topY)
+        path.addLine(to: CGPoint(x: center.x + thickness/2, y: sunCenter.y + sunRadius + thickness))
+
+        addRightSun(to: &path, center: sunCenter, radius: sunRadius, thickness: thickness)
+    }
+
+    private func addRightBottomRectangle(to path: inout Path, center: CGPoint, radius: CGFloat, thickness: CGFloat, topY: CGFloat) {
         path.addLine(to: CGPoint(x: center.x + thickness/2, y: topY - thickness))
         path.addLine(to: CGPoint(x: center.x + thickness * 2, y: topY - thickness))
         path.addLine(to: CGPoint(x: center.x + thickness * 2, y: topY - thickness * 2))
         path.addLine(to: CGPoint(x: center.x + thickness/2, y: topY - thickness * 2))
-        path.addLine(to: CGPoint(x: center.x + thickness/2, y: sunCenter.y + sunRadius + thickness))
+    }
 
+    private func addRightSun(to path: inout Path, center: CGPoint, radius: CGFloat, thickness: CGFloat) {
         for arc in 1...4 {
             let point = CGPoint
-                .pointInCircle(from: Angle(degrees: -Double(arc) * 35 + 180), diameter: sunRadius, margin: -sunRadius - thickness)
-                .recenteredCircle(center: sunCenter, diameter: radius)
+                .pointInCircle(from: Angle(degrees: -Double(arc) * 35 + 180), diameter: radius, margin: -radius - thickness)
+                .recenteredCircle(center: center, diameter: radius)
 
             let control = CGPoint
-                .pointInCircle(from: Angle(degrees: -Double(arc) * 35 + 35/2 + 180), diameter: sunRadius, margin: -sunRadius * 1/2)
-                .recenteredCircle(center: sunCenter, diameter: radius)
+                .pointInCircle(from: Angle(degrees: -Double(arc) * 35 + 35/2 + 180), diameter: radius, margin: -radius * 1/2)
+                .recenteredCircle(center: center, diameter: radius)
 
             path.addQuadCurve(to: point, control: control)
         }
         let control = CGPoint
-            .pointInCircle(from: Angle(degrees: 35/2 + 180), diameter: sunRadius, margin: sunRadius + thickness/2)
-            .recenteredCircle(center: sunCenter, diameter: radius)
-        path.addQuadCurve(to: CGPoint(x: center.x + thickness/2, y: sunCenter.y - sunRadius - thickness), control: control)
+            .pointInCircle(from: Angle(degrees: 35/2 + 180), diameter: radius, margin: radius + thickness/2)
+            .recenteredCircle(center: center, diameter: radius)
+        path.addQuadCurve(to: CGPoint(x: center.x + thickness/2, y: center.y - radius - thickness), control: control)
     }
 
     private func arrow(path: inout Path, bottomY: CGFloat, width: CGFloat, center: CGPoint, thickness: CGFloat) {
