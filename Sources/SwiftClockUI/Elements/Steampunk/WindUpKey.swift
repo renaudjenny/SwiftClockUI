@@ -30,14 +30,6 @@ struct WindUpKey: Shape {
     }
 }
 
-// TODO: move this extension into its own file
-extension Path {
-    mutating func addCircle(_ circle: CGRect) {
-        move(to: CGPoint(x: circle.maxX, y: circle.center.y))
-        addArc(center: circle.center, radius: circle.radius, startAngle: .zero, endAngle: .fullRound, clockwise: false)
-    }
-}
-
 struct WindUpKey_Previews: PreviewProvider {
     static var previews: some View {
         WindUpKey()
