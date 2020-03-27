@@ -31,16 +31,6 @@ struct WindUpKey: Shape {
 }
 
 // TODO: move this extension into its own file
-extension CGRect {
-    static func circle(center: CGPoint, radius: CGFloat) -> Self {
-        .init(x: center.x - radius, y: center.y - radius, width: radius * 2, height: radius * 2)
-    }
-
-    var center: CGPoint { .init(x: midX, y: midY) }
-    var radius: CGFloat { min(width, height)/2 }
-}
-
-// TODO: move this extension into its own file
 extension Path {
     mutating func addCircle(_ circle: CGRect) {
         move(to: CGPoint(x: circle.maxX, y: circle.center.y))
