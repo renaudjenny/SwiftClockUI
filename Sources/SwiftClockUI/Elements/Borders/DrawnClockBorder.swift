@@ -38,24 +38,16 @@ struct DrawnCircle: Shape {
 
     func path(in rect: CGRect) -> Path {
         var path = Path()
-        let diameter = min(rect.width, rect.height)
+        path.move(to: .inCircle(rect, for: .zero))
 
-        path.move(to: .pointInCircle(from: .zero, diameter: diameter))
-
+        // TODO: split this into private addSomething functions
         let margin = rect.width * self.maxMarginRatio
         for i in 1...Self.numberOfArcs {
             let angle = Angle(degrees: Double(i) * Self.angleRatio)
-            let to: CGPoint = .pointInCircle(
-                from: angle,
-                diameter: diameter,
-                margin: margin
-            )
+            let to = CGPoint.inCircle(rect, for: angle, margin: margin)
 
-            let control: CGPoint = .pointInCircle(
-                from: Angle(degrees: angle.degrees - self.angleMarginRatio * Self.angleRatio),
-                diameter: diameter,
-                margin: margin
-            )
+            let controlAngle = Angle(degrees: angle.degrees - self.angleMarginRatio * Self.angleRatio)
+            let control = CGPoint.inCircle(rect, for: controlAngle, margin: margin)
             path.addQuadCurve(to: to, control: control)
         }
 

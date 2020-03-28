@@ -13,15 +13,9 @@ struct Moon: Shape {
 
         let margin: CGFloat = width
         path.addCurve(
-            to: CGPoint
-                .pointInCircle(from: .zero, diameter: width)
-                .recenteredCircle(center: center, diameter: width),
-            control1: CGPoint
-                .pointInCircle(from: angle * 1/4, diameter: width, margin: margin)
-                .recenteredCircle(center: center, diameter: width),
-            control2: CGPoint
-                .pointInCircle(from: angle * 3/4, diameter: width, margin: margin)
-                .recenteredCircle(center: center, diameter: width)
+            to: .inCircle(rect, for: .zero),
+            control1: .inCircle(rect, for: angle * 1/4, margin: margin),
+            control2: .inCircle(rect, for: angle * 3/4, margin: margin)
         )
 
         return path

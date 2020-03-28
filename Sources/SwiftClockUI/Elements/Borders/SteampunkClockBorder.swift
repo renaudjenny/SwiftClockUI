@@ -24,7 +24,7 @@ struct SteampunkClockBorder: View {
                 .scale(1/8)
                 .stroke(lineWidth: geometry.diameter * Self.borderWidthRatio)
                 .rotation(.radians(.pi * 7/4))
-                .position(.pointInCircle(from: .radians(.pi * 7/4), diameter: geometry.diameter, margin: -geometry.diameter * 1/20))
+                .position(.inCircle(geometry.circle, for: .radians(.pi * 7/4), margin: -geometry.radius * 1/10))
                 .animation(nil)
                 .modifier(FlipOnAppear())
         }

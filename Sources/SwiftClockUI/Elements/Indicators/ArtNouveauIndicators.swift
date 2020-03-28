@@ -57,25 +57,21 @@ struct ArtNouveauIndicators: View {
     private struct Sun: Shape {
         func path(in rect: CGRect) -> Path {
             var path = Path()
-            let diameter = min(rect.width, rect.height)
-            
-            path.move(to: .pointInCircle(
-                from: .zero,
-                diameter: diameter,
-                margin: rect.width/6
-                ))
+            let circle = rect
+            let startPoint = CGPoint.inCircle(circle, for: .zero, margin: circle.radius * 1/3)
+            path.move(to: startPoint)
             
             for minute in 1...60 {
-                let point: CGPoint = .pointInCircle(
-                    from: Angle(degrees: Double(minute) * 6),
-                    diameter: diameter,
-                    margin: rect.width/6
+                let point = CGPoint.inCircle(
+                    circle,
+                    for: Angle(degrees: Double(minute) * 6),
+                    margin: circle.radius * 1/3
                 )
                 
-                let control: CGPoint = .pointInCircle(
-                    from: Angle(degrees: Double(minute) * 6 - 3),
-                    diameter: diameter,
-                    margin: rect.width/4
+                let control = CGPoint.inCircle(
+                    circle,
+                    for: Angle(degrees: Double(minute) * 6 - 3),
+                    margin: circle.radius * 1/2
                 )
                 
                 path.addQuadCurve(to: point, control: control)

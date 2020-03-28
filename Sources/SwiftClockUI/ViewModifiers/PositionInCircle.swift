@@ -6,9 +6,9 @@ struct PositionInCircle: ViewModifier {
 
     func body(content: Content) -> some View {
         GeometryReader { geometry in
-            content.position(.pointInCircle(
-                from: self.angle,
-                diameter: geometry.diameter,
+            content.position(.inCircle(
+                geometry.circle,
+                for: self.angle,
                 margin: geometry.diameter * self.marginRatio
                 ))
         }

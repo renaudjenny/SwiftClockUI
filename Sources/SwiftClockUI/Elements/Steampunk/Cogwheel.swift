@@ -12,7 +12,7 @@ struct Cogwheel: Shape {
 
         var path = Path()
         addCenterCircle(to: &path, center: center, radius: holeRadius)
-        addArms(to: &path, width: width, center: center, radius: holeRadius)
+        addArms(to: &path, rect: rect, radius: holeRadius)
         path.move(to: CGPoint(x: center.x + width/2, y: center.y))
         addTeeth(to: &path, center: center, radius: width/2)
         path.closeSubpath()
@@ -28,33 +28,31 @@ struct Cogwheel: Shape {
         ))
     }
 
-    private func addArms(to path: inout Path, width: CGFloat, center: CGPoint, radius: CGFloat) {
+    private func addArms(to path: inout Path, rect: CGRect, radius: CGFloat) {
         let degreesByArm = 360/Double(armCount)
         let armThickness = Angle(degrees: 280 * 1/Double(armCount))
         for arm in 1...armCount {
             let arm = Double(arm)
             let angle = Angle.degrees(degreesByArm * arm)
             let startAngle = angle + .degrees(90)
-            let startPoint = CGPoint
-                .pointInCircle(from: startAngle, diameter: radius * 2)
-                .recenteredCircle(center: center, diameter: radius * 2)
+            let circle = CGRect.circle(center: rect.center, radius: radius)
+            let startPoint = CGPoint.inCircle(circle, for: startAngle)
             path.move(to: startPoint)
-            path.addArc(center: center, radius: radius, startAngle: angle, endAngle: angle - armThickness, clockwise: true)
-            path.addArc(center: center, radius: radius * 3, startAngle: angle - armThickness, endAngle: angle, clockwise: false)
+            path.addArc(center: rect.center, radius: radius, startAngle: angle, endAngle: angle - armThickness, clockwise: true)
+            path.addArc(center: rect.center, radius: radius * 3, startAngle: angle - armThickness, endAngle: angle, clockwise: false)
             path.closeSubpath()
-            addArmHoleIfNeeded(to: &path, width: width, center: center, radius: radius, startAngle: startAngle, degreesByArm: degreesByArm)
+            addArmHoleIfNeeded(to: &path, rect: rect, radius: radius, startAngle: startAngle, degreesByArm: degreesByArm)
         }
     }
 
-    private func addArmHoleIfNeeded(to path: inout Path, width: CGFloat, center: CGPoint, radius: CGFloat, startAngle: Angle, degreesByArm: Double) {
+    private func addArmHoleIfNeeded(to path: inout Path, rect: CGRect, radius: CGFloat, startAngle: Angle, degreesByArm: Double) {
         guard addExtraHoles else { return }
 
-        let extraHoleMargin = width * 1/10
+        let extraHoleMargin = rect.radius * 1/5
         let extraHoleAngle = startAngle - .degrees(degreesByArm/3)
         let extraHoleRadius = radius * 1/6
         let extraHoleCenter = CGPoint
-            .pointInCircle(from: extraHoleAngle, diameter: width, margin: extraHoleMargin)
-            .recenteredCircle(center: center, diameter: width)
+            .inCircle(rect, for: extraHoleAngle, margin: extraHoleMargin)
             .applying(.init(translationX: -extraHoleRadius/2, y: -extraHoleRadius/2))
         let extraHoleSize = CGSize(width: extraHoleRadius, height: extraHoleRadius)
         path.addEllipse(in: CGRect(origin: extraHoleCenter, size: extraHoleSize))
