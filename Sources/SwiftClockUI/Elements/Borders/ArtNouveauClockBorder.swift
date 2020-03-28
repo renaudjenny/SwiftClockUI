@@ -1,20 +1,20 @@
 import SwiftUI
 
 struct ArtNouveauClockBorder: View {
-    static let borderWidthRatio: CGFloat = 1/100
+    static let borderWidthRatio: CGFloat = 1/50
     static let innerCircleScale: CGFloat = 9/10
     
     var body: some View {
         GeometryReader { geometry in
             ZStack {
                 Circle()
-                    .stroke(lineWidth: geometry.diameter * Self.borderWidthRatio)
+                    .stroke(lineWidth: geometry.radius * Self.borderWidthRatio)
                 Circle()
                     .scale(Self.innerCircleScale)
                     .transform(.init(
                         translationX: 0,
-                        y: geometry.diameter/2 * (1 - Self.innerCircleScale)))
-                    .stroke(lineWidth: geometry.diameter * Self.borderWidthRatio/4)
+                        y: geometry.radius * (1 - Self.innerCircleScale)))
+                    .stroke(lineWidth: geometry.radius * Self.borderWidthRatio/2)
             }.aspectRatio(1/1, contentMode: .fit)
         }
     }

@@ -81,7 +81,7 @@ struct Cogwheel_Previews: PreviewProvider {
 struct Cogwheels_Previews: PreviewProvider {
     static var previews: some View {
         GeometryReader { geometry in
-            VStack(spacing: geometry.diameter * -1/50) {
+            VStack(spacing: geometry.radius * -1/25) {
                 Cogwheel(toothCount: 10, armCount: 4, addExtraHoles: false)
                     .stroke()
                     .modifier(RotateOnAppear())

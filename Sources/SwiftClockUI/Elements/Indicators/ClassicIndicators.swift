@@ -2,7 +2,7 @@ import SwiftUI
 
 struct ClassicIndicators: View {
     @Environment(\.clockConfiguration) var configuration
-    private static let marginRatio: CGFloat = 1/7
+    private static let marginRatio: CGFloat = 2/7
 
     var body: some View {
         ZStack(alignment: .center) {
@@ -21,9 +21,9 @@ struct ClassicIndicators: View {
 
 private struct HourTexts: View {
     @Environment(\.clockConfiguration) var configuration
-    private static let hours = [12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+    private static let hours = [12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
     private static let limitedHours = [12, 3, 6, 9]
-    private static let textFontRatio: CGFloat = 1/10
+    private static let textFontRatio: CGFloat = 1/5
     let marginRatio: CGFloat
 
     var body: some View {
@@ -49,14 +49,14 @@ private struct HourTexts: View {
 }
 
 private struct HourIndicators: View {
-    private static let hourDotRatio: CGFloat = 1/35
+    private static let hourDotRatio: CGFloat = 2/35
     let marginRatio: CGFloat
 
     var body: some View {
         GeometryReader { geometry in
             ForEach(1..<13) { hour in
                 Circle()
-                    .frame(width: geometry.diameter * Self.hourDotRatio)
+                    .frame(width: geometry.radius * Self.hourDotRatio)
                     .modifier(PositionInCircle(
                         angle: .degrees(Double(hour) * .hourInDegree),
                         marginRatio: self.marginRatio/3
@@ -67,14 +67,14 @@ private struct HourIndicators: View {
 }
 
 private struct MinuteIndicators: View {
-    private static let minuteDotRatio: CGFloat = 1/70
+    private static let minuteDotRatio: CGFloat = 1/35
     let marginRatio: CGFloat
 
     var body: some View {
         GeometryReader { geometry in
             ForEach(1..<61) { minute in
                 Circle()
-                    .frame(width: geometry.diameter * Self.minuteDotRatio)
+                    .frame(width: geometry.radius * Self.minuteDotRatio)
                     .modifier(PositionInCircle(
                         angle: .degrees(Double(minute) * .minuteInDegree),
                         marginRatio: self.marginRatio/3

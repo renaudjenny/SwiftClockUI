@@ -3,7 +3,7 @@ import SwiftUI
 struct ArtNouveauIndicators: View {
     @Environment(\.clockConfiguration) var configuration
     static let marginRatio: CGFloat = 1/12
-    private static let textFontRatio: CGFloat = 1/16
+    private static let textFontRatio: CGFloat = 1/8
     
     var body: some View {
         ZStack {
@@ -24,7 +24,7 @@ struct ArtNouveauIndicators: View {
                 .modifier(FontProportional(ratio: Self.textFontRatio))
                 .modifier(NumberCircle(geometry: geometry))
                 .modifier(ScaleUpOnAppear())
-                .modifier(PositionInCircle(angle: RomanNumber.angle(for: romanNumber), marginRatio: Self.marginRatio))
+                .modifier(PositionInCircle(angle: RomanNumber.angle(for: romanNumber), marginRatio: Self.marginRatio * 2))
         }
     }
 
@@ -38,7 +38,7 @@ struct ArtNouveauIndicators: View {
         }
         
         private var width: CGFloat {
-            geometry.diameter * 3/2 * ArtNouveauIndicators.marginRatio
+            geometry.radius * 3 * ArtNouveauIndicators.marginRatio
         }
         
         private var background: some View {

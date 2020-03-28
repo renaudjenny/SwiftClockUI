@@ -23,7 +23,7 @@ private struct Hours: View {
     @Environment(\.clockRandom) var random
     private static let widthRatio: CGFloat = 1/40
     private static let heightRatio: CGFloat = 1/20
-    private static let marginRatio: CGFloat = 1/20
+    private static let marginRatio: CGFloat = 1/10
     @State private var animate: Bool = false
     
     var body: some View {
@@ -47,7 +47,7 @@ private struct Minutes: View {
     @Environment(\.clockRandom) var random
     private static let widthRatio: CGFloat = 1/50
     private static let heightRatio: CGFloat = 1/30
-    private static let marginRatio: CGFloat = 1/30
+    private static let marginRatio: CGFloat = 1/15
     @State private var animate: Bool = false
     
     var body: some View {
@@ -151,10 +151,10 @@ struct DrawnIndicator: Shape {
 struct DrawnNumbers: View {
     @Environment(\.clockConfiguration) var configuration
     @Environment(\.clockRandom) var random
-    private static let hours = [12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+    private static let hours = [12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
     private static let limitedHours = [12, 3, 6, 9]
-    private static let marginRatio: CGFloat = 1/7
-    private static let textFontRatio: CGFloat = 1/10
+    private static let marginRatio: CGFloat = 2/7
+    private static let textFontRatio: CGFloat = 1/5
     
     var body: some View {
         ForEach(self.configurationHours, id: \.self) { hour in

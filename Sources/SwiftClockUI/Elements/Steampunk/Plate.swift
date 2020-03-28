@@ -19,7 +19,7 @@ struct Plate: View {
                 .stroke(lineWidth: Self.lineWidth)
                 .scale(10/12)
             rivets.aspectRatio(contentMode: .fit)
-            Text(text).modifier(FontProportional(ratio: 1/2, design: .serif))
+            Text(text).modifier(FontProportional(ratio: 1, design: .serif))
         }
     }
 
@@ -37,10 +37,10 @@ struct Plate: View {
         ZStack {
             Circle()
                 .scale(1/20)
-                .modifier(PositionInCircle(angle: .degrees(-45), marginRatio: 1/5))
+                .modifier(PositionInCircle(angle: .degrees(-45), marginRatio: 2/5))
             Circle()
                 .scale(1/20)
-                .modifier(PositionInCircle(angle: .degrees(135), marginRatio: 1/5))
+                .modifier(PositionInCircle(angle: .degrees(135), marginRatio: 2/5))
         }
     }
 
@@ -48,7 +48,7 @@ struct Plate: View {
         ForEach(0..<20) { rivet in
             Circle()
                 .scale(1/20)
-            .modifier(PositionInCircle(angle: .degrees(Double(rivet) * 360/20), marginRatio: 1/22))
+            .modifier(PositionInCircle(angle: .degrees(Double(rivet) * 360/20), marginRatio: 1/11))
         }
     }
 }

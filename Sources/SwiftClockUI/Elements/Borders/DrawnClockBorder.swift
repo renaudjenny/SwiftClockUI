@@ -3,13 +3,13 @@ import SwiftUI
 struct DrawnClockBorder: View {
     @Environment(\.clockIsAnimationEnabled) var isAnimationEnabled
     @Environment(\.clockRandom) var random
-    static let borderWidthRatio: CGFloat = 1/70
+    static let borderWidthRatio: CGFloat = 1/35
     @State private var animate = false
 
     var body: some View {
         GeometryReader { geometry in
             DrawnCircle(draw: !self.isAnimationEnabled || self.animate, random: self.random)
-                .stroke(lineWidth: geometry.diameter * Self.borderWidthRatio)
+                .stroke(lineWidth: geometry.radius * Self.borderWidthRatio)
                 .onAppear(perform: { self.animate = true })
                 .animation(.easeInOut(duration: 1))
                 .aspectRatio(contentMode: .fit)
