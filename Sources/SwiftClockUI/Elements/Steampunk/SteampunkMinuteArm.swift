@@ -126,17 +126,6 @@ struct SteampunkMinuteArm: Shape {
     }
 }
 
-// TODO: move this to an extension
-// TODO: add unit test (snapshot) for that
-extension Path {
-    mutating func addTest(to center: CGPoint) {
-        let previous = currentPoint ?? .zero
-        move(to: CGPoint(x: center.x + 2, y: center.y))
-        addArc(center: center, radius: 2, startAngle: .zero, endAngle: .fullRound, clockwise: false)
-        move(to: previous)
-    }
-}
-
 struct SteampunkMinuteArm_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
