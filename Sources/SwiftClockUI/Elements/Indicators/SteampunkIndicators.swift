@@ -16,7 +16,7 @@ struct SteampunkIndicators: View {
             }.scaleEffect(Self.decorationScale)
             circles
             numbers
-        }.aspectRatio(1/1, contentMode: .fit)
+        }.aspectRatio(contentMode: .fit)
     }
 
     private var mainCogwheel: some View {
