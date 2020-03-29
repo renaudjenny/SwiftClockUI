@@ -9,14 +9,3 @@ extension CGPoint {
         )
     }
 }
-
-// TODO: this extension shouldn't be in this file
-extension Angle {
-    // TODO: add unit tests
-    static func inCircle(for point: CGPoint, circleCenter: CGPoint) -> Self {
-        Angle(radians: Double(atan2(
-            point.y - circleCenter.y,
-            point.x - circleCenter.x
-        )))
-    }
-}
