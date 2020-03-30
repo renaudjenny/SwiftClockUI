@@ -93,7 +93,11 @@ struct SteampunkMinuteArm: Shape {
         let mirror = path
             .applying(.init(scaleX: -1, y: 1))
             .applying(.init(translationX: rect.width, y: 0))
+        #if os(iOS)
         let reversedPath = Path(UIBezierPath(cgPath: mirror.cgPath).reversing().cgPath)
+        #else
+        let reversedPath = Path(NSBezierPath(cgPath: mirror.cgPath).reversed.cgPath)
+        #endif
 
         reversedPath.forEach {
             switch $0 {
