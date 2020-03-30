@@ -20,14 +20,14 @@ struct SteampunkMinuteArm: Shape {
     }
 
     private func addBottomCircle(to path: inout Path, rect: CGRect) {
-        let radius = rect.radius * 1/15
+        let circle = CGRect.circle(center: rect.center, radius: rect.radius * 1/15)
         let lineWidth = rect.radius * Self.lineWidthRatio
 
-        let bottom = CGPoint(x: rect.midX, y: rect.midY + radius + lineWidth)
-        let topRight = CGPoint(x: rect.midX + lineWidth/2, y: rect.midY - radius - lineWidth)
+        let bottom = CGPoint(x: rect.midX, y: circle.maxY + lineWidth)
+        let topRight = CGPoint(x: rect.midX + lineWidth/2, y: circle.minY - lineWidth)
 
         path.move(to: bottom)
-        path.addArc(center: rect.center, radius: radius + lineWidth, startAngle: .inCircle(for: bottom, circleCenter: rect.center), endAngle: .inCircle(for: topRight, circleCenter: rect.center), clockwise: true)
+        path.addArc(center: rect.center, radius: circle.radius + lineWidth, startAngle: .inCircle(for: bottom, circleCenter: rect.center), endAngle: .inCircle(for: topRight, circleCenter: rect.center), clockwise: true)
     }
 
     private func addDroplet(to path: inout Path, rect: CGRect) {
@@ -47,10 +47,12 @@ struct SteampunkMinuteArm: Shape {
     private func addDropletHole(to path: inout Path, rect: CGRect) {
         let center = CGPoint(x: rect.midX, y: rect.midY - rect.radius * 1/4)
         let radius = rect.radius * 1/30
-        path.move(to: CGPoint(x: center.x + radius, y: center.y))
+        let circle = CGRect.circle(center: center, radius: radius)
+
+        path.move(to: CGPoint(x: circle.maxX, y: center.y))
         path.addArc(center: center, radius: radius, startAngle: .zero, endAngle: .fullRound/2, clockwise: false)
         path.addLine(to: CGPoint(x: center.x, y: center.y - radius * 2))
-        path.addLine(to: CGPoint(x: center.x + radius, y: center.y))
+        path.addLine(to: CGPoint(x: circle.maxX, y: center.y))
     }
 
     private func addBottomRectange(to path: inout Path, rect: CGRect) {
