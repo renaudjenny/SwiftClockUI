@@ -2,6 +2,7 @@
 import AppKit
 
 extension NSBezierPath {
+    // Inspired from https://stackoverflow.com/questions/1815568/how-can-i-convert-nsbezierpath-to-cgpath
     var cgPath: CGPath {
         let path = CGMutablePath()
         var points = [CGPoint](repeating: .zero, count: 3)
@@ -20,6 +21,7 @@ extension NSBezierPath {
         return path
     }
 
+    // Inspired from https://gist.github.com/lukaskubanek/1f3585314903dfc66fc7
     convenience init(cgPath: CGPath) {
         self.init()
         cgPath.applyWithBlock {
