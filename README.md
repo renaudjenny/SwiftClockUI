@@ -2,8 +2,6 @@
 
 Clock UI for SwiftUI
 
-⚠️ It's very unstable right now. I'm currently highly working on it and changing the code. Don't use it now!
-
 This library has been tested
 * ✅💻 macOS Catalina 10.15.3
 * ✅📱 iOS 13.3
@@ -39,9 +37,6 @@ Steampunk | ![Clock View with Steampunk style](docs/assets/ClockViewSteampunk.pn
 
 To set the style: `.environment(\.clockStyle, .steampunk)` for Steampunk style for instance.
 
-struct ContentView: View {
-@State private var date = Date()
-
 ```swift
 struct ContentView: View {
     @State private var clockStyle: ClockStyle = .classic
@@ -71,11 +66,13 @@ struct StylePicker: View {
 }
 ```
 
+## App using this library
+
+* [📲 Tell Time UK](https://apps.apple.com/gb/app/tell-time-uk/id1496541173): https://github.com/renaudjenny/telltime
+
 ## TODO
 
-* 📷 Add some demo pictures
-* 📲 Add the link to the different apps who are using this library
 * 👆 Add a bigger zone for dragging arms, it's not easy with the mouse on macOS
+  * Use the new `.hover` and `.hoverEffect` from Swift 5.2 and Xcode 11.4
 * 👾 Add a smooth animation while resizing the window on macOS
-* ⚠️  Address TODO and FIXME
 * 🧽 Add Linter rules
