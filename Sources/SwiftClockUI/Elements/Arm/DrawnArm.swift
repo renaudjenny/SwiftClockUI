@@ -6,7 +6,7 @@ struct DrawnArm: View {
     private static let widthRatio: CGFloat = 1/20
     let type: ArmType
     @State private var showIndicator = false
-    
+
     var body: some View {
         DrawnArmShape(draw: !isAnimationEnabled || showIndicator, type: type, random: random)
             .onAppear(perform: { self.showIndicator = true })

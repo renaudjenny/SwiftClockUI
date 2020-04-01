@@ -9,7 +9,7 @@ struct SteampunkIndicators: View {
 
     var body: some View {
         ZStack {
-            ZStack() {
+            ZStack {
                 mainCogwheel
                 moon
                 gears.mask(moon)
@@ -27,7 +27,7 @@ struct SteampunkIndicators: View {
     }
 
     private var circles: some View {
-        ZStack() {
+        ZStack {
             Circle()
                 .scale(21/25)
                 .strokeProportionally(Self.lineWidthRatio)

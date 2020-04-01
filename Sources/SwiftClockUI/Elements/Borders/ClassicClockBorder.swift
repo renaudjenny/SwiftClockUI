@@ -2,7 +2,7 @@ import SwiftUI
 
 struct ClassicClockBorder: View {
     static let borderWidthRatio: CGFloat = 1/35
-    
+
     var body: some View {
         GeometryReader { geometry in
             Circle()

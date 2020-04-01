@@ -16,7 +16,7 @@ struct ArmDragGesture: ViewModifier {
 
     private func dragGesture(geometry: GeometryProxy) -> some Gesture {
         DragGesture(coordinateSpace: .global)
-            .updating($dragAngle, body: { value, state, transaction in
+            .updating($dragAngle, body: { value, state, _ in
                 let extraRotationAngle = self.angle(dragGestureValue: value, frame: geometry.frame(in: .global))
                 state = extraRotationAngle - self.currentAngle
             })

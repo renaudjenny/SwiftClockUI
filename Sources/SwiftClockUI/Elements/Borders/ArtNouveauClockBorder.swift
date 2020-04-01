@@ -3,7 +3,7 @@ import SwiftUI
 struct ArtNouveauClockBorder: View {
     static let borderWidthRatio: CGFloat = 1/50
     static let innerCircleScale: CGFloat = 9/10
-    
+
     var body: some View {
         GeometryReader { geometry in
             ZStack {

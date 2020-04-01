@@ -3,7 +3,6 @@ import SwiftUI
 struct SteampunkClockBorder: View {
     static let borderWidthRatio: CGFloat = 1/80
 
-
     var body: some View {
         ZStack {
             windUpKey

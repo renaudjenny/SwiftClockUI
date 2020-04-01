@@ -2,7 +2,7 @@ import SwiftUI
 
 struct DrawnIndicators: View {
     @Environment(\.clockConfiguration) var configuration
-    
+
     var body: some View {
         ZStack {
             if configuration.isHourIndicatorsShown {
@@ -25,7 +25,7 @@ private struct Hours: View {
     private static let heightRatio: CGFloat = 1/20
     private static let marginRatio: CGFloat = 1/10
     @State private var animate: Bool = false
-    
+
     var body: some View {
         ForEach(1...12, id: \.self) { hour in
             DrawnIndicator(draw: !self.isAnimationEnabled || self.animate, random: self.random)
@@ -49,7 +49,7 @@ private struct Minutes: View {
     private static let heightRatio: CGFloat = 1/30
     private static let marginRatio: CGFloat = 1/15
     @State private var animate: Bool = false
-    
+
     var body: some View {
         ForEach(1...60, id: \.self) { minute in
             Group {
@@ -61,7 +61,7 @@ private struct Minutes: View {
             }
         }
     }
-    
+
     private func indicator(minute: Int) -> some View {
         Group {
             if self.isOverlapingHour(minute: minute) {
@@ -79,7 +79,7 @@ private struct Minutes: View {
             }
         }
     }
-    
+
     private func isOverlapingHour(minute: Int) -> Bool {
         guard configuration.isHourIndicatorsShown else { return false }
         return minute == 0 || minute % 5 == 0
@@ -89,17 +89,17 @@ private struct Minutes: View {
 struct DrawnIndicator: Shape {
     private var drawStep: CGFloat
     private var controlRatios: Random.ControlRatio
-    
+
     init(draw: Bool, random: Random) {
         self.drawStep = draw ? 1 : 0
         self.controlRatios = Random.ControlRatio(random: random)
     }
-    
+
     var animatableData: CGFloat {
         get { self.drawStep }
         set { self.drawStep = newValue }
     }
-    
+
     func path(in rect: CGRect) -> Path {
         var path = Path()
         let radius = rect.width/2 * self.drawStep
@@ -113,9 +113,9 @@ struct DrawnIndicator: Shape {
             x: topCenter.x - radius,
             y: topCenter.y
         )
-        
+
         path.move(to: bottomRight)
-        
+
         path.addArc(
             center: bottomCenter,
             radius: radius/2,
@@ -123,13 +123,13 @@ struct DrawnIndicator: Shape {
             endAngle: .degrees(180),
             clockwise: false
         )
-        
+
         let controlLeft = CGPoint(
             x: rect.maxX * self.controlRatios.leftX,
             y: rect.maxY * self.controlRatios.leftY
         )
         path.addQuadCurve(to: topLeft, control: controlLeft)
-        
+
         path.addArc(
             center: topCenter,
             radius: radius,
@@ -137,13 +137,13 @@ struct DrawnIndicator: Shape {
             endAngle: .zero,
             clockwise: false
         )
-        
+
         let controlRight = CGPoint(
             x: rect.maxX * self.controlRatios.rightX,
             y: rect.maxY * self.controlRatios.rightY
         )
         path.addQuadCurve(to: bottomRight, control: controlRight)
-        
+
         return path
     }
 }
@@ -155,13 +155,13 @@ struct DrawnNumbers: View {
     private static let limitedHours = [12, 3, 6, 9]
     private static let marginRatio: CGFloat = 2/7
     private static let textFontRatio: CGFloat = 1/5
-    
+
     var body: some View {
         ForEach(self.configurationHours, id: \.self) { hour in
             self.hourText(hour)
         }
     }
-    
+
     private func hourText(_ hour: Int) -> some View {
         Text("\(hour)")
             .modifier(FontProportional(ratio: Self.textFontRatio))
@@ -171,13 +171,13 @@ struct DrawnNumbers: View {
                 angle: .degrees(Double(hour) * .hourInDegree), marginRatio: self.marginRatio
             ))
     }
-    
+
     private var marginRatio: CGFloat {
         configuration.isHourIndicatorsShown || configuration.isMinuteIndicatorsShown
             ? Self.marginRatio
             : Self.marginRatio/2
     }
-    
+
     private var configurationHours: [Int] {
         configuration.isLimitedHoursShown ? Self.limitedHours : Self.hours
     }
