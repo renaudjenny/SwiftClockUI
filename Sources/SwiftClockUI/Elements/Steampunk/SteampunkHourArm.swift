@@ -22,6 +22,7 @@ struct SteampunkHourArm: Shape {
         return path
     }
 
+    // TODO: use `addSomething` conventions for private func
     private func startCircle(path: inout Path, center: CGPoint, radius: CGFloat, thickness: CGFloat) {
         path.addArc(center: center, radius: radius, startAngle: .zero, endAngle: .fullRound, clockwise: false)
 
@@ -29,7 +30,13 @@ struct SteampunkHourArm: Shape {
         let rightEndThickCirclePoint = CGPoint(x: center.x + thickness/2, y: center.y - radius - thickness)
 
         path.move(to: leftStartThickCirclePoint)
-        path.addArc(center: center, radius: radius + thickness, startAngle: .inCircle(for: leftStartThickCirclePoint, circleCenter: center), endAngle: .inCircle(for: rightEndThickCirclePoint, circleCenter: center), clockwise: true)
+        path.addArc(
+            center: center,
+            radius: radius + thickness,
+            startAngle: .inCircle(for: leftStartThickCirclePoint, circleCenter: center),
+            endAngle: .inCircle(for: rightEndThickCirclePoint, circleCenter: center),
+            clockwise: true
+        )
     }
 
     private func rightPart(path: inout Path, center: CGPoint, radius: CGFloat, bottomY: CGFloat, thickness: CGFloat, bottomArrowY: CGFloat) {
@@ -38,7 +45,14 @@ struct SteampunkHourArm: Shape {
 
         path.addLine(to: holeBottomRight)
 
-        path.addArc(center: center, radius: radius + thickness, startAngle: .inCircle(for: holeBottomRight, circleCenter: center), endAngle: .inCircle(for: holeTopRight, circleCenter: center), clockwise: true)
+        // TODO: add a convenient extension function to Path to deal with addArc to add arc between two points in a circle
+        path.addArc(
+            center: center,
+            radius: radius + thickness,
+            startAngle: .inCircle(for: holeBottomRight, circleCenter: center),
+            endAngle: .inCircle(for: holeTopRight, circleCenter: center),
+            clockwise: true
+        )
 
         path.addLine(to: CGPoint(x: center.x + thickness/2, y: bottomArrowY))
     }
@@ -65,7 +79,13 @@ struct SteampunkHourArm: Shape {
         path.addLine(to: holeTopLeft)
 
         let holeBottomLeft = CGPoint(x: center.x - thickness/2, y: bottomY + thickness)
-        path.addArc(center: center, radius: radius + thickness, startAngle: .inCircle(for: holeTopLeft, circleCenter: center), endAngle: .inCircle(for: holeBottomLeft, circleCenter: center), clockwise: true)
+        path.addArc(
+            center: center,
+            radius: radius + thickness,
+            startAngle: .inCircle(for: holeTopLeft, circleCenter: center),
+            endAngle: .inCircle(for: holeBottomLeft, circleCenter: center),
+            clockwise: true
+        )
     }
 
     private func circleHole(path: inout Path, holeCenter: CGPoint, holeRadius: CGFloat) {

@@ -27,7 +27,13 @@ struct SteampunkMinuteArm: Shape {
         let topRight = CGPoint(x: rect.midX + lineWidth/2, y: circle.minY - lineWidth)
 
         path.move(to: bottom)
-        path.addArc(center: rect.center, radius: circle.radius + lineWidth, startAngle: .inCircle(for: bottom, circleCenter: rect.center), endAngle: .inCircle(for: topRight, circleCenter: rect.center), clockwise: true)
+        path.addArc(
+            center: rect.center,
+            radius: circle.radius + lineWidth,
+            startAngle: .inCircle(for: bottom, circleCenter: rect.center),
+            endAngle: .inCircle(for: topRight, circleCenter: rect.center),
+            clockwise: true
+        )
     }
 
     private func addDroplet(to path: inout Path, rect: CGRect) {
