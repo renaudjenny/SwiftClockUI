@@ -43,7 +43,10 @@ extension NSBezierPath {
 
                 self.curve(to: endPoint, controlPoint1: interpolatedPoint, controlPoint2: interpolatedPoint)
             case .addCurveToPoint:
-                self.curve(to: $0.pointee.points[2], controlPoint1: $0.pointee.points[0], controlPoint2: $0.pointee.points[1])
+                let to = $0.pointee.points[2]
+                let contronPoint1 = $0.pointee.points[0]
+                let controlPoint2 = $0.pointee.points[1]
+                self.curve(to: to, controlPoint1: controlPoint1, controlPoint2: controlPoint2)
             case .closeSubpath:
                 self.close()
             @unknown default: break

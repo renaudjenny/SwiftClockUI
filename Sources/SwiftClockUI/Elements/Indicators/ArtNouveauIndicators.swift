@@ -24,7 +24,10 @@ struct ArtNouveauIndicators: View {
                 .modifier(FontProportional(ratio: Self.textFontRatio))
                 .modifier(NumberCircle(geometry: geometry))
                 .modifier(ScaleUpOnAppear())
-                .modifier(PositionInCircle(angle: RomanNumber.angle(for: romanNumber), marginRatio: Self.marginRatio * 2))
+                .modifier(PositionInCircle(
+                    angle: RomanNumber.angle(for: romanNumber),
+                    marginRatio: Self.marginRatio * 2
+                ))
         }
     }
 

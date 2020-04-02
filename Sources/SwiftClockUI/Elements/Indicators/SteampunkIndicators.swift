@@ -87,10 +87,16 @@ struct SteampunkIndicators_Previews: PreviewProvider {
 }
 
 struct SteampunkIndicatorsWithLimitedHours_Previews: PreviewProvider {
+    static var customClockConfiguration = ClockConfiguration(
+        isLimitedHoursShown: true,
+        isMinuteIndicatorsShown: true,
+        isHourIndicatorsShown: true
+    )
+
     static var previews: some View {
         ZStack {
             Circle().stroke()
-            SteampunkIndicators().environment(\.clockConfiguration, .init(isLimitedHoursShown: true, isMinuteIndicatorsShown: true, isHourIndicatorsShown: true))
+            SteampunkIndicators().environment(\.clockConfiguration, customClockConfiguration)
         }.padding()
     }
 }
