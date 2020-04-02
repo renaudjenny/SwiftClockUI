@@ -7,7 +7,7 @@ struct FlipOnAppear: ViewModifier {
     func body(content: Content) -> some View {
         content
             .rotation3DEffect(animate && isAnimationEnabled ? .fullRound : .zero, axis: (x: 1, y: 1, z: 0))
-            .animation(Animation.easeInOut(duration: 1).repeatForever(autoreverses: true), value: animate)
+            .animation(Animation.easeInOut(duration: 1).repeatForever(autoreverses: true))
             .onAppear { self.animate = true }
     }
 }
