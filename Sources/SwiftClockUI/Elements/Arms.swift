@@ -8,7 +8,6 @@ struct Arms: View {
             ArmView(type: .minute)
         }
         .modifier(OnHover())
-        .animation(.easeInOut)
     }
 }
 
@@ -21,6 +20,7 @@ struct OnHover: ViewModifier {
             .onHover { self.isHover = $0 }
             .shadow(color: Color(.sRGBLinear, white: 0, opacity: 0.44), radius: isHover ? 6 : 0)
             .scaleEffect(isHover ? 1.1 : 1)
+            .animation(.easeInOut, value: isHover)
         #else
         return content
         #endif
