@@ -7,7 +7,7 @@ struct ScaleUpOnAppear: ViewModifier {
     func body(content: Content) -> some View {
         content
             .scaleEffect(scaleValue)
-            .animation(.spring())
+            .animation(.spring(), value: isShown)
             .onAppear(perform: { self.isShown = true })
     }
 
