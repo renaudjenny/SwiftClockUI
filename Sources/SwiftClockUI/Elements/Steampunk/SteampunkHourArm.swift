@@ -2,95 +2,96 @@ import SwiftUI
 
 struct SteampunkHourArm: Shape {
     func path(in rect: CGRect) -> Path {
-        let width = min(rect.width, rect.height)
-        let thickness = width * 1/60
-        let startRadius = width * 1/30
-        let center = CGPoint(x: rect.midX, y: rect.midY)
-        let holeBottomY = center.y - width * 1/8
-        let holeRadius = startRadius * 1/2
-        let holeCenter = CGPoint(x: center.x, y: holeBottomY - holeRadius)
-        let bottomArrowY = center.y - width * 2/9
-        let arrowWidth = width * 1/4
+        let thickness = rect.radius * 1/30
+        let middleHoleCenter = CGPoint(x: rect.midX, y: rect.midY - rect.radius * 1/4 - thickness)
 
         var path = Path()
-        startCircle(path: &path, center: center, radius: startRadius, thickness: thickness)
-        rightPart(path: &path, center: holeCenter, radius: holeRadius, bottomY: holeBottomY, thickness: thickness, bottomArrowY: bottomArrowY)
-        arrow(path: &path, bottomY: bottomArrowY, width: arrowWidth, center: center, thickness: thickness)
-        leftPart(path: &path, center: holeCenter, radius: holeRadius, bottomY: holeBottomY, thickness: thickness, bottomArrowY: bottomArrowY)
-        path.closeSubpath()
-        circleHole(path: &path, holeCenter: holeCenter, holeRadius: holeRadius)
+        addBottomHole(to: &path, rect: rect)
+        addMiddleHole(to: &path, rect: rect)
+        addRectangle(to: &path, rect: rect)
+        addArrow(to: &path, rect: rect)
+        addVerticalMirror(to: &path, rect: rect)
+
+        path.addCircle(CGRect.circle(center: rect.center, radius: rect.radius * 1/15))
+        path.addCircle(CGRect.circle(center: middleHoleCenter, radius: rect.radius * 1/30))
+
         return path
     }
 
-    // TODO: use `addSomething` conventions for private func
-    private func startCircle(path: inout Path, center: CGPoint, radius: CGFloat, thickness: CGFloat) {
-        path.addArc(center: center, radius: radius, startAngle: .zero, endAngle: .fullRound, clockwise: false)
-
-        let leftStartThickCirclePoint = CGPoint(x: center.x - thickness/2, y: center.y - radius - thickness)
-        let rightEndThickCirclePoint = CGPoint(x: center.x + thickness/2, y: center.y - radius - thickness)
-
-        path.move(to: leftStartThickCirclePoint)
+    private func addBottomHole(to path: inout Path, rect: CGRect) {
+        let thickness = rect.radius * 1/30
+        let endPoint = CGPoint(x: rect.midX + thickness/2, y: rect.midY - rect.radius * 1/15 - thickness)
         path.addArc(
-            center: center,
-            radius: radius + thickness,
-            startAngle: .inCircle(for: leftStartThickCirclePoint, circleCenter: center),
-            endAngle: .inCircle(for: rightEndThickCirclePoint, circleCenter: center),
+            center: rect.center,
+            radius: rect.radius * 1/15 + thickness,
+            startAngle: .fullRound * 1/4,
+            endAngle: .inCircle(for: endPoint, circleCenter: rect.center),
             clockwise: true
         )
     }
 
-    private func rightPart(path: inout Path, center: CGPoint, radius: CGFloat, bottomY: CGFloat, thickness: CGFloat, bottomArrowY: CGFloat) {
-        let holeBottomRight = CGPoint(x: center.x + thickness/2, y: bottomY + thickness)
-        let holeTopRight = CGPoint(x: holeBottomRight.x, y: bottomY - radius - thickness * 2)
-
-        path.addLine(to: holeBottomRight)
-
-        // TODO: add a convenient extension function to Path to deal with addArc to add arc between two points in a circle
-        path.addArc(
-            center: center,
-            radius: radius + thickness,
-            startAngle: .inCircle(for: holeBottomRight, circleCenter: center),
-            endAngle: .inCircle(for: holeTopRight, circleCenter: center),
-            clockwise: true
+    private func addMiddleHole(to path: inout Path, rect: CGRect) {
+        let thickness = rect.radius * 1/30
+        let circle = CGRect.circle(
+            center: CGPoint(x: rect.midX, y: rect.midY - rect.radius * 1/4 - thickness),
+            radius: rect.radius * 1/30 + thickness
         )
-
-        path.addLine(to: CGPoint(x: center.x + thickness/2, y: bottomArrowY))
-    }
-
-    private func arrow(path: inout Path, bottomY: CGFloat, width: CGFloat, center: CGPoint, thickness: CGFloat) {
-        path.addLine(to: CGPoint(x: center.x + thickness * 2, y: bottomY))
-        path.addLine(to: CGPoint(x: center.x + thickness * 2, y: bottomY - thickness))
-        path.addLine(to: CGPoint(x: center.x + thickness/2, y: bottomY - thickness))
-        path.addLine(to: CGPoint(x: center.x + thickness/2, y: bottomY - width * 1/5))
-        path.addLine(to: CGPoint(x: center.x + thickness * 2, y: bottomY - width * 1/4))
-
-        path.addLine(to: CGPoint(x: center.x, y: bottomY - width * 1/2))
-
-        path.addLine(to: CGPoint(x: center.x - thickness * 2, y: bottomY - width * 1/4))
-        path.addLine(to: CGPoint(x: center.x - thickness/2, y: bottomY - width * 1/5))
-        path.addLine(to: CGPoint(x: center.x - thickness/2, y: bottomY - thickness))
-        path.addLine(to: CGPoint(x: center.x - thickness * 2, y: bottomY - thickness))
-        path.addLine(to: CGPoint(x: center.x - thickness * 2, y: bottomY))
-        path.addLine(to: CGPoint(x: center.x - thickness/2, y: bottomY))
-    }
-
-    private func leftPart(path: inout Path, center: CGPoint, radius: CGFloat, bottomY: CGFloat, thickness: CGFloat, bottomArrowY: CGFloat) {
-        let holeTopLeft = CGPoint(x: center.x - thickness/2, y: bottomY - radius - thickness * 2)
-        path.addLine(to: holeTopLeft)
-
-        let holeBottomLeft = CGPoint(x: center.x - thickness/2, y: bottomY + thickness)
+        let startPoint = CGPoint(x: rect.midX + thickness/2, y: circle.maxY)
+        let endPoint = CGPoint(x: rect.midX + thickness/2, y: circle.minY)
         path.addArc(
-            center: center,
-            radius: radius + thickness,
-            startAngle: .inCircle(for: holeTopLeft, circleCenter: center),
-            endAngle: .inCircle(for: holeBottomLeft, circleCenter: center),
+            center: circle.center,
+            radius: circle.radius,
+            startAngle: .inCircle(for: startPoint, circleCenter: circle.center),
+            endAngle: .inCircle(for: endPoint, circleCenter: circle.center),
             clockwise: true
         )
     }
 
-    private func circleHole(path: inout Path, holeCenter: CGPoint, holeRadius: CGFloat) {
-        path.move(to: CGPoint(x: holeCenter.x + holeRadius, y: holeCenter.y))
-        path.addArc(center: holeCenter, radius: holeRadius, startAngle: .zero, endAngle: .fullRound, clockwise: false)
+    func addRectangle(to path: inout Path, rect: CGRect) {
+        let thickness = rect.radius * 1/30
+        let y = rect.midY - rect.radius * 4/9
+
+        path.addLine(to: CGPoint(x: rect.midX + thickness/2, y: y))
+        path.addLine(to: CGPoint(x: rect.midX + thickness * 2, y: y))
+        path.addLine(to: CGPoint(x: rect.midX + thickness * 2, y: y - thickness))
+        path.addLine(to: CGPoint(x: rect.midX + thickness/2, y: y - thickness))
+    }
+
+    func addArrow(to path: inout Path, rect: CGRect) {
+        let thickness = rect.radius * 1/30
+        let bottomY = rect.midY - rect.radius * 49/90
+        let middleY = rect.midY - rect.radius * 41/72
+        let topY = rect.midY - rect.radius * 25/36
+        path.addLine(to: CGPoint(x: rect.midX + thickness/2, y: bottomY))
+        path.addLine(to: CGPoint(x: rect.midX + thickness * 2, y: middleY))
+        path.addLine(to: CGPoint(x: rect.midX, y: topY))
+    }
+
+    // TODO: refactor that, add directly to an extension of Path
+    private func addVerticalMirror(to path: inout Path, rect: CGRect) {
+        let mirror = path
+            .applying(.init(scaleX: -1, y: 1))
+            .applying(.init(translationX: rect.width, y: 0))
+        #if os(iOS)
+        let reversedPath = Path(UIBezierPath(cgPath: mirror.cgPath).reversing().cgPath)
+        #else
+        let reversedPath = Path(NSBezierPath(cgPath: mirror.cgPath).reversed.cgPath)
+        #endif
+
+        reversedPath.forEach {
+            switch $0 {
+            case .move: break
+            case .closeSubpath: break
+            case .line(to: let to):
+                path.addLine(to: to)
+            case .quadCurve(to: let to, control: let control):
+                path.addQuadCurve(to: to, control: control)
+            case .curve(to: let to, control1: let control1, control2: let control2):
+                path.addCurve(to: to, control1: control1, control2: control2)
+            }
+        }
+
+        path.closeSubpath()
     }
 }
 
