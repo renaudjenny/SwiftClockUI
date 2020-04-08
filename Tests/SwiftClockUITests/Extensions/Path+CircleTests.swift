@@ -3,7 +3,7 @@ import XCTest
 import SnapshotTesting
 import SwiftUI
 
-class CGPathExtensionCircleTests: XCTestCase {
+class PathExtensionCircleTests: XCTestCase {
     func testCenter() {
         let Circles = CirclesTest()
             .stroke()
