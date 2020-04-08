@@ -10,7 +10,7 @@ struct SteampunkHourArm: Shape {
         addMiddleHole(to: &path, rect: rect)
         addRectangle(to: &path, rect: rect)
         addArrow(to: &path, rect: rect)
-        addVerticalMirror(to: &path, rect: rect)
+        path.addVerticalMirror(in: rect)
 
         path.addCircle(CGRect.circle(center: rect.center, radius: rect.radius * 1/15))
         path.addCircle(CGRect.circle(center: middleHoleCenter, radius: rect.radius * 1/30))
@@ -65,33 +65,6 @@ struct SteampunkHourArm: Shape {
         path.addLine(to: CGPoint(x: rect.midX + thickness/2, y: bottomY))
         path.addLine(to: CGPoint(x: rect.midX + thickness * 2, y: middleY))
         path.addLine(to: CGPoint(x: rect.midX, y: topY))
-    }
-
-    // TODO: refactor that, add directly to an extension of Path
-    private func addVerticalMirror(to path: inout Path, rect: CGRect) {
-        let mirror = path
-            .applying(.init(scaleX: -1, y: 1))
-            .applying(.init(translationX: rect.width, y: 0))
-        #if os(iOS)
-        let reversedPath = Path(UIBezierPath(cgPath: mirror.cgPath).reversing().cgPath)
-        #else
-        let reversedPath = Path(NSBezierPath(cgPath: mirror.cgPath).reversed.cgPath)
-        #endif
-
-        reversedPath.forEach {
-            switch $0 {
-            case .move: break
-            case .closeSubpath: break
-            case .line(to: let to):
-                path.addLine(to: to)
-            case .quadCurve(to: let to, control: let control):
-                path.addQuadCurve(to: to, control: control)
-            case .curve(to: let to, control1: let control1, control2: let control2):
-                path.addCurve(to: to, control1: control1, control2: control2)
-            }
-        }
-
-        path.closeSubpath()
     }
 }
 

@@ -11,7 +11,7 @@ struct SteampunkMinuteArm: Shape {
         addSun(to: &path, rect: rect)
         addTopRectange(to: &path, rect: rect)
         addArrow(to: &path, rect: rect)
-        addVerticalMirror(to: &path, rect: rect)
+        path.addVerticalMirror(in: rect)
 
         path.addCircle(CGRect.circle(center: rect.center, radius: rect.radius * 1/15))
         addDropletHole(to: &path, rect: rect)
@@ -93,32 +93,6 @@ struct SteampunkMinuteArm: Shape {
         path.addLine(to: CGPoint(x: center.x + lineWidth/2, y: center.y + lineWidth))
         path.addLine(to: CGPoint(x: center.x + lineWidth * 2, y: center.y))
         path.addLine(to: CGPoint(x: top.x, y: top.y))
-    }
-
-    private func addVerticalMirror(to path: inout Path, rect: CGRect) {
-        let mirror = path
-            .applying(.init(scaleX: -1, y: 1))
-            .applying(.init(translationX: rect.width, y: 0))
-        #if os(iOS)
-        let reversedPath = Path(UIBezierPath(cgPath: mirror.cgPath).reversing().cgPath)
-        #else
-        let reversedPath = Path(NSBezierPath(cgPath: mirror.cgPath).reversed.cgPath)
-        #endif
-
-        reversedPath.forEach {
-            switch $0 {
-            case .move: break
-            case .closeSubpath: break
-            case .line(to: let to):
-                path.addLine(to: to)
-            case .quadCurve(to: let to, control: let control):
-                path.addQuadCurve(to: to, control: control)
-            case .curve(to: let to, control1: let control1, control2: let control2):
-                path.addCurve(to: to, control1: control1, control2: control2)
-            }
-        }
-
-        path.closeSubpath()
     }
 
     private func addSun(to path: inout Path, rect: CGRect) {
