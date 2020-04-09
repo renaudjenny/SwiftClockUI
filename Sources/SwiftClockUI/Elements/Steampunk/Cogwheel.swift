@@ -19,6 +19,7 @@ struct Cogwheel: Shape {
         return path
     }
 
+    // TODO: only prove rect as parameter
     private func addCenterCircle(to path: inout Path, center: CGPoint, radius: CGFloat) {
         path.addEllipse(in: CGRect(
             x: center.x - radius/2,
@@ -38,8 +39,20 @@ struct Cogwheel: Shape {
             let circle = CGRect.circle(center: rect.center, radius: radius)
             let startPoint = CGPoint.inCircle(circle, for: startAngle)
             path.move(to: startPoint)
-            path.addArc(center: rect.center, radius: radius, startAngle: angle, endAngle: angle - armThickness, clockwise: true)
-            path.addArc(center: rect.center, radius: radius * 3, startAngle: angle - armThickness, endAngle: angle, clockwise: false)
+            path.addArc(
+                center: rect.center,
+                radius: radius,
+                startAngle: angle,
+                endAngle: angle - armThickness,
+                clockwise: true
+            )
+            path.addArc(
+                center: rect.center,
+                radius: radius * 3,
+                startAngle: angle - armThickness,
+                endAngle: angle,
+                clockwise: false
+            )
             path.closeSubpath()
             addArmHoleIfNeeded(to: &path, rect: rect, radius: radius, startAngle: startAngle, degreesByArm: degreesByArm)
         }
@@ -64,8 +77,20 @@ struct Cogwheel: Shape {
             let tooth = Double(tooth)
             let angle = Angle.degrees(degreesByTooth * tooth)
 
-            path.addArc(center: center, radius: radius, startAngle: angle, endAngle: angle + .degrees(degreesByTooth/2), clockwise: false)
-            path.addArc(center: center, radius: radius * 10/11, startAngle: angle + .degrees(degreesByTooth/2), endAngle: .degrees((tooth + 1) * degreesByTooth), clockwise: false)
+            path.addArc(
+                center: center,
+                radius: radius,
+                startAngle: angle,
+                endAngle: angle + .degrees(degreesByTooth/2),
+                clockwise: false
+            )
+            path.addArc(
+                center: center,
+                radius: radius * 10/11,
+                startAngle: angle + .degrees(degreesByTooth/2),
+                endAngle: .degrees((tooth + 1) * degreesByTooth),
+                clockwise: false
+            )
         }
     }
 }

@@ -44,7 +44,13 @@ struct SteampunkMinuteArm: Shape {
         let outlineBottomRightPoint = CGPoint(x: center.x + lineWidth/2, y: center.y + radius + lineWidth)
         let topY = center.y - radius * 2 - lineWidth
 
-        path.addArc(center: center, radius: radius + lineWidth, startAngle: .inCircle(for: outlineBottomRightPoint, circleCenter: center), endAngle: .zero, clockwise: true)
+        path.addArc(
+            center: center,
+            radius: radius + lineWidth,
+            startAngle: .inCircle(for: outlineBottomRightPoint, circleCenter: center),
+            endAngle: .zero,
+            clockwise: true
+        )
 
         let outlineTopRightPoint = CGPoint(x: rect.midX + lineWidth/2, y: topY)
         path.addLine(to: outlineTopRightPoint)
@@ -115,7 +121,8 @@ struct SteampunkMinuteArm: Shape {
                 point = CGPoint.inCircle(outlineCircle, for: Angle(degrees: Double(beamCount/2 - beam) * degreeByBeam))
             }
 
-            let control = CGPoint.inCircle(insideCircle, for: Angle(degrees: Double(beamCount/2 - beam) * degreeByBeam + degreeByBeam/2))
+            let controlAngle = Angle(degrees: Double(beamCount/2 - beam) * degreeByBeam + degreeByBeam/2)
+            let control = CGPoint.inCircle(insideCircle, for: controlAngle)
             path.addQuadCurve(to: point, control: control)
         }
     }
