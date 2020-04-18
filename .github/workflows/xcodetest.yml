@@ -32,4 +32,4 @@ jobs:
       run: xcrun simctl create "iPhone SE" "iPhone SE" iOS13.4
 
     - name: Xcode test on iPhone SE
-      run: xcodebuild clean test -scheme telltime -destination 'platform=iOS Simulator,OS=13.4,name=iPhone SE'
+      run: xcodebuild clean test -scheme SwiftClockUI-Package -destination 'platform=iOS Simulator,OS=13.4,name=iPhone SE'
