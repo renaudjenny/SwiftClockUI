@@ -1,0 +1,7 @@
+disabled_rules:
+  - identifier_name
+opt_in_rules:
+  - force_unwrapping
+  - implicitly_unwrapped_optional
+  - implicit_return
+  - unused_import
