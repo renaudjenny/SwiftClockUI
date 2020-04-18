@@ -17,7 +17,7 @@ jobs:
       run: brew install swiftlint
 
     - name: Linter
-      run: swiftlint
+      run: swiftlint lint Sources
 
     - name: Select Xcode
       run: sudo xcode-select -switch /Applications/Xcode_11.4.app
