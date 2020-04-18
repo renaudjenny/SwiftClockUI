@@ -1,0 +1,35 @@
+name: Xcode Unit Test
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: macOS-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install SwiftLint
+      run: brew install swiftlint
+
+    - name: Linter
+      run: swiftlint
+
+    - name: Select Xcode
+      run: sudo xcode-select -switch /Applications/Xcode_11.4.app
+
+    - name: Xcode version
+      run: /usr/bin/xcodebuild -version
+
+    - name: Generate Xcode project
+      run: swift package generate-xcodeproj
+
+    - name: Create iPhone SE Simulator
+      run: xcrun simctl create "iPhone SE" "iPhone SE" iOS13.4
+
+    - name: Xcode test on iPhone SE
+      run: xcodebuild clean test -scheme telltime -destination 'platform=iOS Simulator,OS=13.4,name=iPhone SE'
