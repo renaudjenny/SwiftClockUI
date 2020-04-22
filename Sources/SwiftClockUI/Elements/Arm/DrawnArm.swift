@@ -15,7 +15,7 @@ struct DrawnArm: View {
 }
 
 private struct DrawnArmShape: Shape {
-    private static let widthRatio: CGFloat = 1/30
+    private static let thicknessRatio: CGFloat = 1/30
     let type: ArmType
     private var drawStep: CGFloat
     private static var controlRatios = Random.ControlRatio(random: .fixed)
@@ -33,50 +33,48 @@ private struct DrawnArmShape: Shape {
 
     func path(in rect: CGRect) -> Path {
         var path = Path()
-        let center = CGPoint(x: rect.midX, y: rect.midY)
-        let diameter = min(rect.height, rect.width)
-        let width = diameter * Self.widthRatio * type.ratio.lineWidth
-        let margin = diameter/2 * type.ratio.margin
+        let thickness = rect.radius * Self.thicknessRatio * type.ratio.lineWidth
+        let margin = rect.radius * type.ratio.margin
         let bottomRight = CGPoint(
-            x: center.x + width/2,
-            y: center.y
+            x: rect.midX + thickness,
+            y: rect.midY
         )
 
-        let topY = center.y - diameter/2 * self.drawStep
-        let topCenter = CGPoint(x: diameter/2, y: topY + margin + width/2)
+        let topY = rect.midY - rect.radius * self.drawStep
+        let topCenter = CGPoint(x: rect.radius, y: topY + margin + thickness)
         let topLeft = CGPoint(
-            x: topCenter.x - width/2,
+            x: topCenter.x - thickness,
             y: topCenter.y
         )
 
         path.move(to: bottomRight)
 
         path.addArc(
-            center: center,
-            radius: width/2,
+            center: rect.center,
+            radius: thickness,
             startAngle: .zero,
             endAngle: .degrees(180),
             clockwise: false
         )
 
         let controlLeft = CGPoint(
-            x: diameter/2 - width/2 *  Self.controlRatios.leftX,
-            y: topY + width/2 + diameter/2 * Self.controlRatios.leftY
+            x: rect.radius - thickness *  Self.controlRatios.leftX,
+            y: topY + thickness + rect.radius * Self.controlRatios.leftY
         )
 
         path.addQuadCurve(to: topLeft, control: controlLeft)
 
         path.addArc(
             center: topCenter,
-            radius: width/2,
+            radius: thickness,
             startAngle: .degrees(180),
             endAngle: .zero,
             clockwise: false
         )
 
         let controlRight = CGPoint(
-            x: diameter/2 + width/2 *  Self.controlRatios.rightX,
-            y: topY + width/2 + diameter/2 * Self.controlRatios.rightY
+            x: rect.radius + thickness *  Self.controlRatios.rightX,
+            y: topY + thickness + rect.radius * Self.controlRatios.rightY
         )
 
         path.addQuadCurve(to: bottomRight, control: controlRight)
