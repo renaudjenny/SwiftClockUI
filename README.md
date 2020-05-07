@@ -75,4 +75,3 @@ struct StylePicker: View {
 * 👆 Add a bigger zone for dragging arms, it's not easy with the mouse on macOS
   * Use the new `.hover` and `.hoverEffect` from Swift 5.2 and Xcode 11.4
 * 👾 Add a smooth animation while resizing the window on macOS
-* 🧽 Add Linter rules
