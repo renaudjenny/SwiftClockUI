@@ -1,5 +1,7 @@
 # SwiftClockUI
 
+![Xcode Unit Test](https://github.com/renaudjenny/SwiftClockUI/workflows/Xcode%20Unit%20Test/badge.svg)
+
 Clock UI for SwiftUI
 
 This library has been tested
