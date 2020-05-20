@@ -51,7 +51,7 @@ struct ContentView: View {
 
 `\.clockStyle` is typed as `enum ClockStyle`  which is `Identifiable`, `CaseIterable`, and has a convenient method to get the description (in English): `public var description: String`
 
-It's very useful when you want to iterate over this to let the use choose the clock style, for instance you can easily do something like this:
+It's very useful when you want to iterate over this `enum` to let the user choose the clock style, for instance you can easily do something like this:
 
 ```swift
 struct StylePicker: View {
