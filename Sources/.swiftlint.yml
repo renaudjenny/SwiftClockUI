@@ -5,3 +5,4 @@ opt_in_rules:
   - implicitly_unwrapped_optional
   - implicit_return
   - unused_import
+  - indentation_width
