@@ -30,4 +30,11 @@ enum ArmType {
             date.setMinute(angle: angle, calendar: calendar)
         }
     }
+
+    func color(with armColors: ArmColors) -> Color {
+        switch self {
+        case .hour: return armColors.hour
+        case .minute: return armColors.minute
+        }
+    }
 }

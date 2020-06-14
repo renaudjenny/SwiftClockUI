@@ -2,6 +2,7 @@ import SwiftUI
 
 struct IndicatorsView: View {
     @Environment(\.clockStyle) var style
+    @Environment(\.clockIndicatorsColor) var color
 
     var body: some View {
         Group {
@@ -14,6 +15,6 @@ struct IndicatorsView: View {
             } else {
                 ClassicIndicators()
             }
-        }
+        }.foregroundColor(color)
     }
 }

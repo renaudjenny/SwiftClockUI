@@ -68,6 +68,10 @@ struct StylePicker: View {
 }
 ```
 
+## Change elements color (TODO 🛠)
+
+See #7
+
 ## App using this library
 
 * [📲 Tell Time UK](https://apps.apple.com/gb/app/tell-time-uk/id1496541173): https://github.com/renaudjenny/telltime

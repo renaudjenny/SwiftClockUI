@@ -5,6 +5,7 @@ struct ArmView: View {
     @Environment(\.calendar) var calendar
     @Environment(\.clockDate) var date
     @Environment(\.clockStyle) var style
+    @Environment(\.clockArmColors) var colors
     let type: ArmType
 
     var body: some View {
@@ -22,6 +23,7 @@ struct ArmView: View {
         .modifier(ArmDragGesture(type: type))
         .rotationEffect(rotationAngle)
         .animation(.spring(), value: rotationAngle)
+        .foregroundColor(type.color(with: colors))
     }
 
     private var rotationAngle: Angle {

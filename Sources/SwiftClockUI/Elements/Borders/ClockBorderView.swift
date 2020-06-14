@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ClockBorderView: View {
     @Environment(\.clockStyle) var style
+    @Environment(\.clockBorderColor) var color
 
     var body: some View {
         Group {
@@ -14,6 +15,6 @@ struct ClockBorderView: View {
             } else {
                 ClassicClockBorder()
             }
-        }
+        }.foregroundColor(color)
     }
 }

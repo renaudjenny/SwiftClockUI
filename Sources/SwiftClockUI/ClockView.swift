@@ -82,4 +82,20 @@ struct ClockViewSteampunkStyle_Previews: PreviewProvider {
             .environment(\.clockStyle, .steampunk)
     }
 }
+
+struct ClockViewDifferentColors_Previews: PreviewProvider {
+    @Environment(\.calendar) static var calendar
+
+    static var previews: some View {
+        ClockView()
+            .padding()
+            .environment(\.clockDate, .constant(.init(hour: 10, minute: 10, calendar: calendar)))
+            .environment(\.clockArmColors, ArmColors(
+                minute: .red,
+                hour: .blue
+            ))
+            .environment(\.clockBorderColor, .orange)
+            .environment(\.clockIndicatorsColor, .green)
+    }
+}
 #endif
