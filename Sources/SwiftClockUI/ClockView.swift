@@ -90,7 +90,7 @@ struct ClockViewDifferentColors_Previews: PreviewProvider {
         ClockView()
             .padding()
             .environment(\.clockDate, .constant(.init(hour: 10, minute: 10, calendar: calendar)))
-            .environment(\.clockArmColors, ArmColors(
+            .environment(\.clockArmColors, ClockArmColors(
                 minute: .red,
                 hour: .blue
             ))

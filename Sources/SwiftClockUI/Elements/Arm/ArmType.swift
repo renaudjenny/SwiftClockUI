@@ -31,7 +31,7 @@ enum ArmType {
         }
     }
 
-    func color(with armColors: ArmColors) -> Color {
+    func color(with armColors: ClockArmColors) -> Color {
         switch self {
         case .hour: return armColors.hour
         case .minute: return armColors.minute

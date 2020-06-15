@@ -74,7 +74,7 @@ You can also change the color of Clock elements. Again with changing some `.envi
 
 ```swift
 ClockView()
-    .environment(\.clockArmColors, ArmColors(
+    .environment(\.clockArmColors, ClockArmColors(
         minute: .red,
         hour: .blue
     ))
