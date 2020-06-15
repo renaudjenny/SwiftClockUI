@@ -68,9 +68,23 @@ struct StylePicker: View {
 }
 ```
 
-## Change elements color (TODO 🛠)
+## Change elements color
 
-See #7
+You can also change the color of Clock elements. Again with changing some `.environment` keys.
+
+```swift
+ClockView()
+    .environment(\.clockArmColors, ArmColors(
+        minute: .red,
+        hour: .blue
+    ))
+    .environment(\.clockBorderColor, .orange)
+    .environment(\.clockIndicatorsColor, .green)
+```
+
+In light mode, you could expect a result like this:
+
+![Clock View with Classic style and some colors changed](docs/assets/ClockViewClassicAndColors.png)
 
 ## App using this library
 
