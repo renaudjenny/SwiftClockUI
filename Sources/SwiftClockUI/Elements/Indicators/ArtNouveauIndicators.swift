@@ -15,7 +15,7 @@ struct ArtNouveauIndicators: View {
                     .stroke()
                     .modifier(ScaleUpOnAppear())
             }
-        }.aspectRatio(contentMode: .fit)
+        }
     }
 
     func romanHour(for romanNumber: String) -> some View {

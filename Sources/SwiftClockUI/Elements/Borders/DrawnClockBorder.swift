@@ -12,7 +12,6 @@ struct DrawnClockBorder: View {
                 .stroke(lineWidth: geometry.radius * Self.borderWidthRatio)
                 .onAppear(perform: { self.animate = true })
                 .animation(.easeInOut(duration: 1))
-                .aspectRatio(contentMode: .fit)
         }
     }
 }

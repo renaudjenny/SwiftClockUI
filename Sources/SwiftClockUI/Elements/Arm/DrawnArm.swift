@@ -10,7 +10,6 @@ struct DrawnArm: View {
     var body: some View {
         DrawnArmShape(draw: !isAnimationEnabled || showIndicator, type: type, random: random)
             .onAppear(perform: { self.showIndicator = true })
-            .aspectRatio(1/1, contentMode: .fit)
     }
 }
 

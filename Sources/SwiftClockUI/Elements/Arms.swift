@@ -36,7 +36,6 @@ struct Arms_Previews: PreviewProvider {
             Circle().stroke()
             Arms()
         }
-        .aspectRatio(contentMode: .fit)
         .padding()
         .environment(\.clockDate, .constant(.init(hour: 10, minute: 10, calendar: calendar)))
     }

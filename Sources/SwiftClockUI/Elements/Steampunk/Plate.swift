@@ -18,7 +18,7 @@ struct Plate: View {
             Circle()
                 .stroke(lineWidth: Self.lineWidth)
                 .scale(10/12)
-            rivets.aspectRatio(contentMode: .fit)
+            rivets
             Text(text).modifier(FontProportional(ratio: 1, design: .serif))
         }
     }

@@ -42,7 +42,6 @@ struct ClassicArm_Previews: PreviewProvider {
             Circle().stroke()
             ClassicArm(type: .minute)
         }
-        .aspectRatio(contentMode: .fit)
         .padding()
     }
 }

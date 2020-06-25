@@ -13,7 +13,6 @@ struct DrawnIndicators: View {
             }
             DrawnNumbers()
         }
-        .aspectRatio(1/1, contentMode: .fit)
         .animation(.easeOut)
     }
 }

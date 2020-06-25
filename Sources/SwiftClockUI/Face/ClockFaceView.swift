@@ -5,12 +5,7 @@ struct ClockFaceView: View {
 
     var body: some View {
         GeometryReader { geometry in
-            Eye(move: self.isShown, position: .left)
-                .frame(width: geometry.frame(in: .local).height/6, height: geometry.frame(in: .local).height/6)
-                .position(
-                    x: geometry.frame(in: .local).width/3,
-                    y: geometry.frame(in: .local).width/3
-            )
+            leftEye(geometry: geometry)
             Eye(move: self.isShown, position: .right)
                 .frame(width: geometry.frame(in: .local).height/6, height: geometry.frame(in: .local).height/6)
                 .position(
@@ -28,6 +23,15 @@ struct ClockFaceView: View {
         .opacity(isShown ? 1 : 0)
         .animation(.easeInOut)
     }
+
+    func leftEye(geometry: GeometryProxy) -> some View {
+        Eye(move: isShown, position: .left)
+            .frame(width: geometry.circle.height/6)
+            .position(
+                x: geometry.circle.width/3,
+                y: geometry.circle.height/3
+            )
+    }
 }
 
 #if DEBUG
@@ -37,7 +41,6 @@ struct ClockFaceSmiling_Previews: PreviewProvider {
             Circle().stroke()
             ClockFaceView()
         }
-        .aspectRatio(1/1, contentMode: .fit)
         .padding()
         .environment(\.clockFaceShown, true)
     }

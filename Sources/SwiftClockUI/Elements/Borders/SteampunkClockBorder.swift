@@ -7,7 +7,7 @@ struct SteampunkClockBorder: View {
         ZStack {
             windUpKey
             border
-        }.aspectRatio(contentMode: .fit)
+        }
     }
 
     var border: some View {
