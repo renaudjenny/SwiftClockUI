@@ -4,6 +4,7 @@ struct ArtNouveauIndicators: View {
     @Environment(\.clockConfiguration) var configuration
     static let marginRatio: CGFloat = 1/12
     private static let textFontRatio: CGFloat = 1/8
+    @State private var numberCircleRadius: CGFloat = .zero
 
     var body: some View {
         ZStack {
@@ -19,41 +20,43 @@ struct ArtNouveauIndicators: View {
     }
 
     func romanHour(for romanNumber: String) -> some View {
-        GeometryReader { geometry in
-            Text(romanNumber)
-                .modifier(FontProportional(ratio: Self.textFontRatio))
-                .modifier(NumberCircle(geometry: geometry))
-                .modifier(ScaleUpOnAppear())
-                .modifier(PositionInCircle(
-                    angle: RomanNumber.angle(for: romanNumber),
-                    marginRatio: Self.marginRatio * 2
-                ))
-        }
+        Text(romanNumber)
+            .modifier(NumberInCircle(numberCircleRadius: $numberCircleRadius))
+            .modifier(PositionInCircle(
+                angle: RomanNumber.angle(for: romanNumber),
+                marginRatio: Self.marginRatio * 2
+            ))
+            .modifier(FontProportional(ratio: Self.textFontRatio))
+            .modifier(ScaleUpOnAppear())
     }
 
-    private struct NumberCircle: ViewModifier {
-        let geometry: GeometryProxy
+    private struct NumberInCircle: ViewModifier {
+        @Binding var numberCircleRadius: CGFloat
 
         func body(content: Content) -> some View {
             content
-                .background(self.background)
-                .overlay(self.overlay)
+                .background(Circle().fill(Color.background).frame(width: numberCircleRadius * 3, height: numberCircleRadius * 3))
+                .overlay(Circle().stroke().frame(width: numberCircleRadius * 3, height: numberCircleRadius * 3))
+                .background(GeometryReader {
+                    Color.clear.preference(key: NumberCircleRadiusPreferenceKey.self, value: $0.radius)
+                })
+                .onPreferenceChange(NumberCircleRadiusPreferenceKey.self) {
+                    numberCircleRadius = $0
+                }
         }
+    }
 
-        private var width: CGFloat {
-            geometry.radius * 3 * ArtNouveauIndicators.marginRatio
+    private struct NumberCircleRadiusPreferenceKey: PreferenceKey {
+        static var defaultValue: CGFloat = .zero
+
+        static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+            value = max(value, nextValue())
         }
+    }
 
-        private var background: some View {
-            Circle()
-                .fill(Color.background)
-                .frame(width: width, height: width)
-        }
-
-        private var overlay: some View {
-            Circle()
-                .stroke()
-                .frame(width: width, height: width)
+    private struct NumberCircleRadiusPreferenceSetter: View {
+        var body: some View {
+            GeometryReader { Color.clear.preference(key: NumberCircleRadiusPreferenceKey.self, value: $0.radius) }
         }
     }
 
