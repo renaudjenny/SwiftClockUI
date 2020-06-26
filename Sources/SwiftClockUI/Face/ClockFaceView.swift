@@ -6,19 +6,8 @@ struct ClockFaceView: View {
     var body: some View {
         GeometryReader { geometry in
             leftEye(geometry: geometry)
-            Eye(move: self.isShown, position: .right)
-                .frame(width: geometry.frame(in: .local).height/6, height: geometry.frame(in: .local).height/6)
-                .position(
-                    x: geometry.frame(in: .local).width/1.5,
-                    y: geometry.frame(in: .local).width/3
-            )
-            Mouth(shape: self.isShown ? .smile : .neutral)
-                .stroke(style: .init(lineWidth: 6.0, lineCap: .round, lineJoin: .round))
-                .frame(width: geometry.frame(in: .local).width/3, height: geometry.frame(in: .local).height/6)
-                .position(
-                    x: geometry.frame(in: .local).width/2,
-                    y: geometry.frame(in: .local).width/1.3
-            )
+            rightEye(geometry: geometry)
+            mouth(geometry: geometry)
         }
         .opacity(isShown ? 1 : 0)
         .animation(.easeInOut)
@@ -26,10 +15,29 @@ struct ClockFaceView: View {
 
     func leftEye(geometry: GeometryProxy) -> some View {
         Eye(move: isShown, position: .left)
-            .frame(width: geometry.circle.height/6)
+            .frame(width: geometry.radius/2)
             .position(
-                x: geometry.circle.width/3,
-                y: geometry.circle.height/3
+                x: geometry.radius * 2/3,
+                y: geometry.circle.midY - geometry.radius/3
+            )
+    }
+
+    func rightEye(geometry: GeometryProxy) -> some View {
+        Eye(move: isShown, position: .right)
+            .frame(width: geometry.radius/2)
+            .position(
+                x: geometry.radius * 4/3,
+                y: geometry.circle.midY - geometry.radius/3
+            )
+    }
+
+    func mouth(geometry: GeometryProxy) -> some View {
+        Mouth(shape: self.isShown ? .smile : .neutral)
+            .stroke(style: .init(lineWidth: 6.0, lineCap: .round, lineJoin: .round))
+            .frame(width: geometry.radius * 3/5, height: geometry.radius/5)
+            .position(
+                x: geometry.radius,
+                y: geometry.circle.midY + geometry.radius/2
             )
     }
 }
@@ -37,12 +45,28 @@ struct ClockFaceView: View {
 #if DEBUG
 struct ClockFaceSmiling_Previews: PreviewProvider {
     static var previews: some View {
-        ZStack {
-            Circle().stroke()
-            ClockFaceView()
+        Preview()
+    }
+
+    private struct Preview: View {
+        @State private var isShown = true
+
+        var body: some View {
+            VStack {
+                ZStack {
+                    Circle().stroke()
+                    ClockFaceView()
+                }
+                .padding()
+                .animation(Animation
+                            .default
+                            .speed(1/4)
+                            .repeatForever(autoreverses: true)
+                )
+                .environment(\.clockFaceShown, isShown)
+                Button("Hide/Show", action: { self.isShown.toggle() })
+            }
         }
-        .padding()
-        .environment(\.clockFaceShown, true)
     }
 }
 #endif
