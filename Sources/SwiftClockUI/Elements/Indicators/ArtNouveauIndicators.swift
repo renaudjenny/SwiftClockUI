@@ -35,14 +35,26 @@ struct ArtNouveauIndicators: View {
 
         func body(content: Content) -> some View {
             content
-                .background(Circle().fill(Color.background).frame(width: numberCircleRadius * 3, height: numberCircleRadius * 3))
-                .overlay(Circle().stroke().frame(width: numberCircleRadius * 3, height: numberCircleRadius * 3))
+                .background(background)
+                .overlay(overlay)
                 .background(GeometryReader {
                     Color.clear.preference(key: NumberCircleRadiusPreferenceKey.self, value: $0.radius)
                 })
                 .onPreferenceChange(NumberCircleRadiusPreferenceKey.self) {
                     numberCircleRadius = $0
                 }
+        }
+
+        private var background: some View {
+            Circle()
+                .fill(Color.background)
+                .frame(width: numberCircleRadius * 3, height: numberCircleRadius * 3)
+        }
+
+        private var overlay: some View {
+            Circle()
+                .stroke()
+                .frame(width: numberCircleRadius * 3, height: numberCircleRadius * 3)
         }
     }
 
@@ -91,10 +103,18 @@ struct ArtNouveauIndicators: View {
 #if DEBUG
 struct ArtNouveauIndicators_Previews: PreviewProvider {
     static var previews: some View {
-        ZStack {
-            Circle().stroke()
-            ArtNouveauIndicators()
-        }.padding()
+        Group {
+            ZStack {
+                Circle().stroke()
+                ArtNouveauIndicators()
+            }.padding()
+            ZStack {
+                Circle().stroke()
+                ArtNouveauIndicators()
+            }
+            .padding()
+            .preferredColorScheme(.dark)
+        }
     }
 }
 #endif
