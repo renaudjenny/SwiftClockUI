@@ -4,6 +4,7 @@ struct Plate: View {
     static let lineWidth: CGFloat = 6
     let type: PlateType
     let text: String
+    @State private var radius: CGFloat = .zero
 
     var body: some View {
         ZStack {
@@ -19,7 +20,17 @@ struct Plate: View {
                 .stroke(lineWidth: Self.lineWidth)
                 .scale(10/12)
             rivets
-            Text(text).modifier(FontProportional(ratio: 1, design: .serif))
+            Text(text)
+                .font(.system(size: radius.rounded(), design: .serif))
+        }
+        .background(
+            GeometryReader {
+                Color.clear
+                    .preference(key: RadiusPreferenceKey.self, value: $0.radius)
+            }
+        )
+        .onPreferenceChange(RadiusPreferenceKey.self) {
+            radius = $0
         }
     }
 
@@ -56,6 +67,18 @@ struct Plate: View {
 extension Plate {
     enum PlateType {
         case hard, soft
+    }
+}
+
+extension Plate {
+    // TODO: this preference key looks very similar to NumberCircleRadiusPreferenceKey
+    // I should create a more generic usage of this behaviour
+    struct RadiusPreferenceKey: PreferenceKey {
+        static var defaultValue: CGFloat = .zero
+
+        static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+            value = max(value, nextValue())
+        }
     }
 }
 
