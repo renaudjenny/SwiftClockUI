@@ -66,12 +66,6 @@ struct ArtNouveauIndicators: View {
         }
     }
 
-    private struct NumberCircleRadiusPreferenceSetter: View {
-        var body: some View {
-            GeometryReader { Color.clear.preference(key: NumberCircleRadiusPreferenceKey.self, value: $0.radius) }
-        }
-    }
-
     private struct Sun: Shape {
         func path(in rect: CGRect) -> Path {
             var path = Path()
