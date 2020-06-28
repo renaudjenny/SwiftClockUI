@@ -50,17 +50,17 @@ struct SteampunkIndicators: View {
                 .scale(1/5)
                 .strokeProportionally(Self.decorationLineWidthRatio)
                 .modifier(RotateOnAppear(clockwise: false))
-                .position(x: geometry.radius * 1/5, y: geometry.radius * 4/3)
+                .position(x: geometry.radius * 1/5, y: geometry.radius * 7/3)
             Cogwheel(toothCount: 8, armCount: 5, addExtraHoles: false)
                 .scale(1/6)
                 .fill(style: .init(eoFill: true, antialiased: true))
                 .modifier(RotateOnAppear(clockwise: true))
-                .position(x: geometry.radius * 2 * 7/27, y: geometry.radius * 3/2)
+                .position(x: geometry.radius * 2 * 7/27, y: geometry.radius * 5/2)
             Cogwheel(toothCount: 12, armCount: 8, addExtraHoles: false)
                 .scale(1/4)
                 .strokeProportionally(Self.decorationLineWidthRatio)
                 .modifier(RotateOnAppear(clockwise: false))
-                .position(x: geometry.radius * 2/3, y: geometry.radius * 28/15)
+                .position(x: geometry.radius * 2/3, y: geometry.radius * 46/16)
         }
     }
 

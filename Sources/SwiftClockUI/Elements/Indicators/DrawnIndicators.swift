@@ -95,7 +95,7 @@ struct DrawnIndicator: Shape {
 
     func path(in rect: CGRect) -> Path {
         var path = Path()
-        let thickness = rect.radius/60 * self.drawStep
+        let thickness = rect.radius/50 * self.drawStep
         let height = thickness * 2
         let width = thickness
         let bottomCenter = CGPoint(x: rect.midX, y: (rect.midY + height) * self.drawStep)
