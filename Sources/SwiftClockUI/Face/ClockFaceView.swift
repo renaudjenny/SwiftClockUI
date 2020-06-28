@@ -58,10 +58,11 @@ struct ClockFaceSmiling_Previews: PreviewProvider {
                     ClockFaceView()
                 }
                 .padding()
-                .animation(Animation
-                            .default
-                            .speed(1/4)
-                            .repeatForever(autoreverses: true)
+                .animation(
+                    Animation
+                        .default
+                        .speed(1/4)
+                        .repeatForever(autoreverses: true)
                 )
                 .environment(\.clockFaceShown, isShown)
                 Button("Hide/Show", action: { self.isShown.toggle() })

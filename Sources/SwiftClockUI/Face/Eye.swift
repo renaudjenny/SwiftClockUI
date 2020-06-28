@@ -40,8 +40,6 @@ extension ClockFaceView {
                 y: (1 - animationStep) * center.y + directionCenter.y * animationStep
             )
 
-//            let center = rect.center
-//                .applying(.init(translationX: translationX, y: translationY))
             let iris = CGRect.circle(
                 center: eyeCenter,
                 radius: Self.width
@@ -73,7 +71,7 @@ struct Eye_Previews: PreviewProvider {
     }
 
     struct Preview: View {
-        @State private var move = true
+        @State private var move = false
 
         var body: some View {
             VStack {
@@ -82,13 +80,14 @@ struct Eye_Previews: PreviewProvider {
                 ClockFaceView.Eye(move: move, position: .right)
             }
             .padding()
-            .animation(Animation
-                        .default
-                        .speed(1/4)
-                        .repeatForever(autoreverses: true)
+            .animation(
+                Animation
+                    .default
+                    .speed(1/4)
+                    .repeatForever(autoreverses: true)
             )
             .onAppear {
-                self.move = false
+                self.move = true
             }
         }
     }
