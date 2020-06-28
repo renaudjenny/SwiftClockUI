@@ -23,7 +23,7 @@ struct SteampunkClockBorder: View {
                 .scale(1/8)
                 .stroke(lineWidth: geometry.radius * Self.borderWidthRatio)
                 .rotation(.radians(.pi * 7/4))
-                .position(.inCircle(geometry.circle, for: .radians(.pi * 7/4), margin: -geometry.radius * 1/10))
+                .position(.inCircle(geometry.circle, for: .radians(.pi * 7/4), margin: -geometry.radius * 1/100))
                 .animation(nil)
                 .modifier(FlipOnAppear())
         }
