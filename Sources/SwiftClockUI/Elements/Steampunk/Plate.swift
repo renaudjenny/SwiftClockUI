@@ -23,15 +23,7 @@ struct Plate: View {
             Text(text)
                 .font(.system(size: radius.rounded(), design: .serif))
         }
-        .background(
-            GeometryReader {
-                Color.clear
-                    .preference(key: RadiusPreferenceKey.self, value: $0.radius)
-            }
-        )
-        .onPreferenceChange(RadiusPreferenceKey.self) {
-            radius = $0
-        }
+        .modifier(RadiusProvider(radius: $radius))
     }
 
     private var rivets: some View {
@@ -67,18 +59,6 @@ struct Plate: View {
 extension Plate {
     enum PlateType {
         case hard, soft
-    }
-}
-
-extension Plate {
-    // TODO: this preference key looks very similar to NumberCircleRadiusPreferenceKey
-    // I should create a more generic usage of this behaviour
-    struct RadiusPreferenceKey: PreferenceKey {
-        static var defaultValue: CGFloat = .zero
-
-        static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
-            value = max(value, nextValue())
-        }
     }
 }
 

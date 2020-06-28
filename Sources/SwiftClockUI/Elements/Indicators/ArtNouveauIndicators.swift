@@ -21,7 +21,8 @@ struct ArtNouveauIndicators: View {
 
     func romanHour(for romanNumber: String) -> some View {
         Text(romanNumber)
-            .modifier(NumberInCircle(numberCircleRadius: $numberCircleRadius))
+            .modifier(NumberInCircle(radius: numberCircleRadius))
+            .modifier(RadiusProvider(radius: $numberCircleRadius))
             .modifier(PositionInCircle(
                 angle: RomanNumber.angle(for: romanNumber),
                 marginRatio: Self.marginRatio * 2
@@ -31,38 +32,24 @@ struct ArtNouveauIndicators: View {
     }
 
     private struct NumberInCircle: ViewModifier {
-        @Binding var numberCircleRadius: CGFloat
+        var radius: CGFloat
 
         func body(content: Content) -> some View {
             content
                 .background(background)
                 .overlay(overlay)
-                .background(GeometryReader {
-                    Color.clear.preference(key: NumberCircleRadiusPreferenceKey.self, value: $0.radius)
-                })
-                .onPreferenceChange(NumberCircleRadiusPreferenceKey.self) {
-                    numberCircleRadius = $0
-                }
         }
 
         private var background: some View {
             Circle()
                 .fill(Color.background)
-                .frame(width: numberCircleRadius * 3, height: numberCircleRadius * 3)
+                .frame(width: radius * 3, height: radius * 3)
         }
 
         private var overlay: some View {
             Circle()
                 .stroke()
-                .frame(width: numberCircleRadius * 3, height: numberCircleRadius * 3)
-        }
-    }
-
-    private struct NumberCircleRadiusPreferenceKey: PreferenceKey {
-        static var defaultValue: CGFloat = .zero
-
-        static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
-            value = max(value, nextValue())
+                .frame(width: radius * 3, height: radius * 3)
         }
     }
 

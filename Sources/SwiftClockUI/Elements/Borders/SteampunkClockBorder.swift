@@ -2,31 +2,33 @@ import SwiftUI
 
 struct SteampunkClockBorder: View {
     static let borderWidthRatio: CGFloat = 1/80
+    @State private var radius: CGFloat = .zero
 
     var body: some View {
         ZStack {
             windUpKey
             border
-        }
+        }.modifier(RadiusProvider(radius: $radius))
     }
 
     var border: some View {
-        GeometryReader { geometry in
-            Circle().fill(Color.background)
-            Circle().stroke(lineWidth: geometry.radius * Self.borderWidthRatio)
-        }
+        // FIXME: fix that!
+//            Circle().fill(Color.background)
+        Circle().stroke(lineWidth: radius * Self.borderWidthRatio)
     }
 
     var windUpKey: some View {
-        GeometryReader { geometry in
-            WindUpKey()
-                .scale(1/8)
-                .stroke(lineWidth: geometry.radius * Self.borderWidthRatio)
-                .rotation(.radians(.pi * 7/4))
-                .position(.inCircle(geometry.circle, for: .radians(.pi * 7/4), margin: -geometry.radius * 1/100))
-                .animation(nil)
-                .modifier(FlipOnAppear())
-        }
+        WindUpKey()
+            .scale(1/8)
+            .stroke(lineWidth: radius * Self.borderWidthRatio)
+            .rotation(.radians(.pi * 7/4))
+            .position(.inCircle(circle, for: .radians(.pi * 7/4), margin: -circle.radius * 0))
+            .animation(nil)
+            .modifier(FlipOnAppear())
+    }
+
+    private var circle: CGRect {
+        CGRect(x: 0, y: 0, width: radius, height: radius)
     }
 }
 
