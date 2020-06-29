@@ -2,42 +2,44 @@ import SwiftUI
 
 struct ClockFaceView: View {
     @Environment(\.clockFaceShown) var isShown
+    @State private var circle: CGRect = .zero
 
     var body: some View {
-        GeometryReader { geometry in
-            leftEye(geometry: geometry)
-            rightEye(geometry: geometry)
-            mouth(geometry: geometry)
+        ZStack {
+            leftEye
+            rightEye
+            mouth
         }
+        .modifier(LocalFrameProvider(frame: $circle))
         .opacity(isShown ? 1 : 0)
         .animation(.easeInOut)
     }
 
-    func leftEye(geometry: GeometryProxy) -> some View {
+    private var leftEye: some View {
         Eye(move: isShown, position: .left)
-            .frame(width: geometry.radius/2)
+            .frame(width: circle.radius/2)
             .position(
-                x: geometry.radius * 2/3,
-                y: geometry.circle.midY - geometry.radius/3
+                x: circle.radius * 2/3,
+                y: circle.midY - circle.radius/3
             )
     }
 
-    func rightEye(geometry: GeometryProxy) -> some View {
+    private var rightEye: some View {
         Eye(move: isShown, position: .right)
-            .frame(width: geometry.radius/2)
+            .frame(width: circle.radius/2)
             .position(
-                x: geometry.radius * 4/3,
-                y: geometry.circle.midY - geometry.radius/3
+                x: circle.radius * 4/3,
+                y: circle.midY - circle.radius/3
             )
     }
 
-    func mouth(geometry: GeometryProxy) -> some View {
+    private var mouth: some View {
         Mouth(shape: self.isShown ? .smile : .neutral)
             .stroke(style: .init(lineWidth: 6.0, lineCap: .round, lineJoin: .round))
-            .frame(width: geometry.radius * 3/5, height: geometry.radius/5)
+            .frame(width: circle.radius * 3/5, height: circle.radius/5)
             .position(
-                x: geometry.radius,
-                y: geometry.circle.midY + geometry.radius/2
+                x: circle.radius,
+                y: circle.midY + circle.radius/2
             )
     }
 }
@@ -58,12 +60,6 @@ struct ClockFaceSmiling_Previews: PreviewProvider {
                     ClockFaceView()
                 }
                 .padding()
-                .animation(
-                    Animation
-                        .default
-                        .speed(1/4)
-                        .repeatForever(autoreverses: true)
-                )
                 .environment(\.clockFaceShown, isShown)
                 Button("Hide/Show", action: { self.isShown.toggle() })
             }

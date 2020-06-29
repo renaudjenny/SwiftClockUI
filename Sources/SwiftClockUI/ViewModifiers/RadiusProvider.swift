@@ -12,7 +12,7 @@ struct RadiusProvider: ViewModifier {
                 }
             )
             .onPreferenceChange(RadiusPreferenceKey.self) {
-                radius = $0
+                self.radius = $0
             }
     }
 }

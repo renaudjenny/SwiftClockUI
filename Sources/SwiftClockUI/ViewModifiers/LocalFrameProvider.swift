@@ -12,7 +12,7 @@ struct LocalFrameProvider: ViewModifier {
                 }
             )
             .onPreferenceChange(LocalFramePreferenceKey.self) {
-                frame = $0
+                self.frame = $0
             }
     }
 }

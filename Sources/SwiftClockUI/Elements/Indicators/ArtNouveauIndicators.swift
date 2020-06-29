@@ -89,12 +89,6 @@ struct ArtNouveauIndicators_Previews: PreviewProvider {
                 Circle().stroke()
                 ArtNouveauIndicators()
             }.padding()
-            ZStack {
-                Circle().stroke()
-                ArtNouveauIndicators()
-            }
-            .padding()
-            .preferredColorScheme(.dark)
         }
     }
 }
