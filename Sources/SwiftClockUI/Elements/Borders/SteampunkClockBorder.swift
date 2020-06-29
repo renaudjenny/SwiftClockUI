@@ -21,10 +21,15 @@ struct SteampunkClockBorder: View {
 
     var windUpKey: some View {
         WindUpKey()
-            .scale(1/8)
             .stroke(lineWidth: circle.radius * Self.borderWidthRatio)
-            .rotation(.radians(.pi * 7/4))
-            .position(.inCircle(circle, for: .radians(.pi * 7/4)))
+            .rotation(.degrees(-45))
+            .frame(width: circle.radius * 1/4, height: circle.radius * 1/4)
+            .position(
+                .inCircle(
+                    circle,
+                    for: .degrees(-45),
+                    margin: -circle.radius * 1/10
+                ))
             .animation(nil)
             .modifier(FlipOnAppear())
     }
@@ -32,6 +37,9 @@ struct SteampunkClockBorder: View {
 
 struct SteampunkClockBorder_Previews: PreviewProvider {
     static var previews: some View {
-        SteampunkClockBorder().padding()
+        Group {
+            SteampunkClockBorder().padding()
+            SteampunkClockBorder().previewLayout(.fixed(width: 400, height: 200)).padding()
+        }
     }
 }
