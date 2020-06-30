@@ -15,7 +15,7 @@ let package = Package(
             targets: ["SwiftClockUI"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.7.2"),
+        .package(url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.8.1"),
     ],
     targets: [
         .target(

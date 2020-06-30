@@ -84,12 +84,10 @@ struct ArtNouveauIndicators: View {
 #if DEBUG
 struct ArtNouveauIndicators_Previews: PreviewProvider {
     static var previews: some View {
-        Group {
-            ZStack {
-                Circle().stroke()
-                ArtNouveauIndicators()
-            }.padding()
-        }
+        ZStack {
+            Circle().stroke()
+            ArtNouveauIndicators()
+        }.padding()
     }
 }
 #endif

@@ -5,8 +5,7 @@ import SwiftUI
 
 class ArtNouveauIndicatorsTests: XCTestCase {
     func testArtNouveauIndicators() {
-        let arms = ArtNouveauIndicators_Previews.previews.environment(\.clockIsAnimationEnabled, false)
-        let hostingController = UIHostingController(rootView: arms)
-        assertSnapshot(matching: hostingController, as: .image(on: .iPhoneSe))
+        let indicators = ArtNouveauIndicators_Previews.previews.environment(\.clockIsAnimationEnabled, false)
+        assertSnapshot(matching: indicators, as: .wait(for: 1.4, on: .defaultImage))
     }
 }
