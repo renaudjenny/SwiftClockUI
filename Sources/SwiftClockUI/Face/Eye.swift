@@ -71,24 +71,19 @@ struct Eye_Previews: PreviewProvider {
     }
 
     struct Preview: View {
-        @State private var move = false
+        @State private var move = true
 
         var body: some View {
             VStack {
                 ClockFaceView.Eye(move: false, position: .left)
                 ClockFaceView.Eye(move: move, position: .left)
                 ClockFaceView.Eye(move: move, position: .right)
+                Button(action: { self.move.toggle() }) {
+                    Text("Move eyes")
+                }
             }
+            .animation(.default)
             .padding()
-            .animation(
-                Animation
-                    .default
-                    .speed(1/4)
-                    .repeatForever(autoreverses: true)
-            )
-            .onAppear {
-                self.move = true
-            }
         }
     }
 }
