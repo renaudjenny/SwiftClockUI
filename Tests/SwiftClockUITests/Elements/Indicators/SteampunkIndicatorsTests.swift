@@ -7,8 +7,7 @@ class SteampunkIndicatorsTests: XCTestCase {
     func testSteampunkIndicators() {
         let indicators = SteampunkIndicators_Previews.previews
             .environment(\.clockIsAnimationEnabled, false)
-        let hostingController = UIHostingController(rootView: indicators)
-        assertSnapshot(matching: hostingController, as: .image(on: .iPhoneSe))
+        assertSnapshot(matching: indicators, as: .defaultImage)
     }
 
     func testSteampunkIndicatorsWithLimitedHours() {
