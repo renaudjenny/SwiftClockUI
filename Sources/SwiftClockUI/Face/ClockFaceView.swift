@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ClockFaceView: View {
     @Environment(\.clockFaceShown) var isShown
+    @Environment(\.clockIsAnimationEnabled) var isAnimationEnabled
     @State private var circle: CGRect = .zero
 
     var body: some View {
@@ -12,7 +13,7 @@ struct ClockFaceView: View {
         }
         .modifier(LocalFrameProvider(frame: $circle))
         .opacity(isShown ? 1 : 0)
-        .animation(.easeInOut)
+        .animation(isAnimationEnabled ? .easeInOut : nil)
     }
 
     private var leftEye: some View {
