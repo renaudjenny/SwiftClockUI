@@ -3,8 +3,8 @@ import SwiftUI
 struct ArtNouveauIndicators: View {
     @Environment(\.clockConfiguration) var configuration
     static let marginRatio: CGFloat = 1/12
-    private static let textFontRatio: CGFloat = 1/8
     @State private var numberCircleRadius: CGFloat = .zero
+    @State private var circle: CGRect = .zero
 
     var body: some View {
         ZStack {
@@ -16,19 +16,22 @@ struct ArtNouveauIndicators: View {
                     .stroke()
                     .modifier(ScaleUpOnAppear())
             }
-        }
+        }.modifier(LocalFrameProvider(frame: $circle))
     }
 
     func romanHour(for romanNumber: String) -> some View {
         Text(romanNumber)
-            .modifier(NumberInCircle(radius: numberCircleRadius))
-            .modifier(RadiusProvider(radius: $numberCircleRadius))
+            .modifier(NumberInCircle(radius: circle.radius * 1/12))
             .modifier(PositionInCircle(
                 angle: RomanNumber.angle(for: romanNumber),
                 marginRatio: Self.marginRatio * 2
             ))
-            .modifier(FontProportional(ratio: Self.textFontRatio))
+            .font(.system(size: fontSize))
             .modifier(ScaleUpOnAppear())
+    }
+
+    var fontSize: CGFloat {
+        (circle.radius * 1/8).rounded()
     }
 
     private struct NumberInCircle: ViewModifier {
