@@ -12,14 +12,12 @@ class ClockTests: XCTestCase {
 
     func testClockViewWithFace() {
         let clockViews = ClockViewWithFace_Previews.previews.environment(\.clockIsAnimationEnabled, false)
-        let hostingController = UIHostingController(rootView: clockViews)
-        assertSnapshot(matching: hostingController, as: .image(on: .iPhoneSe))
+        assertSnapshot(matching: clockViews, as: .defaultImage)
     }
 
     func testClockViewArtNouveauStyle() {
         let clockViews = ClockViewArtNouveauStyle_Previews.previews.environment(\.clockIsAnimationEnabled, false)
-        let hostingController = UIHostingController(rootView: clockViews)
-        assertSnapshot(matching: hostingController, as: .image(on: .iPhoneSe))
+        assertSnapshot(matching: clockViews, as: .defaultImage)
     }
 
     func testClockViewDrawingStyle() {
