@@ -7,6 +7,7 @@ Clock UI for SwiftUI
 This library has been tested
 * ✅💻 macOS Catalina 10.15.3
 * ✅📱 iOS 13.3
+* ✅📱 iOS 14.0 Beta (some snapshots tests are failing but they are all correct 😅)
 
 ## Bind a date
 
