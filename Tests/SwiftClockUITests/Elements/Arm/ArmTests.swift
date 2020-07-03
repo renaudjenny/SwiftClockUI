@@ -6,7 +6,7 @@ import SwiftUI
 class ArmTests: XCTestCase {
   func testMinuteArms() {
     let arms = ArmMinute_Previews.previews.environment(\.clockIsAnimationEnabled, false)
-    assertSnapshot(matching: arms, as: .defaultImage)
+    assertSnapshot(matching: arms, as: .default)
   }
 
   func testHourArm() {

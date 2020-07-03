@@ -6,6 +6,6 @@ import SwiftUI
 class ArtNouveauArmTests: XCTestCase {
     func testArtNouveauArm() {
         let arms = ArtNouveauArm_Previews.previews.environment(\.clockIsAnimationEnabled, false)
-        assertSnapshot(matching: arms, as: .defaultImage)
+        assertSnapshot(matching: arms, as: .default)
     }
 }

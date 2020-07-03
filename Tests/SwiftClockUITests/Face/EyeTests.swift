@@ -6,6 +6,6 @@ import SwiftUI
 class EyeTests: XCTestCase {
   func testEyes() {
     let eyes = Eye_Previews.previews
-    assertSnapshot(matching: eyes, as: .defaultImage)
+    assertSnapshot(matching: eyes, as: .default)
   }
 }
