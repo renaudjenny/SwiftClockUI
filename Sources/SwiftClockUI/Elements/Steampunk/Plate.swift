@@ -4,6 +4,7 @@ struct Plate: View {
     static let lineWidth: CGFloat = 6
     let type: PlateType
     let text: String
+    @State private var radius: CGFloat = .zero
 
     var body: some View {
         ZStack {
@@ -18,9 +19,11 @@ struct Plate: View {
             Circle()
                 .stroke(lineWidth: Self.lineWidth)
                 .scale(10/12)
-            rivets.aspectRatio(contentMode: .fit)
-            Text(text).modifier(FontProportional(ratio: 1, design: .serif))
+            rivets
+            Text(text)
+                .font(.system(size: radius.rounded(), design: .serif))
         }
+        .modifier(RadiusProvider(radius: $radius))
     }
 
     private var rivets: some View {

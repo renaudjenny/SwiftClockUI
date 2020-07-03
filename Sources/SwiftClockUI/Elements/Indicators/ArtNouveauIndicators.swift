@@ -3,7 +3,8 @@ import SwiftUI
 struct ArtNouveauIndicators: View {
     @Environment(\.clockConfiguration) var configuration
     static let marginRatio: CGFloat = 1/12
-    private static let textFontRatio: CGFloat = 1/8
+    @State private var numberCircleRadius: CGFloat = .zero
+    @State private var circle: CGRect = .zero
 
     var body: some View {
         ZStack {
@@ -15,45 +16,43 @@ struct ArtNouveauIndicators: View {
                     .stroke()
                     .modifier(ScaleUpOnAppear())
             }
-        }.aspectRatio(contentMode: .fit)
+        }.modifier(LocalFrameProvider(frame: $circle))
     }
 
     func romanHour(for romanNumber: String) -> some View {
-        GeometryReader { geometry in
-            Text(romanNumber)
-                .modifier(FontProportional(ratio: Self.textFontRatio))
-                .modifier(NumberCircle(geometry: geometry))
-                .modifier(ScaleUpOnAppear())
-                .modifier(PositionInCircle(
-                    angle: RomanNumber.angle(for: romanNumber),
-                    marginRatio: Self.marginRatio * 2
-                ))
-        }
+        Text(romanNumber)
+            .modifier(NumberInCircle(radius: circle.radius * 1/12))
+            .modifier(PositionInCircle(
+                angle: RomanNumber.angle(for: romanNumber),
+                marginRatio: Self.marginRatio * 2
+            ))
+            .font(.system(size: fontSize))
+            .modifier(ScaleUpOnAppear())
     }
 
-    private struct NumberCircle: ViewModifier {
-        let geometry: GeometryProxy
+    var fontSize: CGFloat {
+        (circle.radius * 1/8).rounded()
+    }
+
+    private struct NumberInCircle: ViewModifier {
+        var radius: CGFloat
 
         func body(content: Content) -> some View {
             content
-                .background(self.background)
-                .overlay(self.overlay)
-        }
-
-        private var width: CGFloat {
-            geometry.radius * 3 * ArtNouveauIndicators.marginRatio
+                .background(background)
+                .overlay(overlay)
         }
 
         private var background: some View {
             Circle()
                 .fill(Color.background)
-                .frame(width: width, height: width)
+                .frame(width: radius * 3, height: radius * 3)
         }
 
         private var overlay: some View {
             Circle()
                 .stroke()
-                .frame(width: width, height: width)
+                .frame(width: radius * 3, height: radius * 3)
         }
     }
 

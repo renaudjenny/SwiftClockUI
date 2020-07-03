@@ -7,6 +7,7 @@ Clock UI for SwiftUI
 This library has been tested
 * ✅💻 macOS Catalina 10.15.3
 * ✅📱 iOS 13.3
+* ✅📱 iOS 14.0 Beta (some snapshots tests are failing but they are all correct 😅)
 
 ## Bind a date
 
@@ -24,7 +25,7 @@ Simply set `.environment(\.clockDate, $date)` `$date` has to be a binding.
 If you want something constant (just for showing the time), you could pass `.constant(yourDate)`
 
 * Arms move when date are set (take hour and minute in account)
-* Move the Arms change the date (hour and minute depending on wich arm you've moved)
+* Move the Arms change the date (hour and minute depending on which arm you've moved)
 
 ## Change Clock style
 
@@ -34,7 +35,7 @@ Style | Picture
 ------------ | -------------
 Classic | ![Clock View with Classic style](docs/assets/ClockViewClassic.png)
 Art Nouveau | ![Clock View with Art Nouveau style](docs/assets/ClockViewArtNouveau.png)
-Drawing | ![Clock View with Darwing style](docs/assets/ClockViewDrawing.png)
+Drawing | ![Clock View with Drawing style](docs/assets/ClockViewDrawing.png)
 Steampunk | ![Clock View with Steampunk style](docs/assets/ClockViewSteampunk.png)
 
 To set the style: `.environment(\.clockStyle, .steampunk)` for Steampunk style for instance.

@@ -16,7 +16,6 @@ public struct ClockView: View {
             ClockFaceView()
         }
         .environment(\.clockFaceShown, initialClockFaceShown || clockFaceShown)
-        .aspectRatio(1/1, contentMode: .fit)
         .onTapGesture(count: 3, perform: self.showClockFace)
     }
 

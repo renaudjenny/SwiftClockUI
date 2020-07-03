@@ -12,11 +12,11 @@ struct SteampunkIndicators: View {
             ZStack {
                 mainCogwheel
                 moon
-                gears.mask(moon)
+                Gears().mask(moon)
             }.scaleEffect(Self.decorationScale)
             circles
             numbers
-        }.aspectRatio(contentMode: .fit)
+        }
     }
 
     private var mainCogwheel: some View {
@@ -44,26 +44,6 @@ struct SteampunkIndicators: View {
         }.modifier(BalanceOnAppear())
     }
 
-    private var gears: some View {
-        GeometryReader { geometry in
-            Cogwheel(toothCount: 12, armCount: 3, addExtraHoles: false)
-                .scale(1/5)
-                .strokeProportionally(Self.decorationLineWidthRatio)
-                .modifier(RotateOnAppear(clockwise: false))
-                .position(x: geometry.radius * 1/5, y: geometry.radius * 4/3)
-            Cogwheel(toothCount: 8, armCount: 5, addExtraHoles: false)
-                .scale(1/6)
-                .fill(style: .init(eoFill: true, antialiased: true))
-                .modifier(RotateOnAppear(clockwise: true))
-                .position(x: geometry.radius * 2 * 7/27, y: geometry.radius * 3/2)
-            Cogwheel(toothCount: 12, armCount: 8, addExtraHoles: false)
-                .scale(1/4)
-                .strokeProportionally(Self.decorationLineWidthRatio)
-                .modifier(RotateOnAppear(clockwise: false))
-                .position(x: geometry.radius * 2/3, y: geometry.radius * 28/15)
-        }
-    }
-
     private var numbers: some View {
         ForEach(RomanNumber.numbers(configuration: configuration), id: \.self) { romanNumber in
             Plate(type: self.plateType(for: romanNumber), text: romanNumber)
@@ -75,6 +55,46 @@ struct SteampunkIndicators: View {
     private func plateType(for romanNumber: String) -> Plate.PlateType {
         RomanNumber.limitedNumbers.contains(romanNumber) ? .hard : .soft
     }
+}
+
+struct Gears: View {
+    @State private var circle: CGRect = .zero
+
+    var body: some View {
+        Group {
+            Cogwheel(toothCount: 12, armCount: 3, addExtraHoles: false)
+                .scale(1/5)
+                .strokeProportionally(SteampunkIndicators.decorationLineWidthRatio)
+                .modifier(RotateOnAppear(clockwise: false))
+                .position(gearsPositions.first)
+            Cogwheel(toothCount: 8, armCount: 5, addExtraHoles: false)
+                .scale(1/6)
+                .fill(style: .init(eoFill: true, antialiased: true))
+                .modifier(RotateOnAppear(clockwise: true))
+                .position(gearsPositions.second)
+            Cogwheel(toothCount: 12, armCount: 8, addExtraHoles: false)
+                .scale(1/4)
+                .strokeProportionally(SteampunkIndicators.decorationLineWidthRatio)
+                .modifier(RotateOnAppear(clockwise: false))
+                .position(gearsPositions.third)
+        }
+        .modifier(LocalFrameProvider(frame: $circle))
+    }
+
+    private var gearsPositions: (first: CGPoint, second: CGPoint, third: CGPoint) {(
+        CGPoint(
+            x: circle.midX - circle.radius * 4/5,
+            y: circle.midY + circle.radius * 1/4
+        ),
+        CGPoint(
+            x: circle.midX - circle.radius * 2/4,
+            y: circle.midY + circle.radius * 4/10
+        ),
+        CGPoint(
+            x: circle.midX - circle.radius * 1/4,
+            y: circle.midY + circle.radius * 7/10
+        )
+    )}
 }
 
 struct SteampunkIndicators_Previews: PreviewProvider {

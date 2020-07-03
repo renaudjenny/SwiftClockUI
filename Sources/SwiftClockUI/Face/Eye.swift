@@ -7,10 +7,10 @@ extension ClockFaceView {
 
         var body: some View {
             ZStack {
-                // Iris should be proportional of the size instead of hardcoded value
+                // TODO: Iris should be proportional of the size instead of hardcoded value
                 Circle().stroke(lineWidth: 4)
-                ClockFaceView.Iris(move: self.move, position: self.position).fill()
-            }.aspectRatio(1/1, contentMode: .fit)
+                ClockFaceView.Iris(move: move, position: position).fill()
+            }
         }
     }
 
@@ -30,24 +30,20 @@ extension ClockFaceView {
         }
 
         func path(in rect: CGRect) -> Path {
-            let origin = CGPoint(x: rect.width/2, y: rect.height/2)
-            let size = CGSize(width: Self.width, height: Self.width)
             let animationStep = CGFloat(self.animationStep)
 
-            let rotationAngle: CGFloat
-            switch self.position {
-            case .left: rotationAngle = CGFloat.pi/4
-            case .right: rotationAngle = -CGFloat.pi/4
-            }
-            let xTranslation = (rect.width/2 - Self.width/2) * sin(rotationAngle)
-            let yTranslation = (rect.height/2 - Self.width/2) * cos(rotationAngle)
+            let directionCenter = CGPoint.inCircle(rect, for: position.angle, margin: Self.width)
 
-            let iris = CGRect(origin: origin, size: size)
-                .offsetBy(dx: -Self.width/2, dy: -Self.width/2)
-                .applying(.init(
-                    translationX: xTranslation  * animationStep,
-                    y: yTranslation * animationStep
-                    ))
+            let center = rect.center
+            let eyeCenter = CGPoint(
+                x: (1 - animationStep) * center.x + directionCenter.x * animationStep,
+                y: (1 - animationStep) * center.y + directionCenter.y * animationStep
+            )
+
+            let iris = CGRect.circle(
+                center: eyeCenter,
+                radius: Self.width
+            )
 
             var path = Path()
             path.addEllipse(in: iris)
@@ -58,17 +54,37 @@ extension ClockFaceView {
     enum Position {
         case left
         case right
+
+        var angle: Angle {
+            switch self {
+            case .left: return .radians(.pi * 3/4)
+            case .right: return .radians(-.pi * 3/4)
+            }
+        }
     }
 }
 
 #if DEBUG
 struct Eye_Previews: PreviewProvider {
     static var previews: some View {
-        VStack {
-            ClockFaceView.Eye(move: false, position: .left)
-            ClockFaceView.Eye(move: true, position: .left)
-            ClockFaceView.Eye(move: true, position: .right)
-        }.padding()
+        Preview()
+    }
+
+    struct Preview: View {
+        @State private var move = true
+
+        var body: some View {
+            VStack {
+                ClockFaceView.Eye(move: false, position: .left)
+                ClockFaceView.Eye(move: move, position: .left)
+                ClockFaceView.Eye(move: move, position: .right)
+                Button(action: { self.move.toggle() }) {
+                    Text("Move eyes")
+                }
+            }
+            .animation(.default)
+            .padding()
+        }
     }
 }
 #endif

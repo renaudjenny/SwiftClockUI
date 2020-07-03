@@ -15,7 +15,7 @@ struct ArtNouveauClockBorder: View {
                         translationX: 0,
                         y: geometry.radius * (1 - Self.innerCircleScale)))
                     .stroke(lineWidth: geometry.radius * Self.borderWidthRatio/2)
-            }.aspectRatio(1/1, contentMode: .fit)
+            }
         }
     }
 }

@@ -13,7 +13,6 @@ struct DrawnIndicators: View {
             }
             DrawnNumbers()
         }
-        .aspectRatio(1/1, contentMode: .fit)
         .animation(.easeOut)
     }
 }
@@ -21,17 +20,14 @@ struct DrawnIndicators: View {
 private struct Hours: View {
     @Environment(\.clockIsAnimationEnabled) var isAnimationEnabled
     @Environment(\.clockRandom) var random
-    private static let widthRatio: CGFloat = 1/40
-    private static let heightRatio: CGFloat = 1/20
     private static let marginRatio: CGFloat = 1/10
     @State private var animate: Bool = false
+    @State private var size: CGSize = .zero
 
     var body: some View {
         ForEach(1...12, id: \.self) { hour in
             DrawnIndicator(draw: !self.isAnimationEnabled || self.animate, random: self.random)
                 .rotation(Angle(degrees: Double(hour) * .hourInDegree))
-                .fill()
-                .modifier(FrameProportional(widthRatio: Self.widthRatio, heightRatio: Self.heightRatio))
                 .modifier(PositionInCircle(
                     angle: .degrees(Double(hour) * .hourInDegree),
                     marginRatio: Self.marginRatio
@@ -45,8 +41,6 @@ private struct Minutes: View {
     @Environment(\.clockConfiguration) var configuration
     @Environment(\.clockIsAnimationEnabled) var isAnimationEnabled
     @Environment(\.clockRandom) var random
-    private static let widthRatio: CGFloat = 1/50
-    private static let heightRatio: CGFloat = 1/30
     private static let marginRatio: CGFloat = 1/15
     @State private var animate: Bool = false
 
@@ -68,9 +62,8 @@ private struct Minutes: View {
                 EmptyView()
             } else {
                 DrawnIndicator(draw: !isAnimationEnabled || animate, random: random)
+                    .scale(2/3)
                     .rotation(Angle(degrees: Double(minute) * .minuteInDegree))
-                    .fill()
-                    .modifier(FrameProportional(widthRatio: Self.widthRatio, heightRatio: Self.heightRatio))
                     .modifier(PositionInCircle(
                         angle: .degrees(Double(minute) * .minuteInDegree),
                         marginRatio: Self.marginRatio
@@ -102,15 +95,17 @@ struct DrawnIndicator: Shape {
 
     func path(in rect: CGRect) -> Path {
         var path = Path()
-        let radius = rect.width/2 * self.drawStep
-        let bottomCenter = CGPoint(x: radius, y: rect.maxY * self.drawStep)
+        let thickness = rect.radius/50 * self.drawStep
+        let height = thickness * 2
+        let width = thickness
+        let bottomCenter = CGPoint(x: rect.midX, y: (rect.midY + height) * self.drawStep)
         let bottomRight = CGPoint(
-            x: bottomCenter.x + radius/2,
+            x: bottomCenter.x + width,
             y: bottomCenter.y
         )
-        let topCenter = CGPoint(x: radius, y: radius)
+        let topCenter = CGPoint(x: rect.midX, y: rect.midY - height)
         let topLeft = CGPoint(
-            x: topCenter.x - radius,
+            x: topCenter.x - width,
             y: topCenter.y
         )
 
@@ -118,29 +113,29 @@ struct DrawnIndicator: Shape {
 
         path.addArc(
             center: bottomCenter,
-            radius: radius/2,
+            radius: thickness,
             startAngle: .zero,
             endAngle: .degrees(180),
             clockwise: false
         )
 
         let controlLeft = CGPoint(
-            x: rect.maxX * self.controlRatios.leftX,
-            y: rect.maxY * self.controlRatios.leftY
+            x: rect.midX + width * self.controlRatios.leftX,
+            y: rect.midY + height * self.controlRatios.leftY
         )
         path.addQuadCurve(to: topLeft, control: controlLeft)
 
         path.addArc(
             center: topCenter,
-            radius: radius,
+            radius: thickness,
             startAngle: .degrees(180),
             endAngle: .zero,
             clockwise: false
         )
 
         let controlRight = CGPoint(
-            x: rect.maxX * self.controlRatios.rightX,
-            y: rect.maxY * self.controlRatios.rightY
+            x: rect.midX + width * self.controlRatios.rightX,
+            y: rect.midY + height * self.controlRatios.rightY
         )
         path.addQuadCurve(to: bottomRight, control: controlRight)
 
@@ -164,12 +159,12 @@ struct DrawnNumbers: View {
 
     private func hourText(_ hour: Int) -> some View {
         Text("\(hour)")
-            .modifier(FontProportional(ratio: Self.textFontRatio))
-            .rotationEffect(random.angle() ?? .zero, anchor: .center)
-            .scaleEffect(random.scale() ?? 1, anchor: .center)
             .modifier(PositionInCircle(
                 angle: .degrees(Double(hour) * .hourInDegree), marginRatio: self.marginRatio
             ))
+            .modifier(FontProportional(ratio: Self.textFontRatio))
+            .rotationEffect(random.angle() ?? .zero, anchor: .center)
+            .scaleEffect(random.scale() ?? 1, anchor: .center)
     }
 
     private var marginRatio: CGFloat {

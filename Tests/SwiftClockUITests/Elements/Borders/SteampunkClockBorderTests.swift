@@ -5,8 +5,7 @@ import SwiftUI
 
 class SteampunkClockBorderTests: XCTestCase {
     func testSteampunkClockBorderBorder() {
-        let arms = SteampunkClockBorder_Previews.previews.environment(\.clockIsAnimationEnabled, false)
-        let hostingController = UIHostingController(rootView: arms)
-        assertSnapshot(matching: hostingController, as: .image(on: .iPhoneSe))
+        let borders = SteampunkClockBorder_Previews.previews.environment(\.clockIsAnimationEnabled, false)
+        assertSnapshot(matching: borders, as: .default)
     }
 }

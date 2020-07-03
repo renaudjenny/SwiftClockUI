@@ -5,7 +5,7 @@ struct ClassicIndicators: View {
     private static let marginRatio: CGFloat = 2/7
 
     var body: some View {
-        ZStack(alignment: .center) {
+        ZStack {
             HourTexts(marginRatio: Self.marginRatio)
             if configuration.isHourIndicatorsShown {
                 HourIndicators(marginRatio: Self.marginRatio)
@@ -14,7 +14,6 @@ struct ClassicIndicators: View {
                 MinuteIndicators(marginRatio: Self.marginRatio)
             }
         }
-        .aspectRatio(1/1, contentMode: .fit)
         .modifier(ScaleUpOnAppear())
     }
 }
@@ -29,11 +28,11 @@ private struct HourTexts: View {
     var body: some View {
         ForEach(self.configurationHours, id: \.self) { hour in
             Text("\(hour)")
-                .modifier(FontProportional(ratio: Self.textFontRatio))
                 .modifier(PositionInCircle(
                     angle: .degrees(Double(hour) * .hourInDegree),
                     marginRatio: self.dynamicMarginRatio
                 ))
+                .modifier(FontProportional(ratio: Self.textFontRatio))
         }
     }
 

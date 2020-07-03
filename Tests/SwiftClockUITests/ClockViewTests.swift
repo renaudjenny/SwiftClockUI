@@ -7,39 +7,33 @@ import Combine
 class ClockTests: XCTestCase {
     func testDefaultClockView() {
         let clockViews = ClockView_Previews.previews.environment(\.clockIsAnimationEnabled, false)
-        let hostingController = UIHostingController(rootView: clockViews)
-        assertSnapshot(matching: hostingController, as: .image(on: .iPhoneSe))
+        assertSnapshot(matching: clockViews, as: .default)
     }
 
     func testClockViewWithFace() {
         let clockViews = ClockViewWithFace_Previews.previews.environment(\.clockIsAnimationEnabled, false)
-        let hostingController = UIHostingController(rootView: clockViews)
-        assertSnapshot(matching: hostingController, as: .image(on: .iPhoneSe))
+        assertSnapshot(matching: clockViews, as: .default)
     }
 
     func testClockViewArtNouveauStyle() {
         let clockViews = ClockViewArtNouveauStyle_Previews.previews.environment(\.clockIsAnimationEnabled, false)
-        let hostingController = UIHostingController(rootView: clockViews)
-        assertSnapshot(matching: hostingController, as: .image(on: .iPhoneSe))
+        assertSnapshot(matching: clockViews, as: .default)
     }
 
     func testClockViewDrawingStyle() {
         let clockViews = ClockViewDrawingStyle_Previews.previews
             .environment(\.clockIsAnimationEnabled, false)
             .environment(\.clockRandom, .fixed)
-        let hostingController = UIHostingController(rootView: clockViews)
-        assertSnapshot(matching: hostingController, as: .image(on: .iPhoneSe))
+        assertSnapshot(matching: clockViews, as: .default)
     }
 
     func testClockViewSteampunkStyle() {
         let clockViews = ClockViewSteampunkStyle_Previews.previews.environment(\.clockIsAnimationEnabled, false)
-        let hostingController = UIHostingController(rootView: clockViews)
-        assertSnapshot(matching: hostingController, as: .image(on: .iPhoneSe))
+        assertSnapshot(matching: clockViews, as: .default)
     }
 
     func testClockViewDifferentColors() {
         let clockViews = ClockViewDifferentColors_Previews.previews.environment(\.clockIsAnimationEnabled, false)
-        let hostingController = UIHostingController(rootView: clockViews)
-        assertSnapshot(matching: hostingController, as: .image(on: .iPhoneSe))
+        assertSnapshot(matching: clockViews, as: .default)
     }
 }

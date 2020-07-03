@@ -40,7 +40,6 @@ struct ArmMinute_Previews: PreviewProvider {
             Circle().stroke()
             ArmView(type: .minute)
         }
-        .aspectRatio(1/1, contentMode: .fit)
         .padding()
         .environment(\.clockDate, .constant(.init(hour: 0, minute: 0, calendar: calendar)))
     }
@@ -54,7 +53,6 @@ struct ArmHour_Previews: PreviewProvider {
             Circle().stroke()
             ArmView(type: .hour)
         }
-        .aspectRatio(1/1, contentMode: .fit)
         .padding()
         .environment(\.clockDate, .constant(.init(hour: 0, minute: 0, calendar: calendar)))
     }
@@ -68,7 +66,6 @@ struct ArmWith25MinuteAngle_Previews: PreviewProvider {
             Circle().stroke()
             ArmView(type: .minute)
         }
-        .aspectRatio(1/1, contentMode: .fit)
         .padding()
         .environment(\.clockDate, .constant(.init(hour: 0, minute: 25, calendar: calendar)))
     }
@@ -82,7 +79,6 @@ struct ArtNouveauDesignArm_Previews: PreviewProvider {
             Circle().stroke()
             ArmView(type: .minute)
         }
-        .aspectRatio(1/1, contentMode: .fit)
         .padding()
         .environment(\.clockDate, .constant(.init(hour: 0, minute: 0, calendar: calendar)))
         .environment(\.clockStyle, .artNouveau)
@@ -97,7 +93,6 @@ struct DrawingDesignArm_Previews: PreviewProvider {
             Circle().stroke()
             ArmView(type: .minute)
         }
-        .aspectRatio(1/1, contentMode: .fit)
         .padding()
         .environment(\.clockDate, .constant(.init(hour: 0, minute: 0, calendar: calendar)))
         .environment(\.clockStyle, .drawing)
