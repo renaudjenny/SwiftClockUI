@@ -4,20 +4,19 @@ extension ClockFaceView {
     struct Eye: View {
         let move: Bool
         let position: Position
+        @State private var circle: CGRect = .zero
 
         var body: some View {
             ZStack {
-                // TODO: Iris should be proportional of the size instead of hardcoded value
-                Circle().stroke(lineWidth: 4)
+                Circle().stroke(lineWidth: circle.radius * 1/6)
                 ClockFaceView.Iris(move: move, position: position).fill()
-            }
+            }.modifier(LocalFrameProvider(frame: $circle))
         }
     }
 
     private struct Iris: Shape {
         let position: Position
         private var animationStep: Double
-        static let width: CGFloat = 15
 
         var animatableData: Double {
             get { self.animationStep }
@@ -30,9 +29,10 @@ extension ClockFaceView {
         }
 
         func path(in rect: CGRect) -> Path {
+            let width = rect.radius/4
             let animationStep = CGFloat(self.animationStep)
 
-            let directionCenter = CGPoint.inCircle(rect, for: position.angle, margin: Self.width)
+            let directionCenter = CGPoint.inCircle(rect, for: position.angle, margin: width)
 
             let center = rect.center
             let eyeCenter = CGPoint(
@@ -42,7 +42,7 @@ extension ClockFaceView {
 
             let iris = CGRect.circle(
                 center: eyeCenter,
-                radius: Self.width
+                radius: width
             )
 
             var path = Path()
@@ -71,18 +71,19 @@ struct Eye_Previews: PreviewProvider {
     }
 
     struct Preview: View {
+        @Environment(\.clockIsAnimationEnabled) private var isAnimationEnabled
         @State private var move = true
 
         var body: some View {
             VStack {
-                ClockFaceView.Eye(move: false, position: .left)
-                ClockFaceView.Eye(move: move, position: .left)
-                ClockFaceView.Eye(move: move, position: .right)
+                ClockFaceView.Eye(move: false, position: .left).padding()
+                ClockFaceView.Eye(move: move, position: .left).padding()
+                ClockFaceView.Eye(move: move, position: .right).padding()
                 Button(action: { self.move.toggle() }) {
                     Text("Move eyes")
                 }
             }
-            .animation(.default)
+            .animation(isAnimationEnabled ? .default : nil)
             .padding()
         }
     }

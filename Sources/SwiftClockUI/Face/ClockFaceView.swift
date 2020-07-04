@@ -18,7 +18,7 @@ struct ClockFaceView: View {
 
     private var leftEye: some View {
         Eye(move: isShown, position: .left)
-            .frame(width: circle.radius/2)
+            .scaleEffect(1/4)
             .position(
                 x: circle.radius * 2/3,
                 y: circle.midY - circle.radius/3
@@ -27,7 +27,7 @@ struct ClockFaceView: View {
 
     private var rightEye: some View {
         Eye(move: isShown, position: .right)
-            .frame(width: circle.radius/2)
+            .scaleEffect(1/4)
             .position(
                 x: circle.radius * 4/3,
                 y: circle.midY - circle.radius/3
@@ -35,8 +35,12 @@ struct ClockFaceView: View {
     }
 
     private var mouth: some View {
-        Mouth(shape: self.isShown ? .smile : .neutral)
-            .stroke(style: .init(lineWidth: 6.0, lineCap: .round, lineJoin: .round))
+        Mouth(shape: isShown ? .smile : .neutral)
+            .stroke(style: .init(
+                lineWidth: circle.radius * 1/20,
+                lineCap: .round,
+                lineJoin: .round
+            ))
             .frame(width: circle.radius * 3/5, height: circle.radius/5)
             .position(
                 x: circle.radius,
