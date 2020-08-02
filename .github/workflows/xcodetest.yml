@@ -22,9 +22,6 @@ jobs:
     - name: Linter for Tests
       run: swiftlint lint Tests
 
-    - name: Select Xcode
-      run: sudo xcode-select -switch /Applications/Xcode_11.4.app
-
     - name: Xcode version
       run: /usr/bin/xcodebuild -version
 
@@ -32,7 +29,7 @@ jobs:
       run: swift package generate-xcodeproj
 
     - name: Create iPhone SE Simulator
-      run: xcrun simctl create "iPhone SE" "iPhone SE" iOS13.4
+      run: xcrun simctl create "iPhone SE (1st generation)" "iPhone SE (1st generation)" iOS13.6
 
     - name: Xcode test on iPhone SE
-      run: xcodebuild clean test -scheme SwiftClockUI-Package -destination 'platform=iOS Simulator,OS=13.4,name=iPhone SE'
+      run: xcodebuild clean test -scheme SwiftClockUI-Package -destination 'platform=iOS Simulator,OS=13.6,name=iPhone SE (1st generation)'
