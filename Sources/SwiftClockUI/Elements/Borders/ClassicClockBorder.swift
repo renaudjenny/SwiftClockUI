@@ -2,12 +2,12 @@ import SwiftUI
 
 struct ClassicClockBorder: View {
     static let borderWidthRatio: CGFloat = 1/35
+    @State private var circle: CGRect = .zero
 
     var body: some View {
-        GeometryReader { geometry in
-            Circle()
-                .stroke(lineWidth: geometry.radius * Self.borderWidthRatio)
-        }
+        Circle()
+            .stroke(lineWidth: circle.radius * Self.borderWidthRatio)
+            .modifier(LocalFrameProvider(frame: $circle))
     }
 }
 
