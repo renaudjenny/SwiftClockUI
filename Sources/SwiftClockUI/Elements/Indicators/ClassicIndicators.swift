@@ -50,36 +50,38 @@ private struct HourTexts: View {
 private struct HourIndicators: View {
     private static let hourDotRatio: CGFloat = 2/35
     let marginRatio: CGFloat
+    @State private var circle: CGRect = .zero
 
     var body: some View {
-        GeometryReader { geometry in
-            ForEach(1..<13) { hour in
-                Circle()
-                    .frame(width: geometry.radius * Self.hourDotRatio)
-                    .modifier(PositionInCircle(
-                        angle: .degrees(Double(hour) * .hourInDegree),
-                        marginRatio: self.marginRatio/3
-                    ))
-            }
-        }
+        ForEach(1..<13, content: hour).modifier(LocalFrameProvider(frame: $circle))
+    }
+
+    private func hour(_ hour: Int) -> some View {
+        Circle()
+            .frame(width: circle.radius * Self.hourDotRatio)
+            .modifier(PositionInCircle(
+                angle: .degrees(Double(hour) * .hourInDegree),
+                marginRatio: marginRatio/3
+            ))
     }
 }
 
 private struct MinuteIndicators: View {
     private static let minuteDotRatio: CGFloat = 1/35
     let marginRatio: CGFloat
+    @State private var circle: CGRect = .zero
 
     var body: some View {
-        GeometryReader { geometry in
-            ForEach(1..<61) { minute in
-                Circle()
-                    .frame(width: geometry.radius * Self.minuteDotRatio)
-                    .modifier(PositionInCircle(
-                        angle: .degrees(Double(minute) * .minuteInDegree),
-                        marginRatio: self.marginRatio/3
-                    ))
-            }
-        }
+        ForEach(1..<61, content: minute).modifier(LocalFrameProvider(frame: $circle))
+    }
+
+    private func minute(_ minute: Int) -> some View {
+        Circle()
+            .frame(width: circle.radius * Self.minuteDotRatio)
+            .modifier(PositionInCircle(
+                angle: .degrees(Double(minute) * .minuteInDegree),
+                marginRatio: marginRatio/3
+            ))
     }
 }
 
