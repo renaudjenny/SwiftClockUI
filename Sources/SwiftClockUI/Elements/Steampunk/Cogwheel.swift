@@ -103,15 +103,21 @@ struct Cogwheel_Previews: PreviewProvider {
 
 struct Cogwheels_Previews: PreviewProvider {
     static var previews: some View {
-        GeometryReader { geometry in
-            VStack(spacing: geometry.radius * -1/25) {
+        Preview().padding()
+    }
+
+    private struct Preview: View {
+        @State private var frame: CGRect = .zero
+
+        var body: some View {
+            VStack(spacing: frame.radius * -1/25) {
                 Cogwheel(toothCount: 10, armCount: 4, addExtraHoles: false)
                     .stroke()
                     .modifier(RotateOnAppear())
                 Cogwheel(toothCount: 10, armCount: 4, addExtraHoles: false)
                     .stroke()
                     .modifier(RotateOnAppear(clockwise: false))
-            }
-        }.padding()
+            }.modifier(LocalFrameProvider(frame: $frame))
+        }
     }
 }
