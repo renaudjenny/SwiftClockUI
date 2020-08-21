@@ -4,7 +4,7 @@ struct Plate: View {
     static let lineWidth: CGFloat = 6
     let type: PlateType
     let text: String
-    @State private var radius: CGFloat = .zero
+    @State private var circle: CGRect = .zero
 
     var body: some View {
         ZStack {
@@ -21,9 +21,9 @@ struct Plate: View {
                 .scale(10/12)
             rivets
             Text(text)
-                .font(.system(size: radius.rounded(), design: .serif))
+                .font(.system(size: circle.radius.rounded(), design: .serif))
         }
-        .modifier(RadiusProvider(radius: $radius))
+        .modifier(LocalFrameProvider(frame: $circle))
     }
 
     private var rivets: some View {
