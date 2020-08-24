@@ -8,9 +8,10 @@ struct RotateOnAppear: ViewModifier {
     func body(content: Content) -> some View {
         content
             .rotationEffect(rotationAngle)
-            .animation(animation)
             .onAppear {
-                self.animate = true
+                withAnimation(self.animation) {
+                    self.animate = true
+                }
             }
     }
 

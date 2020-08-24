@@ -6,23 +6,24 @@ struct SteampunkIndicators: View {
     static let decorationScale: CGFloat = 7/10
     static let lineWidthRatio: CGFloat = 1/100
     static let decorationLineWidthRatio: CGFloat = lineWidthRatio * 1/decorationScale
+    @State private var frame: CGRect = .zero
 
     var body: some View {
         ZStack {
             ZStack {
                 mainCogwheel
                 moon
-                Gears().mask(moon)
+                Gears(strokeLineWidth: frame.radius * Self.decorationLineWidthRatio).mask(moon)
             }.scaleEffect(Self.decorationScale)
             circles
             numbers
-        }
+        }.modifier(LocalFrameProvider(frame: $frame))
     }
 
     private var mainCogwheel: some View {
         Cogwheel()
             .scale(0.8)
-            .strokeProportionally(Self.decorationLineWidthRatio)
+            .stroke(lineWidth: frame.radius * Self.decorationLineWidthRatio)
             .modifier(RotateOnAppear())
     }
 
@@ -30,17 +31,17 @@ struct SteampunkIndicators: View {
         ZStack {
             Circle()
                 .scale(21/25)
-                .strokeProportionally(Self.lineWidthRatio)
+                .stroke(lineWidth: frame.radius * Self.lineWidthRatio)
             Circle()
                 .scale(20/25)
-                .strokeProportionally(Self.lineWidthRatio)
+                .stroke(lineWidth: frame.radius * Self.lineWidthRatio)
         }
     }
 
     private var moon: some View {
         ZStack {
             Moon().fill(Color.background)
-            Moon().strokeProportionally(Self.decorationLineWidthRatio)
+            Moon().stroke(lineWidth: frame.radius * Self.decorationLineWidthRatio)
         }.modifier(BalanceOnAppear())
     }
 
@@ -58,13 +59,14 @@ struct SteampunkIndicators: View {
 }
 
 struct Gears: View {
+    let strokeLineWidth: CGFloat
     @State private var circle: CGRect = .zero
 
     var body: some View {
         Group {
             Cogwheel(toothCount: 12, armCount: 3, addExtraHoles: false)
                 .scale(1/5)
-                .strokeProportionally(SteampunkIndicators.decorationLineWidthRatio)
+                .stroke(lineWidth: strokeLineWidth)
                 .modifier(RotateOnAppear(clockwise: false))
                 .position(gearsPositions.first)
             Cogwheel(toothCount: 8, armCount: 5, addExtraHoles: false)
@@ -74,7 +76,7 @@ struct Gears: View {
                 .position(gearsPositions.second)
             Cogwheel(toothCount: 12, armCount: 8, addExtraHoles: false)
                 .scale(1/4)
-                .strokeProportionally(SteampunkIndicators.decorationLineWidthRatio)
+                .stroke(lineWidth: strokeLineWidth)
                 .modifier(RotateOnAppear(clockwise: false))
                 .position(gearsPositions.third)
         }
