@@ -2,18 +2,28 @@ import SwiftUI
 
 struct BalanceOnAppear: ViewModifier {
     @Environment(\.clockIsAnimationEnabled) var isAnimationEnabled
-    @State var animate = false
-    var clockwise = true
+    @State var rotationAngle: Angle = -.degrees(20)
 
     func body(content: Content) -> some View {
         content
             .rotationEffect(rotationAngle)
-            .animation(Animation.linear(duration: 4).repeatForever(autoreverses: true), value: animate)
-            .onAppear { self.animate = true }
+            .onAppear {
+                guard self.isAnimationEnabled else { return }
+                withAnimation(self.animation) {
+                    self.rotationAngle = .degrees(20)
+                }
+            }
     }
 
-    var rotationAngle: Angle {
-        guard isAnimationEnabled else { return .zero }
-        return animate ? .degrees(20) : -.degrees(20)
+    private var animation: Animation {
+        Animation.linear(duration: 4).repeatForever(autoreverses: true)
+    }
+}
+
+struct BalanceOnAppear_Previews: PreviewProvider {
+    static var previews: some View {
+        Moon()
+            .stroke()
+            .modifier(BalanceOnAppear())
     }
 }
