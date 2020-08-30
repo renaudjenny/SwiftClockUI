@@ -9,7 +9,7 @@ struct RotateOnAppear: ViewModifier {
         content
             .rotationEffect(rotationAngle)
             .onAppear {
-                withAnimation(self.animation) {
+                withAnimation(self.animation.delay(0.1)) {
                     self.animate = true
                 }
             }
