@@ -2,23 +2,30 @@ import SwiftUI
 
 struct ScaleUpOnAppear: ViewModifier {
     @Environment(\.clockIsAnimationEnabled) var isAnimationEnabled
-    @State private var isShown = false
+    @State private var scale: CGFloat = 1
 
     func body(content: Content) -> some View {
         content
-            .scaleEffect(scaleValue)
+            .scaleEffect(scale)
             .onAppear(perform: {
+                guard self.isAnimationEnabled else { return }
                 withAnimation(.spring()) {
-                    self.isShown = true
+                    self.scale = 0.1
+                }
+                withAnimation(.spring()) {
+                    self.scale = 1
                 }
             })
     }
+}
 
-    var scaleValue: CGFloat {
-        if isAnimationEnabled {
-            return self.isShown ? 1 : 0.1
-        } else {
-            return 1
+struct ScaleUpOnAppear_Previews: PreviewProvider {
+    static var previews: some View {
+        VStack {
+            Text("Hello, World!").modifier(ScaleUpOnAppear())
+            Text("Animation deactivated")
+                .modifier(ScaleUpOnAppear())
+                .environment(\.clockIsAnimationEnabled, false)
         }
     }
 }

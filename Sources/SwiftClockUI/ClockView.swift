@@ -5,6 +5,7 @@ public struct ClockView: View {
     @Environment(\.clockFaceShown) var initialClockFaceShown
     static let borderWidthRatio: CGFloat = 1/70
     @State private var clockFaceShown = false
+    @State private var cancellables = Set<AnyCancellable>()
 
     public init() { }
 
@@ -21,9 +22,10 @@ public struct ClockView: View {
 
     private func showClockFace() {
         clockFaceShown = true
-        _ = Just(false)
+        Just(false)
             .delay(for: .seconds(3), scheduler: RunLoop.main)
             .sink { self.clockFaceShown = $0 }
+            .store(in: &cancellables)
     }
 }
 
