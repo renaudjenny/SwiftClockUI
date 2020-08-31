@@ -4,13 +4,16 @@ extension ClockFaceView {
     struct Eye: View {
         let move: Bool
         let position: Position
-        @State private var circle: CGRect = .zero
 
         var body: some View {
+            GeometryReader(content: content)
+        }
+
+        private func content(geometry: GeometryProxy) -> some View {
             ZStack {
-                Circle().stroke(lineWidth: circle.radius * 1/6)
+                Circle().stroke(lineWidth: geometry.radius * 1/6)
                 ClockFaceView.Iris(move: move, position: position).fill()
-            }.modifier(LocalFrameProvider(frame: $circle))
+            }
         }
     }
 

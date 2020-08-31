@@ -4,15 +4,21 @@ struct DrawnClockBorder: View {
     @Environment(\.clockIsAnimationEnabled) var isAnimationEnabled
     @Environment(\.clockRandom) var random
     static let borderWidthRatio: CGFloat = 1/35
-    @State private var circle: CGRect = .zero
     @State private var animate = false
 
     var body: some View {
+        GeometryReader(content: content)
+    }
+
+    private func content(geometry: GeometryProxy) -> some View {
         DrawnCircle(draw: !isAnimationEnabled || animate, random: random)
-            .stroke(lineWidth: circle.radius * Self.borderWidthRatio)
-            .onAppear(perform: { self.animate = true })
-            .animation(isAnimationEnabled ? .easeInOut(duration: 1) : nil)
-            .modifier(LocalFrameProvider(frame: $circle))
+            .stroke(lineWidth: geometry.radius * Self.borderWidthRatio)
+            .onAppear {
+                guard self.isAnimationEnabled else { return }
+                withAnimation(.easeInOut(duration: 1)) {
+                    self.animate = true
+                }
+            }
     }
 }
 
