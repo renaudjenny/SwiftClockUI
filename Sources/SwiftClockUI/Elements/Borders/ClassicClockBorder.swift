@@ -7,6 +7,7 @@ struct ClassicClockBorder: View {
     var body: some View {
         Circle()
             .stroke(lineWidth: circle.radius * Self.borderWidthRatio)
+            .modifier(ScaleUpOnAppear())
             .modifier(LocalFrameProvider(frame: $circle))
     }
 }
