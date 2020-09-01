@@ -6,42 +6,45 @@ struct SteampunkIndicators: View {
     static let decorationScale: CGFloat = 7/10
     static let lineWidthRatio: CGFloat = 1/100
     static let decorationLineWidthRatio: CGFloat = lineWidthRatio * 1/decorationScale
-    @State private var frame: CGRect = .zero
 
     var body: some View {
+        GeometryReader(content: content)
+    }
+
+    private func content(geometry: GeometryProxy) -> some View {
         ZStack {
             ZStack {
-                mainCogwheel
-                moon
-                Gears(strokeLineWidth: frame.radius * Self.decorationLineWidthRatio).mask(moon)
+                mainCogwheel(geometry: geometry)
+                moon(geometry: geometry)
+                Gears(strokeLineWidth: geometry.radius * Self.decorationLineWidthRatio).mask(moon(geometry: geometry))
             }.scaleEffect(Self.decorationScale)
-            circles
+            circles(geometry: geometry)
             numbers
-        }.modifier(LocalFrameProvider(frame: $frame))
-    }
-
-    private var mainCogwheel: some View {
-        Cogwheel()
-            .scale(0.8)
-            .stroke(lineWidth: frame.radius * Self.decorationLineWidthRatio)
-            .modifier(RotateOnAppear())
-    }
-
-    private var circles: some View {
-        ZStack {
-            Circle()
-                .scale(21/25)
-                .stroke(lineWidth: frame.radius * Self.lineWidthRatio)
-            Circle()
-                .scale(20/25)
-                .stroke(lineWidth: frame.radius * Self.lineWidthRatio)
         }
     }
 
-    private var moon: some View {
+    private func mainCogwheel(geometry: GeometryProxy) -> some View {
+        Cogwheel()
+            .scale(0.8)
+            .stroke(lineWidth: geometry.radius * Self.decorationLineWidthRatio)
+            .modifier(RotateOnAppear())
+    }
+
+    private func circles(geometry: GeometryProxy) -> some View {
+        ZStack {
+            Circle()
+                .scale(21/25)
+                .stroke(lineWidth: geometry.radius * Self.lineWidthRatio)
+            Circle()
+                .scale(20/25)
+                .stroke(lineWidth: geometry.radius * Self.lineWidthRatio)
+        }
+    }
+
+    private func moon(geometry: GeometryProxy) -> some View {
         ZStack {
             Moon().fill(Color.background)
-            Moon().stroke(lineWidth: frame.radius * Self.decorationLineWidthRatio)
+            Moon().stroke(lineWidth: geometry.radius * Self.decorationLineWidthRatio)
         }.modifier(BalanceOnAppear())
     }
 
@@ -60,43 +63,51 @@ struct SteampunkIndicators: View {
 
 struct Gears: View {
     let strokeLineWidth: CGFloat
-    @State private var circle: CGRect = .zero
 
     var body: some View {
+        GeometryReader(content: content)
+    }
+
+    private func content(geometry: GeometryProxy) -> some View {
         Group {
             Cogwheel(toothCount: 12, armCount: 3, addExtraHoles: false)
                 .scale(1/5)
                 .stroke(lineWidth: strokeLineWidth)
                 .modifier(RotateOnAppear(clockwise: false))
-                .position(gearsPositions.first)
+                .position(GearPosition.first.position(geometry: geometry))
             Cogwheel(toothCount: 8, armCount: 5, addExtraHoles: false)
                 .scale(1/6)
                 .fill(style: .init(eoFill: true, antialiased: true))
                 .modifier(RotateOnAppear(clockwise: true))
-                .position(gearsPositions.second)
+                .position(GearPosition.second.position(geometry: geometry))
             Cogwheel(toothCount: 12, armCount: 8, addExtraHoles: false)
                 .scale(1/4)
                 .stroke(lineWidth: strokeLineWidth)
                 .modifier(RotateOnAppear(clockwise: false))
-                .position(gearsPositions.third)
+                .position(GearPosition.third.position(geometry: geometry))
         }
-        .modifier(LocalFrameProvider(frame: $circle))
     }
 
-    private var gearsPositions: (first: CGPoint, second: CGPoint, third: CGPoint) {(
-        CGPoint(
-            x: circle.midX - circle.radius * 4/5,
-            y: circle.midY + circle.radius * 1/4
-        ),
-        CGPoint(
-            x: circle.midX - circle.radius * 2/4,
-            y: circle.midY + circle.radius * 4/10
-        ),
-        CGPoint(
-            x: circle.midX - circle.radius * 1/4,
-            y: circle.midY + circle.radius * 7/10
-        )
-    )}
+    private enum GearPosition {
+        case first, second, third
+
+        func position(geometry: GeometryProxy) -> CGPoint {
+            switch self {
+            case .first: return CGPoint(
+                x: geometry.frame(in: .local).midX - geometry.radius * 4/5,
+                y: geometry.frame(in: .local).midY + geometry.radius * 1/4
+                )
+            case .second: return CGPoint(
+                x: geometry.frame(in: .local).midX - geometry.radius * 2/4,
+                y: geometry.frame(in: .local).midY + geometry.radius * 4/10
+                )
+            case .third: return CGPoint(
+                x: geometry.frame(in: .local).midX - geometry.radius * 1/4,
+                y: geometry.frame(in: .local).midY + geometry.radius * 7/10
+                )
+            }
+        }
+    }
 }
 
 struct SteampunkIndicators_Previews: PreviewProvider {
