@@ -3,48 +3,50 @@ import SwiftUI
 struct ClockFaceView: View {
     @Environment(\.clockFaceShown) var isShown
     @Environment(\.clockIsAnimationEnabled) var isAnimationEnabled
-    @State private var circle: CGRect = .zero
 
     var body: some View {
-        ZStack {
-            leftEye
-            rightEye
-            mouth
-        }
-        .modifier(LocalFrameProvider(frame: $circle))
-        .opacity(isShown ? 1 : 0)
-        .animation(isAnimationEnabled ? .easeInOut : nil)
+        GeometryReader(content: content)
     }
 
-    private var leftEye: some View {
+    private func content(geometry: GeometryProxy) -> some View {
+        ZStack {
+            leftEye(geometry: geometry)
+            rightEye(geometry: geometry)
+            mouth(geometry: geometry)
+        }
+        .opacity(isShown ? 1 : 0)
+        .animation(isAnimationEnabled ? .easeInOut : nil, value: isShown)
+    }
+
+    private func leftEye(geometry: GeometryProxy) -> some View {
         Eye(move: isShown, position: .left)
             .scaleEffect(1/4)
             .position(
-                x: circle.radius * 2/3,
-                y: circle.midY - circle.radius/3
+                x: geometry.frame(in: .local).midX - geometry.radius * 2/5,
+                y: geometry.frame(in: .local).midY - geometry.radius/3
             )
     }
 
-    private var rightEye: some View {
+    private func rightEye(geometry: GeometryProxy) -> some View {
         Eye(move: isShown, position: .right)
             .scaleEffect(1/4)
             .position(
-                x: circle.radius * 4/3,
-                y: circle.midY - circle.radius/3
+                x: geometry.frame(in: .local).midX + geometry.radius * 2/5,
+                y: geometry.frame(in: .local).midY - geometry.radius/3
             )
     }
 
-    private var mouth: some View {
+    private func mouth(geometry: GeometryProxy) -> some View {
         Mouth(shape: isShown ? .smile : .neutral)
             .stroke(style: .init(
-                lineWidth: circle.radius * 1/20,
+                lineWidth: geometry.radius * 1/20,
                 lineCap: .round,
                 lineJoin: .round
             ))
-            .frame(width: circle.radius * 3/5, height: circle.radius/5)
+            .frame(width: geometry.radius * 3/5, height: geometry.radius/5)
             .position(
-                x: circle.radius,
-                y: circle.midY + circle.radius/2
+                x: geometry.frame(in: .local).midX,
+                y: geometry.frame(in: .local).midY + geometry.radius/2
             )
     }
 }
@@ -52,7 +54,10 @@ struct ClockFaceView: View {
 #if DEBUG
 struct ClockFaceSmiling_Previews: PreviewProvider {
     static var previews: some View {
-        Preview()
+        Group {
+            Preview()
+            Preview().previewLayout(.fixed(width: 800, height: 400))
+        }
     }
 
     private struct Preview: View {

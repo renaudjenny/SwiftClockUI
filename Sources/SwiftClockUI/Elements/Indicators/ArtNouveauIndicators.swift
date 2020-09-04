@@ -3,35 +3,37 @@ import SwiftUI
 struct ArtNouveauIndicators: View {
     @Environment(\.clockConfiguration) var configuration
     static let marginRatio: CGFloat = 1/12
-    @State private var numberCircleRadius: CGFloat = .zero
-    @State private var circle: CGRect = .zero
 
     var body: some View {
+        GeometryReader(content: content)
+    }
+
+    private func content(geometry: GeometryProxy) -> some View {
         ZStack {
             ForEach(RomanNumber.numbers(configuration: configuration), id: \.self) { romanNumber in
-                self.romanHour(for: romanNumber)
+                self.romanHour(for: romanNumber, geometry: geometry)
             }
             if configuration.isMinuteIndicatorsShown {
                 Sun()
                     .stroke()
                     .modifier(ScaleUpOnAppear())
             }
-        }.modifier(LocalFrameProvider(frame: $circle))
+        }
     }
 
-    func romanHour(for romanNumber: String) -> some View {
+    private func romanHour(for romanNumber: String, geometry: GeometryProxy) -> some View {
         Text(romanNumber)
-            .modifier(NumberInCircle(radius: circle.radius * 1/12))
+            .modifier(NumberInCircle(radius: geometry.radius * 1/12))
             .modifier(PositionInCircle(
                 angle: RomanNumber.angle(for: romanNumber),
                 marginRatio: Self.marginRatio * 2
             ))
-            .font(.system(size: fontSize))
+            .font(.system(size: fontSize(geometry: geometry)))
             .modifier(ScaleUpOnAppear())
     }
 
-    var fontSize: CGFloat {
-        (circle.radius * 1/8).rounded()
+    private func fontSize(geometry: GeometryProxy) -> CGFloat {
+        (geometry.radius * 1/8).rounded()
     }
 
     private struct NumberInCircle: ViewModifier {

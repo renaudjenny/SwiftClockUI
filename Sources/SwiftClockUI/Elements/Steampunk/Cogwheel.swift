@@ -107,17 +107,19 @@ struct Cogwheels_Previews: PreviewProvider {
     }
 
     private struct Preview: View {
-        @State private var frame: CGRect = .zero
-
         var body: some View {
-            VStack(spacing: frame.radius * -1/25) {
+            GeometryReader(content: content)
+        }
+
+        private func content(geometry: GeometryProxy) -> some View {
+            VStack(spacing: geometry.radius * -1/25) {
                 Cogwheel(toothCount: 10, armCount: 4, addExtraHoles: false)
                     .stroke()
                     .modifier(RotateOnAppear())
                 Cogwheel(toothCount: 10, armCount: 4, addExtraHoles: false)
                     .stroke()
                     .modifier(RotateOnAppear(clockwise: false))
-            }.modifier(LocalFrameProvider(frame: $frame))
+            }
         }
     }
 }

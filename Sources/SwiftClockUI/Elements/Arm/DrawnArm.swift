@@ -5,30 +5,33 @@ struct DrawnArm: View {
     @Environment(\.clockRandom) var random
     private static let widthRatio: CGFloat = 1/20
     let type: ArmType
-    @State private var showIndicator = false
+    @State private var drawStep: CGFloat = 1
 
     var body: some View {
-        DrawnArmShape(draw: !isAnimationEnabled || showIndicator, type: type, random: random)
-            .onAppear(perform: { self.showIndicator = true })
+        DrawnArmShape(type: type, drawStep: drawStep, controlRatios: .init(random: self.random))
+            .onAppear {
+                guard self.isAnimationEnabled else { return }
+                withAnimation {
+                    self.drawStep = 0.1
+                }
+                withAnimation(Animation.easeInOut.delay(0.1)) {
+                    self.drawStep = 1
+                }
+            }
     }
 }
 
 private struct DrawnArmShape: Shape {
     private static let thicknessRatio: CGFloat = 1/30
     let type: ArmType
-    private var drawStep: CGFloat
-    private static var controlRatios = Random.ControlRatio(random: .fixed)
-
-    init(draw: Bool, type: ArmType, random: Random) {
-        self.drawStep = draw ? 1 : 0.1
-        self.type = type
-        self.generateControlRatiosIfNeeded(random: random)
-    }
+    var drawStep: CGFloat
+    let controlRatios: Random.ControlRatio
 
     var animatableData: CGFloat {
         get { self.drawStep }
         set { self.drawStep = newValue }
     }
+
     func path(in rect: CGRect) -> Path {
         var path = Path()
         let thickness = rect.radius * Self.thicknessRatio * type.ratio.lineWidth
@@ -44,16 +47,16 @@ private struct DrawnArmShape: Shape {
 
         let top = CGPoint(
             x: rect.midX,
-            y: rect.midY - rect.radius * self.drawStep + margin + thickness
+            y: rect.midY - rect.radius * drawStep + margin * drawStep
         )
 
         let control1 = CGPoint(
-            x: rect.midX + thickness - thickness * 2 * Self.controlRatios.leftX,
-            y: top.y + rect.radius * Self.controlRatios.leftY
+            x: rect.midX + thickness - thickness * 2 * controlRatios.leftX,
+            y: top.y + rect.radius * drawStep * controlRatios.leftY
         )
         let control2 = CGPoint(
-            x: rect.midX + thickness + thickness * 2 * Self.controlRatios.leftX,
-            y: top.y + rect.radius * Self.controlRatios.leftY/2
+            x: rect.midX + thickness + thickness * 2 * controlRatios.leftX,
+            y: top.y + rect.radius * drawStep * controlRatios.leftY/2
         )
 
         path.addCurve(
@@ -74,12 +77,6 @@ private struct DrawnArmShape: Shape {
 
         return path
     }
-
-    func generateControlRatiosIfNeeded(random: Random) {
-        if self.drawStep <= 0 {
-            Self.controlRatios = Random.ControlRatio(random: random)
-        }
-    }
 }
 
 #if DEBUG
@@ -90,6 +87,26 @@ struct DrawnArm_Previews: PreviewProvider {
             DrawnArm(type: .minute)
         }
         .padding()
+    }
+}
+
+struct DrawnArmAnimated_Previews: PreviewProvider {
+    static var previews: some View {
+        Preview()
+    }
+
+    private struct Preview: View {
+        @State private var drawStep: CGFloat = 1
+
+        var body: some View {
+            VStack {
+                ZStack {
+                    Circle().stroke()
+                    DrawnArmShape(type: .minute, drawStep: drawStep, controlRatios: .init(random: .fixed))
+                }
+                Slider(value: $drawStep)
+            }.padding()
+        }
     }
 }
 #endif

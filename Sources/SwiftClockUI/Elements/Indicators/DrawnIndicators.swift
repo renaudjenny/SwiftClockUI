@@ -13,7 +13,6 @@ struct DrawnIndicators: View {
             }
             DrawnNumbers()
         }
-        .animation(.easeOut)
     }
 }
 
@@ -21,18 +20,25 @@ private struct Hours: View {
     @Environment(\.clockIsAnimationEnabled) var isAnimationEnabled
     @Environment(\.clockRandom) var random
     private static let marginRatio: CGFloat = 1/10
-    @State private var animate: Bool = false
-    @State private var size: CGSize = .zero
+    @State private var drawStep: CGFloat = 1
 
     var body: some View {
         ForEach(1...12, id: \.self) { hour in
-            DrawnIndicator(draw: !self.isAnimationEnabled || self.animate, random: self.random)
+            DrawnIndicator(drawStep: self.drawStep, controlRatios: .init(random: self.random))
                 .rotation(Angle(degrees: Double(hour) * .hourInDegree))
                 .modifier(PositionInCircle(
                     angle: .degrees(Double(hour) * .hourInDegree),
                     marginRatio: Self.marginRatio
                 ))
-                .onAppear(perform: { self.animate = true })
+                .onAppear {
+                    guard self.isAnimationEnabled else { return }
+                    withAnimation {
+                        self.drawStep = 0.1
+                    }
+                    withAnimation(Animation.easeInOut.delay(0.1)) {
+                        self.drawStep = 1
+                    }
+                }
         }
     }
 }
@@ -42,7 +48,7 @@ private struct Minutes: View {
     @Environment(\.clockIsAnimationEnabled) var isAnimationEnabled
     @Environment(\.clockRandom) var random
     private static let marginRatio: CGFloat = 1/15
-    @State private var animate: Bool = false
+    @State private var drawStep: CGFloat = 1
 
     var body: some View {
         ForEach(1...60, id: \.self) { minute in
@@ -53,6 +59,15 @@ private struct Minutes: View {
                     self.indicator(minute: minute)
                 }
             }
+            .onAppear {
+                guard self.isAnimationEnabled else { return }
+                withAnimation {
+                    self.drawStep = 0.1
+                }
+                withAnimation(Animation.easeInOut.delay(0.1)) {
+                    self.drawStep = 1
+                }
+            }
         }
     }
 
@@ -61,14 +76,22 @@ private struct Minutes: View {
             if self.isOverlapingHour(minute: minute) {
                 EmptyView()
             } else {
-                DrawnIndicator(draw: !isAnimationEnabled || animate, random: random)
+                DrawnIndicator(drawStep: self.drawStep, controlRatios: .init(random: self.random))
                     .scale(2/3)
                     .rotation(Angle(degrees: Double(minute) * .minuteInDegree))
                     .modifier(PositionInCircle(
                         angle: .degrees(Double(minute) * .minuteInDegree),
                         marginRatio: Self.marginRatio
                     ))
-                    .onAppear(perform: { self.animate = true })
+                    .onAppear {
+                        guard self.isAnimationEnabled else { return }
+                        withAnimation(.easeInOut) {
+                            self.drawStep = 0.1
+                        }
+                        withAnimation(.easeInOut) {
+                            self.drawStep = 1
+                        }
+                    }
             }
         }
     }
@@ -79,14 +102,9 @@ private struct Minutes: View {
     }
 }
 
-struct DrawnIndicator: Shape {
-    private var drawStep: CGFloat
-    private var controlRatios: Random.ControlRatio
-
-    init(draw: Bool, random: Random) {
-        self.drawStep = draw ? 1 : 0
-        self.controlRatios = Random.ControlRatio(random: random)
-    }
+private struct DrawnIndicator: Shape {
+    var drawStep: CGFloat
+    let controlRatios: Random.ControlRatio
 
     var animatableData: CGFloat {
         get { self.drawStep }
@@ -95,15 +113,18 @@ struct DrawnIndicator: Shape {
 
     func path(in rect: CGRect) -> Path {
         var path = Path()
-        let thickness = rect.radius/50 * self.drawStep
+        let thickness = rect.radius/50
         let height = thickness * 2
         let width = thickness
-        let bottomCenter = CGPoint(x: rect.midX, y: (rect.midY + height) * self.drawStep)
+        let bottomCenter = CGPoint(x: rect.midX, y: rect.midY + height)
         let bottomRight = CGPoint(
             x: bottomCenter.x + width,
             y: bottomCenter.y
         )
-        let topCenter = CGPoint(x: rect.midX, y: rect.midY - height)
+        let topCenter = CGPoint(
+            x: rect.midX,
+            y: rect.midY - height + ((1 - drawStep) * height)
+        )
         let topLeft = CGPoint(
             x: topCenter.x - width,
             y: topCenter.y
@@ -113,7 +134,7 @@ struct DrawnIndicator: Shape {
 
         path.addArc(
             center: bottomCenter,
-            radius: thickness,
+            radius: thickness * drawStep,
             startAngle: .zero,
             endAngle: .degrees(180),
             clockwise: false
@@ -127,7 +148,7 @@ struct DrawnIndicator: Shape {
 
         path.addArc(
             center: topCenter,
-            radius: thickness,
+            radius: thickness * drawStep,
             startAngle: .degrees(180),
             endAngle: .zero,
             clockwise: false
@@ -184,7 +205,25 @@ struct DrawnIndicators_Previews: PreviewProvider {
         ZStack {
             Circle().stroke()
             DrawnIndicators()
+                .environment(\.clockIsAnimationEnabled, false)
         }.padding()
+    }
+}
+
+struct DrawnIndicatorsAnimatedElements_Previews: PreviewProvider {
+    static var previews: some View {
+        Preview()
+    }
+
+    private struct Preview: View {
+        @State private var drawStep: CGFloat = 1
+
+        var body: some View {
+            VStack {
+                DrawnIndicator(drawStep: drawStep, controlRatios: .init(random: .fixed))
+                Slider(value: $drawStep)
+            }.padding()
+        }
     }
 }
 #endif

@@ -4,9 +4,12 @@ struct Plate: View {
     static let lineWidth: CGFloat = 6
     let type: PlateType
     let text: String
-    @State private var circle: CGRect = .zero
 
     var body: some View {
+        GeometryReader(content: content)
+    }
+
+    private func content(geometry: GeometryProxy) -> some View {
         ZStack {
             if type == .hard {
                 Circle().fill(Color.background)
@@ -21,9 +24,8 @@ struct Plate: View {
                 .scale(10/12)
             rivets
             Text(text)
-                .font(.system(size: circle.radius.rounded(), design: .serif))
+                .font(.system(size: geometry.radius.rounded(), design: .serif))
         }
-        .modifier(LocalFrameProvider(frame: $circle))
     }
 
     private var rivets: some View {
