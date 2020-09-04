@@ -15,7 +15,7 @@ struct ClockFaceView: View {
             mouth(geometry: geometry)
         }
         .opacity(isShown ? 1 : 0)
-        .animation(isAnimationEnabled ? .easeInOut : nil)
+        .animation(isAnimationEnabled ? .easeInOut : nil, value: isShown)
     }
 
     private func leftEye(geometry: GeometryProxy) -> some View {

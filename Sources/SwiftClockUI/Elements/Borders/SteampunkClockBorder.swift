@@ -31,8 +31,8 @@ struct SteampunkClockBorder: View {
                     geometry.circle,
                     for: .degrees(-45),
                     margin: -geometry.radius * 1/10
-                ))
-            .animation(nil)
+                )
+            )
             .modifier(FlipOnAppear())
     }
 }

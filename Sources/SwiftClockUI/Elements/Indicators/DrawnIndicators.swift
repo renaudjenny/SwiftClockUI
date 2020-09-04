@@ -13,7 +13,6 @@ struct DrawnIndicators: View {
             }
             DrawnNumbers()
         }
-        .animation(.easeOut)
     }
 }
 
