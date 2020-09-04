@@ -22,7 +22,7 @@ struct ClockFaceView: View {
         Eye(move: isShown, position: .left)
             .scaleEffect(1/4)
             .position(
-                x: geometry.radius * 2/3,
+                x: geometry.frame(in: .local).midX - geometry.radius * 2/5,
                 y: geometry.frame(in: .local).midY - geometry.radius/3
             )
     }
@@ -31,7 +31,7 @@ struct ClockFaceView: View {
         Eye(move: isShown, position: .right)
             .scaleEffect(1/4)
             .position(
-                x: geometry.radius * 4/3,
+                x: geometry.frame(in: .local).midX + geometry.radius * 2/5,
                 y: geometry.frame(in: .local).midY - geometry.radius/3
             )
     }
@@ -45,7 +45,7 @@ struct ClockFaceView: View {
             ))
             .frame(width: geometry.radius * 3/5, height: geometry.radius/5)
             .position(
-                x: geometry.radius,
+                x: geometry.frame(in: .local).midX,
                 y: geometry.frame(in: .local).midY + geometry.radius/2
             )
     }
@@ -54,7 +54,10 @@ struct ClockFaceView: View {
 #if DEBUG
 struct ClockFaceSmiling_Previews: PreviewProvider {
     static var previews: some View {
-        Preview()
+        Group {
+            Preview()
+            Preview().previewLayout(.fixed(width: 800, height: 400))
+        }
     }
 
     private struct Preview: View {
