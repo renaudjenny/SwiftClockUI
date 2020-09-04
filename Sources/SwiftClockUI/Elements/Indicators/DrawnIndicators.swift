@@ -59,6 +59,15 @@ private struct Minutes: View {
                     self.indicator(minute: minute)
                 }
             }
+            .onAppear {
+                guard self.isAnimationEnabled else { return }
+                withAnimation {
+                    self.drawStep = 0.1
+                }
+                withAnimation(Animation.easeInOut.delay(0.1)) {
+                    self.drawStep = 1
+                }
+            }
         }
     }
 
