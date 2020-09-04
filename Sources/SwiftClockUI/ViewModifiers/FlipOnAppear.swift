@@ -7,16 +7,15 @@ struct FlipOnAppear: ViewModifier {
     func body(content: Content) -> some View {
         content
             .rotation3DEffect(rotationAngle, axis: (x: 1, y: 1, z: 0))
+            .animation(animation, value: rotationAngle)
             .onAppear {
                 guard self.isAnimationEnabled else { return }
-                let animation = Animation.easeInOut(duration: 1).repeatForever(autoreverses: true)
-                withAnimation(animation) {
-                    self.rotationAngle = .fullRound
-                }
+                self.rotationAngle = .fullRound
             }
-            .onDisappear {
-                self.rotationAngle = .zero
-            }
+    }
+
+    private var animation: Animation {
+        Animation.easeInOut(duration: 1).repeatForever(autoreverses: true)
     }
 }
 

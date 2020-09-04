@@ -8,14 +8,10 @@ struct RotateOnAppear: ViewModifier {
     func body(content: Content) -> some View {
         content
             .rotationEffect(rotationAngle)
+            .animation(animation, value: rotationAngle)
             .onAppear {
                 guard self.isAnimationEnabled else { return }
-                withAnimation(self.animation.delay(0.1)) {
-                    self.rotationAngle = self.clockwise ? .fullRound : -.fullRound
-                }
-            }
-            .onDisappear {
-                self.rotationAngle = .zero
+                self.rotationAngle = self.clockwise ? .fullRound : -.fullRound
             }
     }
 
