@@ -10,7 +10,7 @@ struct PositionInCircle: ViewModifier {
                 geometry.circle,
                 for: self.angle,
                 margin: geometry.radius * self.marginRatio
-                ))
+            ))
         }
     }
 }
