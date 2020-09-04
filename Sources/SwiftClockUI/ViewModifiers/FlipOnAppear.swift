@@ -10,6 +10,7 @@ struct FlipOnAppear: ViewModifier {
             .onAppear {
                 guard self.isAnimationEnabled else { return }
 
+                self.rotationAngle = .zero
                 let animation = Animation.easeInOut(duration: 1).repeatForever(autoreverses: true)
                 withAnimation(animation) {
                     self.rotationAngle = .fullRound
