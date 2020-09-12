@@ -16,11 +16,8 @@ jobs:
     - name: Install SwiftLint
       run: brew install swiftlint
 
-    - name: Linter for Sources
-      run: swiftlint lint Sources
-
-    - name: Linter for Tests
-      run: swiftlint lint Tests
+    - name: Linter
+      run: swiftlint
 
     - name: Xcode version
       run: /usr/bin/xcodebuild -version
@@ -29,7 +26,7 @@ jobs:
       run: swift package generate-xcodeproj
 
     - name: Create iPhone SE Simulator
-      run: xcrun simctl create "iPhone SE (1st generation)" "iPhone SE (1st generation)" iOS13.6
+      run: xcrun simctl create "iPhone SE (1st generation)" "iPhone SE (1st generation)"
 
     - name: Xcode test on iPhone SE
-      run: xcodebuild clean test -scheme SwiftClockUI-Package -destination 'platform=iOS Simulator,OS=13.6,name=iPhone SE (1st generation)'
+      run: xcodebuild clean test -scheme SwiftClockUI-Package -destination 'platform=iOS Simulator,name=iPhone SE (1st generation)'
