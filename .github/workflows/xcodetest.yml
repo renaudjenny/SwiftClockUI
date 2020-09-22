@@ -10,10 +10,10 @@ jobs:
   build:
     runs-on: macOS-latest
     strategy:
-      matrix:
-        run-config:
-          - { xcodeVersion: '11' }
-          - { xcodeVersion: '12' }
+        matrix:
+          run-config:
+          - { title: 'Xcode 11.7', xcodeVersion: '11.7' }
+          - { title: 'Xcode 12', xcodeVersion: '12' }
 
     steps:
     - uses: actions/checkout@v2
