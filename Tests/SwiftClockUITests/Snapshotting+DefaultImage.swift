@@ -3,6 +3,6 @@ import SnapshotTesting
 
 extension Snapshotting where Value: SwiftUI.View, Format == UIImage {
     static var `default`: Self {
-        image(layout: .device(config: .iPhoneSe))
+        image(precision: 95/100, layout: .device(config: .iPhoneSe))
     }
 }

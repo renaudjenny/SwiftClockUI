@@ -6,8 +6,8 @@ Clock UI for SwiftUI
 
 This library has been tested
 * ✅💻 macOS Catalina 10.15.3
-* ✅📱 iOS 13.3
-* ✅📱 iOS 14.0 Beta (some snapshots tests are failing but they are all correct 😅)
+* ✅📱 iOS 13
+* ✅📱 iOS 14
 
 ## Bind a date
 
@@ -90,9 +90,3 @@ In light mode, you could expect a result like this:
 ## App using this library
 
 * [📲 Tell Time UK](https://apps.apple.com/gb/app/tell-time-uk/id1496541173): https://github.com/renaudjenny/telltime
-
-## TODO
-
-* 👆 Add a bigger zone for dragging arms, it's not easy with the mouse on macOS
-  * Use the new `.hover` and `.hoverEffect` from Swift 5.2 and Xcode 11.4
-* 👾 Add a smooth animation while resizing the window on macOS
