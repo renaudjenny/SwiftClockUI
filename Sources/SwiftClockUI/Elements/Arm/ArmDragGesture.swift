@@ -48,3 +48,36 @@ struct ArmDragGesture: ViewModifier {
         type.setAngle(angle, date: &date.wrappedValue, calendar: calendar)
     }
 }
+
+#if DEBUG
+struct ArmDragGesture_Previews: PreviewProvider {
+    static var previews: some View {
+        Group {
+            Preview()
+            VStack {
+                Spacer(minLength: 200)
+                Preview()
+                Spacer(minLength: 200)
+            }
+        }
+    }
+
+    private struct Preview: View {
+        @Environment(\.calendar) var calendar
+        @Environment(\.clockDate) var date
+        let type = ArmType.minute
+
+        var body: some View {
+            ClassicArm(type: .minute)
+                .modifier(ArmDragGesture(type: ArmType.minute))
+                .rotationEffect(rotationAngle)
+                .animation(.spring(), value: rotationAngle)
+                .background(Color.red.opacity(10/100))
+        }
+
+        private var rotationAngle: Angle {
+            type.angle(date: date.wrappedValue, calendar: calendar)
+        }
+    }
+}
+#endif
