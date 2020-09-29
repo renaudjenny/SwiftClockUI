@@ -8,10 +8,11 @@ struct ArmDragGesture: ViewModifier {
 
     func body(content: Content) -> some View {
         GeometryReader { geometry in
-            content.gesture(self.dragGesture(geometry: geometry))
+            content
+                .gesture(self.dragGesture(geometry: geometry))
+                .rotationEffect(self.dragAngle)
+                .animation(self.dragAngle == .zero ? .spring() : nil, value: self.dragAngle)
         }
-        .rotationEffect(dragAngle)
-        .animation(dragAngle == .zero ? .spring() : nil, value: dragAngle)
     }
 
     private func dragGesture(geometry: GeometryProxy) -> some Gesture {
@@ -55,9 +56,9 @@ struct ArmDragGesture_Previews: PreviewProvider {
         Group {
             Preview()
             VStack {
-                Spacer(minLength: 200)
+                Spacer(minLength: 300)
                 Preview()
-                Spacer(minLength: 200)
+                Spacer(minLength: 100)
             }
         }
     }
