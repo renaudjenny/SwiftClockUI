@@ -65,19 +65,22 @@ struct ArmDragGesture_Previews: PreviewProvider {
 
     private struct Preview: View {
         @Environment(\.calendar) var calendar
-        @Environment(\.clockDate) var date
+        @State private var date = Date.init(hour: 0, minute: 0, calendar: .current)
         let type = ArmType.minute
 
         var body: some View {
-            ClassicArm(type: .minute)
-                .modifier(ArmDragGesture(type: ArmType.minute))
-                .rotationEffect(rotationAngle)
-                .animation(.spring(), value: rotationAngle)
-                .background(Color.red.opacity(10/100))
+            VStack {
+                ClassicArm(type: .minute)
+                    .modifier(ArmDragGesture(type: ArmType.minute))
+                    .rotationEffect(rotationAngle)
+                    .animation(.spring(), value: rotationAngle)
+                    .background(Color.red.opacity(10/100))
+                Text("minute: \(calendar.component(.minute, from: date))")
+            }.environment(\.clockDate, $date)
         }
 
         private var rotationAngle: Angle {
-            type.angle(date: date.wrappedValue, calendar: calendar)
+            type.angle(date: date, calendar: calendar)
         }
     }
 }
