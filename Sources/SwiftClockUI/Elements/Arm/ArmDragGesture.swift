@@ -9,7 +9,7 @@ struct ArmDragGesture: ViewModifier {
     func body(content: Content) -> some View {
         GeometryReader { geometry in
             content
-                .contentShape(contentShape(geometry: geometry))
+                .contentShape(self.contentShape(geometry: geometry))
                 .gesture(self.dragGesture(geometry: geometry))
                 .rotationEffect(self.dragAngle)
                 .animation(self.dragAngle == .zero ? .spring() : nil, value: self.dragAngle)
