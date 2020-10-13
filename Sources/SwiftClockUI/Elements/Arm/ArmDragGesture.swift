@@ -9,10 +9,21 @@ struct ArmDragGesture: ViewModifier {
     func body(content: Content) -> some View {
         GeometryReader { geometry in
             content
+                .contentShape(self.contentShape(geometry: geometry))
                 .gesture(self.dragGesture(geometry: geometry))
                 .rotationEffect(self.dragAngle)
                 .animation(self.dragAngle == .zero ? .spring() : nil, value: self.dragAngle)
         }
+        .aspectRatio(1, contentMode: .fit)
+    }
+
+    private func contentShape(geometry: GeometryProxy) -> Path {
+        Rectangle().path(in: CGRect(
+            x: geometry.frame(in: .local).midX - geometry.size.width/12,
+            y: geometry.frame(in: .local).minY,
+            width: geometry.size.width/6,
+            height: geometry.size.height/1.9
+        ))
     }
 
     private func dragGesture(geometry: GeometryProxy) -> some Gesture {
@@ -31,7 +42,7 @@ struct ArmDragGesture: ViewModifier {
     }
 
     private func angle(dragGestureValue: DragGesture.Value, frame: CGRect) -> Angle {
-        let radius = min(frame.size.width, frame.size.height)/2
+        let radius = frame.size.width/2
         let location = (
             x: dragGestureValue.location.x - radius - frame.origin.x,
             y: dragGestureValue.location.y - radius - frame.origin.y
@@ -65,19 +76,22 @@ struct ArmDragGesture_Previews: PreviewProvider {
 
     private struct Preview: View {
         @Environment(\.calendar) var calendar
-        @Environment(\.clockDate) var date
+        @State private var date = Date.init(hour: 0, minute: 0, calendar: .current)
         let type = ArmType.minute
 
         var body: some View {
-            ClassicArm(type: .minute)
-                .modifier(ArmDragGesture(type: ArmType.minute))
-                .rotationEffect(rotationAngle)
-                .animation(.spring(), value: rotationAngle)
-                .background(Color.red.opacity(10/100))
+            VStack {
+                ClassicArm(type: .minute)
+                    .modifier(ArmDragGesture(type: ArmType.minute))
+                    .rotationEffect(rotationAngle)
+                    .animation(.spring(), value: rotationAngle)
+                    .background(Color.red.opacity(10/100))
+                Text("minute: \(calendar.component(.minute, from: date))")
+            }.environment(\.clockDate, $date)
         }
 
         private var rotationAngle: Angle {
-            type.angle(date: date.wrappedValue, calendar: calendar)
+            type.angle(date: date, calendar: calendar)
         }
     }
 }
