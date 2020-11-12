@@ -12,7 +12,7 @@ struct DrawnClockBorder: View {
 
     private func content(geometry: GeometryProxy) -> some View {
         DrawnCircle(draw: !isAnimationEnabled || animate, random: random)
-            .stroke(lineWidth: geometry.radius * Self.borderWidthRatio)
+            .strokeBorder(lineWidth: geometry.radius * Self.borderWidthRatio)
             .onAppear {
                 guard self.isAnimationEnabled else { return }
                 withAnimation(.easeInOut(duration: 1)) {
@@ -30,6 +30,8 @@ struct DrawnCircle: Shape {
     private let angleMarginRatio: Double
     private var circleStep: CGFloat
 
+    var insetAmount: CGFloat = 0
+
     init(draw: Bool, random: Random) {
         self.circleStep = draw ? 1 : 0
         self.maxMarginRatio = random.borderMarginRatio.maxMargin(Self.marginRatio)
@@ -43,6 +45,7 @@ struct DrawnCircle: Shape {
 
     func path(in rect: CGRect) -> Path {
         var path = Path()
+        let rect = rect.insetBy(dx: insetAmount, dy: insetAmount)
         path.move(to: .inCircle(rect, for: .zero))
         addArcs(to: &path, rect: rect)
         return path.trimmedPath(from: 0, to: self.circleStep)
@@ -61,11 +64,18 @@ struct DrawnCircle: Shape {
     }
 }
 
+extension DrawnCircle: InsettableShape {
+    func inset(by amount: CGFloat) -> some InsettableShape {
+        var circle = self
+        circle.insetAmount += amount
+        return circle
+    }
+}
+
 #if DEBUG
 struct DrawnClockBorder_Previews: PreviewProvider {
     static var previews: some View {
         DrawnClockBorder()
-            .padding()
     }
 }
 #endif

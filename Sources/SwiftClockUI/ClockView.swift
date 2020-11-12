@@ -35,7 +35,6 @@ struct ClockView_Previews: PreviewProvider {
 
     static var previews: some View {
         ClockView()
-            .padding()
             .environment(\.clockDate, .constant(.init(hour: 10, minute: 10, calendar: calendar)))
     }
 }
@@ -45,7 +44,6 @@ struct ClockViewWithFace_Previews: PreviewProvider {
 
     static var previews: some View {
         ClockView()
-            .padding()
             .environment(\.clockDate, .constant(.init(hour: 8, minute: 17, calendar: calendar)))
             .environment(\.clockFaceShown, true)
     }
@@ -56,7 +54,6 @@ struct ClockViewArtNouveauStyle_Previews: PreviewProvider {
 
     static var previews: some View {
         ClockView()
-            .padding()
             .environment(\.clockDate, .constant(.init(hour: 10, minute: 10, calendar: calendar)))
             .environment(\.clockStyle, .artNouveau)
     }
@@ -67,7 +64,6 @@ struct ClockViewDrawingStyle_Previews: PreviewProvider {
 
     static var previews: some View {
         ClockView()
-            .padding()
             .environment(\.clockDate, .constant(.init(hour: 10, minute: 10, calendar: calendar)))
             .environment(\.clockStyle, .drawing)
     }
@@ -78,7 +74,6 @@ struct ClockViewSteampunkStyle_Previews: PreviewProvider {
 
     static var previews: some View {
         ClockView()
-            .padding()
             .environment(\.clockDate, .constant(.init(hour: 10, minute: 10, calendar: calendar)))
             .environment(\.clockStyle, .steampunk)
     }
@@ -89,7 +84,6 @@ struct ClockViewDifferentColors_Previews: PreviewProvider {
 
     static var previews: some View {
         ClockView()
-            .padding()
             .environment(\.clockDate, .constant(.init(hour: 10, minute: 10, calendar: calendar)))
             .environment(\.clockArmColors, ClockArmColors(
                 minute: .red,
@@ -97,6 +91,21 @@ struct ClockViewDifferentColors_Previews: PreviewProvider {
             ))
             .environment(\.clockBorderColor, .orange)
             .environment(\.clockIndicatorsColor, .green)
+    }
+}
+
+struct ClockViewWithGradient_Previews: PreviewProvider {
+    @Environment(\.calendar) static var calendar
+
+    static var previews: some View {
+        LinearGradient(
+            gradient: Gradient(colors: [Color.red, Color.blue]),
+            startPoint: .leading,
+            endPoint: .trailing
+        )
+        .aspectRatio(contentMode: .fit)
+        .mask(ClockView())
+        .environment(\.clockDate, .constant(.init(hour: 10, minute: 10, calendar: calendar)))
     }
 }
 #endif

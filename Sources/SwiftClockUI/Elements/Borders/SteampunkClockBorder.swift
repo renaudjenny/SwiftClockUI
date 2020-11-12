@@ -17,7 +17,7 @@ struct SteampunkClockBorder: View {
     private func border(geometry: GeometryProxy) -> some View {
         ZStack {
             Circle().fill(Color.background)
-            Circle().stroke(lineWidth: geometry.radius * Self.borderWidthRatio)
+            Circle().strokeBorder(lineWidth: geometry.radius * Self.borderWidthRatio)
         }
     }
 
@@ -37,11 +37,14 @@ struct SteampunkClockBorder: View {
     }
 }
 
+#if DEBUG
 struct SteampunkClockBorder_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            SteampunkClockBorder().padding()
-            SteampunkClockBorder().previewLayout(.fixed(width: 400, height: 200)).padding()
+            SteampunkClockBorder()
+            SteampunkClockBorder()
+                .previewLayout(.fixed(width: 400, height: 200))
         }
     }
 }
+#endif

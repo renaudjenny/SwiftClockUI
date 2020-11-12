@@ -11,14 +11,14 @@ struct ArtNouveauClockBorder: View {
     private func content(geometry: GeometryProxy) -> some View {
         ZStack {
             Circle()
-                .stroke(lineWidth: geometry.radius * Self.borderWidthRatio)
+                .strokeBorder(lineWidth: geometry.radius * Self.borderWidthRatio)
             Circle()
-                .scale(Self.innerCircleScale)
-                .transform(.init(
+                .strokeBorder(lineWidth: geometry.radius * Self.borderWidthRatio/2)
+                .scaleEffect(Self.innerCircleScale)
+                .transformEffect(.init(
                     translationX: 0,
                     y: geometry.radius * (1 - Self.innerCircleScale)
-                    ))
-                .stroke(lineWidth: geometry.radius * Self.borderWidthRatio/2)
+                ))
         }
     }
 }
