@@ -82,9 +82,12 @@ struct Eye_Previews: PreviewProvider {
                 ClockFaceView.Eye(move: false, position: .left).padding()
                 ClockFaceView.Eye(move: move, position: .left).padding()
                 ClockFaceView.Eye(move: move, position: .right).padding()
-                Button(action: { self.move.toggle() }) {
-                    Text("Move eyes")
-                }
+                Button(
+                    action: { self.move.toggle() },
+                    label: {
+                        Text("Move eyes")
+                    }
+                )
             }
             .animation(isAnimationEnabled ? .default : nil)
             .padding()

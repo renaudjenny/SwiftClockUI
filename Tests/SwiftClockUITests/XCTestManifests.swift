@@ -10,7 +10,7 @@ public func allTests() -> [XCTestCaseEntry] {
         ("MouthTests", MouthTests),
         ("EnvironmentTests", EnvironmentTests),
         ("CGPointExtensionCircleTests", CGPointExtensionCircleTests),
-        ("DateExtensionClockTests", DateExtensionClockTests)
+        ("DateExtensionClockTests", DateExtensionClockTests),
     ]
 }
 #endif
