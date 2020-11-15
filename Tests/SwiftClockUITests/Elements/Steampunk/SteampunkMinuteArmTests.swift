@@ -7,7 +7,7 @@ class SteampunkMinuteArmTests: XCTestCase {
     #if !os(macOS)
     func testSteampunkMinuteArm() {
         let arms = SteampunkMinuteArm_Previews.previews.environment(\.clockIsAnimationEnabled, false)
-        assertSnapshot(matching: hostingController, as: .default)
+        assertSnapshot(matching: arms, as: .default)
     }
     #endif
 }
