@@ -4,9 +4,10 @@ import SnapshotTesting
 import SwiftUI
 
 class SteampunkMinuteArmTests: XCTestCase {
+    #if !os(macOS)
     func testSteampunkMinuteArm() {
         let arms = SteampunkMinuteArm_Previews.previews.environment(\.clockIsAnimationEnabled, false)
-        let hostingController = UIHostingController(rootView: arms)
-        assertSnapshot(matching: hostingController, as: .image(on: .iPhoneSe))
+        assertSnapshot(matching: hostingController, as: .default)
     }
+    #endif
 }

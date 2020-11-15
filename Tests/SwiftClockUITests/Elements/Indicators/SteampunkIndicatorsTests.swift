@@ -4,6 +4,7 @@ import SnapshotTesting
 import SwiftUI
 
 class SteampunkIndicatorsTests: XCTestCase {
+    #if !os(macOS)
     func testSteampunkIndicators() {
         let indicators = SteampunkIndicators_Previews.previews
             .environment(\.clockIsAnimationEnabled, false)
@@ -15,4 +16,5 @@ class SteampunkIndicatorsTests: XCTestCase {
             .environment(\.clockIsAnimationEnabled, false)
         assertSnapshot(matching: indicators, as: .default)
     }
+    #endif
 }

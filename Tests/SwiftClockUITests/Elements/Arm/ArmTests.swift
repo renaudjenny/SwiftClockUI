@@ -4,6 +4,7 @@ import SnapshotTesting
 import SwiftUI
 
 class ArmTests: XCTestCase {
+    #if !os(macOS)
     func testMinuteArms() {
         let arms = ArmMinute_Previews.previews.environment(\.clockIsAnimationEnabled, false)
         assertSnapshot(matching: arms, as: .default)
@@ -37,4 +38,5 @@ class ArmTests: XCTestCase {
             .environment(\.clockRandom, .fixed)
         assertSnapshot(matching: arms, as: .default)
     }
+    #endif
 }

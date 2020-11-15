@@ -4,13 +4,14 @@ import SnapshotTesting
 import SwiftUI
 
 class PathExtensionCircleTests: XCTestCase {
+    #if !os(macOS)
     func testCenter() {
-        let Circles = CirclesTest()
+        let circles = CirclesTest()
             .stroke()
             .padding()
-        let hostingController = UIHostingController(rootView: Circles)
-        assertSnapshot(matching: hostingController, as: .image(on: .iPhoneSe))
+        assertSnapshot(matching: circles, as: .default)
     }
+    #endif
 
     struct CirclesTest: Shape {
         func path(in rect: CGRect) -> Path {

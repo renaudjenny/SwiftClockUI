@@ -5,6 +5,7 @@ import SwiftUI
 import Combine
 
 class ClockTests: XCTestCase {
+    #if !os(macOS)
     func testDefaultClockView() {
         let clockViews = ClockView_Previews.previews.environment(\.clockIsAnimationEnabled, false)
         assertSnapshot(matching: clockViews, as: .default)
@@ -36,4 +37,5 @@ class ClockTests: XCTestCase {
         let clockViews = ClockViewDifferentColors_Previews.previews.environment(\.clockIsAnimationEnabled, false)
         assertSnapshot(matching: clockViews, as: .default)
     }
+    #endif
 }
