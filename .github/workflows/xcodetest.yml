@@ -30,9 +30,6 @@ jobs:
     - name: Xcode version
       run: /usr/bin/xcodebuild -version
 
-    - name: Generate Xcode project
-      run: swift package generate-xcodeproj
-
     - name: List all available build targets and schemes
       run: xcodebuild -list
 
@@ -40,18 +37,15 @@ jobs:
       run: xcrun simctl create "iPhone SE (1st generation)" "iPhone SE (1st generation)"
 
     - name: Xcode test on iPhone SE
-      run: xcodebuild clean test -scheme SwiftClockUI-Package -destination 'platform=iOS Simulator,name=iPhone SE (1st generation)'
+      run: xcodebuild clean test -scheme SwiftClockUI -destination 'platform=iOS Simulator,name=iPhone SE (1st generation)'
   build-macos:
-    runs-on: macOS-latest
+    runs-on: macOS-11.0
 
     steps:
     - uses: actions/checkout@v2
-
-    - name: Generate Xcode project
-      run: swift package generate-xcodeproj
 
     - name: List all available build targets and schemes
       run: xcodebuild -list
 
     - name: Xcode test on Mac
-      run: xcodebuild clean test -scheme SwiftClockUI-Package -destination 'platform=OS X'
+      run: xcodebuild clean test -scheme SwiftClockUI -destination 'platform=OS X'
