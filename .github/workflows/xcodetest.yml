@@ -13,13 +13,10 @@ jobs:
         matrix:
           run-config:
           - { title: 'Xcode 11.7', xcodeVersion: '11.7' }
-          - { title: 'Xcode 12', xcodeVersion: '12' }
+          - { title: 'Xcode 12.4', xcodeVersion: '12.4' }
 
     steps:
     - uses: actions/checkout@v2
-
-    - name: Install SwiftLint
-      run: brew install swiftlint
 
     - name: Linter
       run: swiftlint
