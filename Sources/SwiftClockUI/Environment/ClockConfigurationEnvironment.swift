@@ -1,6 +1,6 @@
 import SwiftUI
 
-public struct ClockConfiguration {
+public struct ClockConfiguration: Equatable {
     public var isLimitedHoursShown = false
     public var isMinuteIndicatorsShown = true
     public var isHourIndicatorsShown = true

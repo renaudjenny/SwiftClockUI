@@ -1,6 +1,6 @@
 import SwiftUI
 
-public struct ClockArmColors {
+public struct ClockArmColors: Equatable {
     var minute: Color
     var hour: Color
 
