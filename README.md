@@ -6,8 +6,10 @@ Clock UI for SwiftUI
 
 This library has been tested
 * ✅💻 macOS Catalina 10.15.3
+* ✅💻 macOS Big Sur 11.6
 * ✅📱 iOS 13
 * ✅📱 iOS 14
+* ✅📱 iOS 15
 
 ## Bind a date
 
@@ -86,6 +88,35 @@ ClockView()
 In light mode, you could expect a result like this:
 
 ![Clock View with Classic style and some colors changed](docs/assets/ClockViewClassicAndColors.png)
+
+## Installation
+
+### Xcode
+
+You can add SwiftToTen to an Xcode project by adding it as a package dependency.
+
+1. From the **File** menu, select **Swift Packages › Add Package Dependency...**
+2. Enter "https://github.com/renaudjenny/SwiftClockUI" into the package repository URL test field
+
+### As package dependency
+
+Edit your `Package.swift` to add this library.
+
+```swift
+let package = Package(
+    ...
+    dependencies: [
+        .package(url: "https://github.com/renaudjenny/SwiftClockUI", from: "1.4.0"),
+        ...
+    ],
+    targets: [
+        .target(
+            name: "<Your project name>",
+            dependencies: ["SwiftClockUI"]),
+        ...
+    ]
+)
+```
 
 ## App using this library
 
