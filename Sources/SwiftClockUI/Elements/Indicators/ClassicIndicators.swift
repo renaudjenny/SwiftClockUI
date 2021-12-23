@@ -14,7 +14,6 @@ struct ClassicIndicators: View {
                 MinuteIndicators(marginRatio: Self.marginRatio)
             }
         }
-        .modifier(ScaleUpOnAppear())
     }
 }
 
