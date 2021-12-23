@@ -10,8 +10,10 @@ struct RotateOnAppear: ViewModifier {
             .rotationEffect(rotationAngle)
             .onAppear {
                 guard self.isAnimationEnabled else { return }
-                withAnimation(animation) {
-                    rotationAngle = clockwise ? .fullRound : -.fullRound
+                DispatchQueue.main.async {
+                    withAnimation(animation) {
+                        rotationAngle = clockwise ? .fullRound : -.fullRound
+                    }
                 }
             }
     }
