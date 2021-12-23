@@ -7,10 +7,9 @@ struct BalanceOnAppear: ViewModifier {
     func body(content: Content) -> some View {
         content
             .rotationEffect(rotationAngle)
-            .animation(animation, value: rotationAngle)
             .onAppear {
                 guard self.isAnimationEnabled else { return }
-                self.rotationAngle = .degrees(20)
+                withAnimation(animation) { rotationAngle = .degrees(20) }
             }
     }
 

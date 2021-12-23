@@ -7,10 +7,11 @@ struct FlipOnAppear: ViewModifier {
     func body(content: Content) -> some View {
         content
             .rotation3DEffect(rotationAngle, axis: (x: 1, y: 1, z: 0))
-            .animation(animation, value: rotationAngle)
             .onAppear {
                 guard self.isAnimationEnabled else { return }
-                self.rotationAngle = .fullRound
+                DispatchQueue.main.async {
+                    withAnimation(animation) { rotationAngle = .fullRound }
+                }
             }
     }
 
@@ -24,5 +25,6 @@ struct FlipOnAppear_Previews: PreviewProvider {
         Text("Hello, World!")
             .rotationEffect(.degrees(-45))
             .modifier(FlipOnAppear())
+            .frame(width: 200, height: 300)
     }
 }

@@ -74,7 +74,6 @@ struct Eye_Previews: PreviewProvider {
     }
 
     struct Preview: View {
-        @Environment(\.clockIsAnimationEnabled) private var isAnimationEnabled
         @State private var move = true
 
         var body: some View {
@@ -83,13 +82,12 @@ struct Eye_Previews: PreviewProvider {
                 ClockFaceView.Eye(move: move, position: .left).padding()
                 ClockFaceView.Eye(move: move, position: .right).padding()
                 Button(
-                    action: { self.move.toggle() },
+                    action: { withAnimation { self.move.toggle() } },
                     label: {
                         Text("Move eyes")
                     }
                 )
             }
-            .animation(isAnimationEnabled ? .default : nil)
             .padding()
         }
     }

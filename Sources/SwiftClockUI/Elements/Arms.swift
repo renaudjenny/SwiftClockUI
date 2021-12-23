@@ -17,10 +17,9 @@ struct OnHover: ViewModifier {
     func body(content: Content) -> some View {
         #if os(macOS)
         return content
-            .onHover { self.isHover = $0 }
+            .onHover { isHover in withAnimation(.easeInOut) { self.isHover = isHover } }
             .shadow(color: Color(.sRGBLinear, white: 0, opacity: 0.44), radius: isHover ? 6 : 0)
             .scaleEffect(isHover ? 1.1 : 1)
-            .animation(.easeInOut, value: isHover)
         #else
         return content
         #endif
