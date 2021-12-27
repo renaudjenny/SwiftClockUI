@@ -10,7 +10,7 @@ struct RotateOnAppear: ViewModifier {
             .rotationEffect(rotationAngle)
             .onAppear {
                 guard self.isAnimationEnabled else { return }
-                DispatchQueue.main.async {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                     withAnimation(animation) {
                         rotationAngle = clockwise ? .fullRound : -.fullRound
                     }
@@ -27,6 +27,17 @@ struct RotateOnAppear: ViewModifier {
 
 struct RotateOnAppear_Previews: PreviewProvider {
     static var previews: some View {
+        Group {
+            preview
+            NavigationView {
+                NavigationLink("Preview") {
+                    preview
+                }
+            }
+        }
+    }
+
+    private static var preview: some View {
         VStack(spacing: 50) {
             Rectangle()
                 .frame(width: 100, height: 100)
