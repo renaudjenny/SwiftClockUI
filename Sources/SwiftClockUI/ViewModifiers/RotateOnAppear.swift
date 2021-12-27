@@ -10,7 +10,7 @@ struct RotateOnAppear: ViewModifier {
             .rotationEffect(rotationAngle)
             .onAppear {
                 guard self.isAnimationEnabled else { return }
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                DispatchQueue.main.async {
                     withAnimation(animation) {
                         rotationAngle = clockwise ? .fullRound : -.fullRound
                     }
@@ -28,24 +28,40 @@ struct RotateOnAppear: ViewModifier {
 struct RotateOnAppear_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            preview
-            NavigationView {
-                NavigationLink("Preview") {
-                    preview
-                }
-            }
+            Rectangles()
+            Navigation()
         }
     }
 
-    private static var preview: some View {
-        VStack(spacing: 50) {
-            Rectangle()
-                .frame(width: 100, height: 100)
-                .modifier(RotateOnAppear())
-            Rectangle()
-                .frame(width: 100, height: 100)
-                .modifier(RotateOnAppear(clockwise: false))
+    private struct Rectangles: View {
+        var body: some View {
+            VStack(spacing: 50) {
+                Rectangle()
+                    .frame(width: 100, height: 100)
+                    .modifier(RotateOnAppear())
+                Rectangle()
+                    .frame(width: 100, height: 100)
+                    .modifier(RotateOnAppear(clockwise: false))
+           }
+            .frame(width: 200, height: 300)
         }
-        .frame(width: 200, height: 300)
+    }
+
+    private struct Navigation: View {
+        @State var isShown = false
+
+        var body: some View {
+            NavigationView {
+                VStack {
+                    NavigationLink("Preview 3") {
+                        VStack {
+                            Button("Show!") { isShown = !isShown }
+                            Text(isShown ? "It's shown" : "It's hidden")
+                        }
+                    }
+                    if isShown { Rectangles() }
+                }
+            }
+        }
     }
 }
