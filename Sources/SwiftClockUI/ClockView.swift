@@ -129,6 +129,11 @@ struct ClockViewWithConfiguration_Previews: PreviewProvider {
                         )
                     }
                     .padding()
+
+                    Button("Set Steampunk style now") {
+                        clockStyle = .steampunk
+                    }
+                    .padding()
                 }
             }
         }

@@ -9,9 +9,7 @@ struct BalanceOnAppear: ViewModifier {
             .rotationEffect(rotationAngle)
             .onAppear {
                 guard self.isAnimationEnabled else { return }
-                DispatchQueue.main.async {
-                    withAnimation(animation) { rotationAngle = .degrees(20) }
-                }
+                withSlightyDelayedAnimation(animation) { rotationAngle = .degrees(20) }
             }
     }
 

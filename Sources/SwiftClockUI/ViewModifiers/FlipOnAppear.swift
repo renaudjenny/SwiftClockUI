@@ -9,9 +9,7 @@ struct FlipOnAppear: ViewModifier {
             .rotation3DEffect(rotationAngle, axis: (x: 1, y: 1, z: 0))
             .onAppear {
                 guard self.isAnimationEnabled else { return }
-                DispatchQueue.main.async {
-                    withAnimation(animation) { rotationAngle = .fullRound }
-                }
+                withSlightyDelayedAnimation(animation) { rotationAngle = .fullRound }
             }
     }
 
