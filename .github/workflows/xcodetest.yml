@@ -8,12 +8,13 @@ on:
 
 jobs:
   build-ios:
-    runs-on: macOS-latest
+    runs-on: macOS-11
     strategy:
         matrix:
           run-config:
           - { title: 'Xcode 11.7', xcodeVersion: '11.7' }
-          - { title: 'Xcode 12.4', xcodeVersion: '12.4' }
+          - { title: 'Xcode 12.5.1', xcodeVersion: '12.5.1' }
+          - { title: 'Xcode 13.0', xcodeVersion: '13.0' }
 
     steps:
     - uses: actions/checkout@v2

@@ -40,7 +40,7 @@ struct RotateOnAppear_Previews: PreviewProvider {
                 Rectangle()
                     .frame(width: 100, height: 100)
                     .modifier(RotateOnAppear(clockwise: false))
-           }
+            }
             .frame(width: 200, height: 300)
         }
     }
