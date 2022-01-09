@@ -32,7 +32,7 @@ struct ArmDragGesture: ViewModifier {
                     dragGestureValue: value,
                     frame: geometry.frame(in: .global)
                 )
-                state = extraRotationAngle - currentAngle
+                state = extraRotationAngle - self.currentAngle
             })
             .onEnded({ value in
                 let angle = angle(dragGestureValue: value, frame: geometry.frame(in: .global))
