@@ -53,7 +53,7 @@ struct RotateOnAppear_Previews: PreviewProvider {
                 VStack {
                     NavigationLink("Preview 3") {
                         VStack {
-                            Button("Show!") { self.isShown = !self.isShown }
+                            Button("Show!") { isShown = !isShown }
                             Text(isShown ? "It's shown" : "It's hidden")
                         }
                     }
