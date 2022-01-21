@@ -12,6 +12,7 @@ struct ArmDragGesture: ViewModifier {
                 .contentShape(self.contentShape(geometry: geometry))
                 .gesture(self.dragGesture(geometry: geometry))
                 .rotationEffect(self.dragAngle)
+                .animation(self.dragAngle == .zero ? .spring() : nil, value: self.dragAngle)
         }
         .aspectRatio(1, contentMode: .fit)
     }
