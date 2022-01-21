@@ -6,9 +6,7 @@ import SwiftUI
 class EyeTests: XCTestCase {
     #if !os(macOS)
     func testEyes() {
-        let eyes = Eye_Previews.previews
-            .environment(\.clockIsAnimationEnabled, false)
-        assertSnapshot(matching: eyes, as: .default)
+        assertSnapshot(matching: Eye_Previews.previews, as: .default)
     }
     #endif
 }

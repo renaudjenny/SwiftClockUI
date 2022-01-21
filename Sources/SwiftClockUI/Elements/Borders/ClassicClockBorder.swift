@@ -8,9 +8,7 @@ struct ClassicClockBorder: View {
     }
 
     private func content(geometry: GeometryProxy) -> some View {
-        Circle()
-            .strokeBorder(lineWidth: geometry.radius * Self.borderWidthRatio)
-            .modifier(ScaleUpOnAppear())
+        Circle().strokeBorder(lineWidth: geometry.radius * Self.borderWidthRatio)
     }
 }
 

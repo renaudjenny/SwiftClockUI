@@ -29,11 +29,15 @@ struct ArmDragGesture: ViewModifier {
     private func dragGesture(geometry: GeometryProxy) -> some Gesture {
         DragGesture(coordinateSpace: .global)
             .updating($dragAngle, body: { value, state, _ in
-                let extraRotationAngle = self.angle(dragGestureValue: value, frame: geometry.frame(in: .global))
+                let extraRotationAngle = angle(
+                    dragGestureValue: value,
+                    frame: geometry.frame(in: .global)
+                )
                 state = extraRotationAngle - self.currentAngle
             })
-            .onEnded({
-                self.setAngle(self.angle(dragGestureValue: $0, frame: geometry.frame(in: .global)))
+            .onEnded({ value in
+                let angle = angle(dragGestureValue: value, frame: geometry.frame(in: .global))
+                setAngle(angle)
             })
     }
 
@@ -84,7 +88,6 @@ struct ArmDragGesture_Previews: PreviewProvider {
                 ClassicArm(type: .minute)
                     .modifier(ArmDragGesture(type: ArmType.minute))
                     .rotationEffect(rotationAngle)
-                    .animation(.spring(), value: rotationAngle)
                     .background(Color.red.opacity(10/100))
                 Text("minute: \(calendar.component(.minute, from: date))")
             }.environment(\.clockDate, $date)

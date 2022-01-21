@@ -8,21 +8,13 @@ on:
 
 jobs:
   build-ios:
-    runs-on: macOS-latest
-    strategy:
-        matrix:
-          run-config:
-          - { title: 'Xcode 11.7', xcodeVersion: '11.7' }
-          - { title: 'Xcode 12.4', xcodeVersion: '12.4' }
+    runs-on: macOS-11
 
     steps:
     - uses: actions/checkout@v2
 
     - name: Linter
       run: swiftlint
-
-    - name: Select Xcode
-      run: sudo xcode-select -switch /Applications/Xcode_${{ matrix.run-config['xcodeVersion'] }}.app
 
     - name: Xcode version
       run: /usr/bin/xcodebuild -version

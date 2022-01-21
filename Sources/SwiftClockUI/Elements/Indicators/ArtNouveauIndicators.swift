@@ -14,9 +14,7 @@ struct ArtNouveauIndicators: View {
                 self.romanHour(for: romanNumber, geometry: geometry)
             }
             if configuration.isMinuteIndicatorsShown {
-                Sun()
-                    .stroke()
-                    .modifier(ScaleUpOnAppear())
+                Sun().stroke()
             }
         }
     }
@@ -29,7 +27,6 @@ struct ArtNouveauIndicators: View {
                 marginRatio: Self.marginRatio * 2
             ))
             .font(.system(size: fontSize(geometry: geometry)))
-            .modifier(ScaleUpOnAppear())
     }
 
     private func fontSize(geometry: GeometryProxy) -> CGFloat {

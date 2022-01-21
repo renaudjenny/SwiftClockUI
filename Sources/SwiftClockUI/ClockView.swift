@@ -108,4 +108,84 @@ struct ClockViewWithGradient_Previews: PreviewProvider {
         .environment(\.clockDate, .constant(.init(hour: 10, minute: 10, calendar: calendar)))
     }
 }
+
+struct ClockViewWithConfiguration_Previews: PreviewProvider {
+    private struct MainView: View {
+        @State private var configuration = ClockConfiguration()
+        @State private var clockStyle: ClockStyle = .classic
+
+        var body: some View {
+            NavigationView {
+                VStack {
+                    ClockView()
+                        .environment(\.clockConfiguration, configuration)
+                        .environment(\.clockStyle, clockStyle)
+                        .padding()
+
+                    NavigationLink("Configuration") {
+                        ConfigurationView(
+                            configuration: $configuration,
+                            clockStyle: $clockStyle
+                        )
+                    }
+                    .padding()
+
+                    Button("Set Steampunk style now") {
+                        clockStyle = .steampunk
+                    }
+                    .padding()
+                }
+            }
+        }
+    }
+
+    private struct ConfigurationView: View {
+        @Binding var configuration: ClockConfiguration
+        @Binding var clockStyle: ClockStyle
+
+        var body: some View {
+            VStack {
+                stylePicker().pickerStyle(SegmentedPickerStyle())
+                clockView()
+                controls()
+                Spacer()
+            }
+            .padding()
+        }
+
+        private func clockView() -> some View {
+            ClockView()
+                .padding()
+                .allowsHitTesting(false)
+                .environment(\.clockConfiguration, configuration)
+                .environment(\.clockStyle, clockStyle)
+        }
+
+        private func controls() -> some View {
+            VStack {
+                Toggle(isOn: $configuration.isMinuteIndicatorsShown) {
+                    Text("Minute indicators")
+                }
+                Toggle(isOn: $configuration.isHourIndicatorsShown) {
+                    Text("Hour indicators")
+                }
+                Toggle(isOn: $configuration.isLimitedHoursShown) {
+                    Text("Limited hour texts")
+                }
+            }
+        }
+
+        private func stylePicker() -> some View {
+            Picker("Style", selection: $clockStyle) {
+                ForEach(ClockStyle.allCases) { style in
+                    Text(style.description).tag(style)
+                }
+            }
+        }
+    }
+
+    static var previews: some View {
+        MainView()
+    }
+}
 #endif
