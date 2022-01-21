@@ -22,6 +22,7 @@ struct ArmView: View {
         }
         .modifier(ArmDragGesture(type: type))
         .rotationEffect(rotationAngle)
+        .animation(.spring(), value: rotationAngle)
         .foregroundColor(type.color(with: colors))
     }
 

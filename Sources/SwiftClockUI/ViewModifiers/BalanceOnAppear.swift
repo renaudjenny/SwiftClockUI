@@ -1,16 +1,13 @@
 import SwiftUI
 
 struct BalanceOnAppear: ViewModifier {
-    @Environment(\.clockIsAnimationEnabled) var isAnimationEnabled
-    @State var rotationAngle: Angle = -.degrees(20)
+    @State var rotationAngle: Angle = -.degrees(40)
 
     func body(content: Content) -> some View {
         content
             .rotationEffect(rotationAngle)
-            .onAppear {
-                guard self.isAnimationEnabled else { return }
-                withSlightyDelayedAnimation(animation) { rotationAngle = .degrees(20) }
-            }
+            .animation(animation, value: rotationAngle)
+            .onAppear { rotationAngle = .degrees(20) }
     }
 
     private var animation: Animation {

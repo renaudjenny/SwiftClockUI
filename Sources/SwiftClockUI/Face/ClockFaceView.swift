@@ -2,7 +2,6 @@ import SwiftUI
 
 struct ClockFaceView: View {
     @Environment(\.clockFaceShown) var isShown
-    @Environment(\.clockIsAnimationEnabled) var isAnimationEnabled
 
     var body: some View {
         GeometryReader(content: content)
@@ -15,6 +14,7 @@ struct ClockFaceView: View {
             mouth(geometry: geometry)
         }
         .opacity(isShown ? 1 : 0)
+        .animation(.easeInOut, value: isShown)
     }
 
     private func leftEye(geometry: GeometryProxy) -> some View {

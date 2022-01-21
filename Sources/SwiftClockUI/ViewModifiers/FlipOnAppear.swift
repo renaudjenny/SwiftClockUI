@@ -1,16 +1,13 @@
 import SwiftUI
 
 struct FlipOnAppear: ViewModifier {
-    @Environment(\.clockIsAnimationEnabled) var isAnimationEnabled
-    @State var rotationAngle: Angle = .zero
+    @State private var rotationAngle: Angle = .zero
 
     func body(content: Content) -> some View {
         content
             .rotation3DEffect(rotationAngle, axis: (x: 1, y: 1, z: 0))
-            .onAppear {
-                guard self.isAnimationEnabled else { return }
-                withSlightyDelayedAnimation(animation) { rotationAngle = .fullRound }
-            }
+            .animation(animation, value: rotationAngle)
+            .onAppear { rotationAngle = .fullRound }
     }
 
     private var animation: Animation {

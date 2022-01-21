@@ -1,25 +1,18 @@
 import SwiftUI
 
 struct RotateOnAppear: ViewModifier {
-    @Environment(\.clockIsAnimationEnabled) var isAnimationEnabled
     @State private var rotationAngle: Angle = .zero
     var clockwise = true
 
     func body(content: Content) -> some View {
         content
             .rotationEffect(rotationAngle)
-            .onAppear {
-                guard self.isAnimationEnabled else { return }
-                withSlightyDelayedAnimation(animation) {
-                    rotationAngle = clockwise ? .fullRound : -.fullRound
-                }
-            }
+            .animation(animation, value: rotationAngle)
+            .onAppear { rotationAngle = clockwise ? .fullRound : -.fullRound }
     }
 
     private var animation: Animation {
-        Animation
-            .linear(duration: 4)
-            .repeatForever(autoreverses: false)
+        Animation.linear(duration: 4).repeatForever(autoreverses: false)
     }
 }
 
