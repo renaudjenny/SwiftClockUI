@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct DrawnArm: View {
-    @Environment(\.clockIsAnimationEnabled) var isAnimationEnabled
     @Environment(\.clockRandom) var random
     private static let widthRatio: CGFloat = 1/20
     let type: ArmType
@@ -10,11 +9,8 @@ struct DrawnArm: View {
     var body: some View {
         DrawnArmShape(type: type, drawStep: drawStep, controlRatios: .init(random: self.random))
             .onAppear {
-                guard self.isAnimationEnabled else { return }
-                withAnimation {
-                    self.drawStep = 0.1
-                }
-                withAnimation(Animation.easeInOut.delay(0.1)) {
+                self.drawStep = 0.01
+                withAnimation(Animation.easeInOut.delay(0.01)) {
                     self.drawStep = 1
                 }
             }
@@ -81,12 +77,31 @@ private struct DrawnArmShape: Shape {
 
 #if DEBUG
 struct DrawnArm_Previews: PreviewProvider {
-    static var previews: some View {
-        ZStack {
-            Circle().stroke()
-            DrawnArm(type: .minute)
+    private struct Preview: View {
+        @State private var redo: Bool = true
+
+        var body: some View {
+            VStack {
+                ZStack {
+                    Circle().stroke()
+                    if redo {
+                        DrawnArm(type: .minute)
+                    }
+                }
+                .padding()
+
+                Button("Redo animation") {
+                    redo = false
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                        redo = true
+                    }
+                }
+            }
         }
-        .padding()
+    }
+
+    static var previews: some View {
+        Preview()
     }
 }
 
@@ -102,7 +117,11 @@ struct DrawnArmAnimated_Previews: PreviewProvider {
             VStack {
                 ZStack {
                     Circle().stroke()
-                    DrawnArmShape(type: .minute, drawStep: drawStep, controlRatios: .init(random: .fixed))
+                    DrawnArmShape(
+                        type: .minute,
+                        drawStep: drawStep,
+                        controlRatios: .init(random: .fixed)
+                    )
                 }
                 Slider(value: $drawStep)
             }.padding()
