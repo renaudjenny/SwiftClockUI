@@ -1,20 +1,21 @@
 import SwiftUI
 
 struct DrawnClockBorder: View {
-    @Environment(\.clockIsAnimationEnabled) var isAnimationEnabled
     @Environment(\.clockRandom) var random
-    static let borderWidthRatio: CGFloat = 1/35
+    var drawStep: CGFloat?
     @State private var animate = false
+
+    private static let borderWidthRatio: CGFloat = 1/35
+
 
     var body: some View {
         GeometryReader(content: content)
     }
 
     private func content(geometry: GeometryProxy) -> some View {
-        DrawnCircle(draw: !isAnimationEnabled || animate, random: random)
+        DrawnCircle(drawStep: drawStep ?? (animate ? 1 : 0), random: random)
             .strokeBorder(lineWidth: geometry.radius * Self.borderWidthRatio)
             .onAppear {
-                guard self.isAnimationEnabled else { return }
                 withAnimation(.easeInOut(duration: 1)) {
                     self.animate = true
                 }
@@ -32,8 +33,8 @@ struct DrawnCircle: Shape {
 
     var insetAmount: CGFloat = 0
 
-    init(draw: Bool, random: Random) {
-        self.circleStep = draw ? 1 : 0
+    init(drawStep: CGFloat, random: Random) {
+        self.circleStep = drawStep
         self.maxMarginRatio = random.borderMarginRatio.maxMargin(Self.marginRatio)
         self.angleMarginRatio = random.borderMarginRatio.angleMargin()
     }
@@ -75,7 +76,24 @@ extension DrawnCircle: InsettableShape {
 #if DEBUG
 struct DrawnClockBorder_Previews: PreviewProvider {
     static var previews: some View {
-        DrawnClockBorder()
+        DrawnClockBorder(drawStep: 1)
+    }
+}
+
+struct DrawnClockBorderAnimation_Previews: PreviewProvider {
+    static var previews: some View {
+        Preview()
+    }
+
+    private struct Preview: View {
+        @State private var drawStep: CGFloat = 1
+
+        var body: some View {
+            VStack {
+                DrawnClockBorder(drawStep: drawStep)
+                Slider(value: $drawStep)
+            }
+        }
     }
 }
 #endif
