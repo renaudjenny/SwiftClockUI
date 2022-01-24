@@ -17,38 +17,33 @@ struct DrawnIndicators: View {
 }
 
 private struct Hours: View {
-    @Environment(\.clockIsAnimationEnabled) var isAnimationEnabled
     @Environment(\.clockRandom) var random
-    private static let marginRatio: CGFloat = 1/10
-    @State private var drawStep: CGFloat = 1
+    @State private var drawStep: CGFloat = 0
 
     var body: some View {
-        ForEach(1...12, id: \.self) { hour in
-            DrawnIndicator(drawStep: self.drawStep, controlRatios: .init(random: self.random))
-                .rotation(Angle(degrees: Double(hour) * .hourInDegree))
-                .modifier(PositionInCircle(
-                    angle: .degrees(Double(hour) * .hourInDegree),
-                    marginRatio: Self.marginRatio
-                ))
-                .onAppear {
-                    guard self.isAnimationEnabled else { return }
-                    withAnimation {
-                        self.drawStep = 0.1
+        GeometryReader { geometry in
+            ForEach(1...12, id: \.self) { hour in
+                DrawnIndicator(drawStep: self.drawStep, controlRatios: .init(random: self.random))
+                    .rotation(Angle(degrees: Double(hour) * .hourInDegree))
+                    .frame(width: geometry.radius/50, height: geometry.radius/10)
+                    .modifier(PositionInCircle(
+                        angle: .degrees(Double(hour) * .hourInDegree),
+                        marginRatio: 1/10
+                    ))
+                    .onAppear {
+                        withAnimation(.default.delay(0.01)) {
+                            self.drawStep = 1
+                        }
                     }
-                    withAnimation(Animation.easeInOut.delay(0.1)) {
-                        self.drawStep = 1
-                    }
-                }
+            }
         }
     }
 }
 
 private struct Minutes: View {
     @Environment(\.clockConfiguration) var configuration
-    @Environment(\.clockIsAnimationEnabled) var isAnimationEnabled
     @Environment(\.clockRandom) var random
-    private static let marginRatio: CGFloat = 1/15
-    @State private var drawStep: CGFloat = 1
+    @State private var drawStep: CGFloat = 0
 
     var body: some View {
         ForEach(1...60, id: \.self) { minute in
@@ -60,11 +55,7 @@ private struct Minutes: View {
                 }
             }
             .onAppear {
-                guard self.isAnimationEnabled else { return }
-                withAnimation {
-                    self.drawStep = 0.1
-                }
-                withAnimation(Animation.easeInOut.delay(0.1)) {
+                withAnimation(.default.delay(0.01)) {
                     self.drawStep = 1
                 }
             }
@@ -76,22 +67,15 @@ private struct Minutes: View {
             if self.isOverlapingHour(minute: minute) {
                 EmptyView()
             } else {
-                DrawnIndicator(drawStep: self.drawStep, controlRatios: .init(random: self.random))
-                    .scale(2/3)
-                    .rotation(Angle(degrees: Double(minute) * .minuteInDegree))
-                    .modifier(PositionInCircle(
-                        angle: .degrees(Double(minute) * .minuteInDegree),
-                        marginRatio: Self.marginRatio
-                    ))
-                    .onAppear {
-                        guard self.isAnimationEnabled else { return }
-                        withAnimation(.easeInOut) {
-                            self.drawStep = 0.1
-                        }
-                        withAnimation(.easeInOut) {
-                            self.drawStep = 1
-                        }
-                    }
+                GeometryReader { geometry in
+                    DrawnIndicator(drawStep: drawStep, controlRatios: .init(random: random))
+                        .rotation(Angle(degrees: Double(minute) * .minuteInDegree))
+                        .frame(width: geometry.circle.radius/70, height: geometry.circle.radius/20)
+                        .modifier(PositionInCircle(
+                            angle: .degrees(Double(minute) * .minuteInDegree),
+                            marginRatio: 1/15
+                        ))
+                }
             }
         }
     }
@@ -113,20 +97,18 @@ private struct DrawnIndicator: Shape {
 
     func path(in rect: CGRect) -> Path {
         var path = Path()
-        let thickness = rect.radius/50
-        let height = thickness * 2
-        let width = thickness
-        let bottomCenter = CGPoint(x: rect.midX, y: rect.midY + height)
+        let thickness = rect.width
+        let bottomCenter = CGPoint(x: rect.midX, y: rect.maxY  - (rect.maxY * (1 - drawStep)))
         let bottomRight = CGPoint(
-            x: bottomCenter.x + width,
+            x: bottomCenter.x + thickness,
             y: bottomCenter.y
         )
         let topCenter = CGPoint(
             x: rect.midX,
-            y: rect.midY - height + ((1 - drawStep) * height)
+            y: rect.minY
         )
         let topLeft = CGPoint(
-            x: topCenter.x - width,
+            x: topCenter.x - thickness,
             y: topCenter.y
         )
 
@@ -134,29 +116,29 @@ private struct DrawnIndicator: Shape {
 
         path.addArc(
             center: bottomCenter,
-            radius: thickness * drawStep,
+            radius: thickness,
             startAngle: .zero,
             endAngle: .degrees(180),
             clockwise: false
         )
 
         let controlLeft = CGPoint(
-            x: rect.midX + width * self.controlRatios.leftX,
-            y: rect.midY + height * self.controlRatios.leftY
+            x: rect.midX + thickness * self.controlRatios.leftX,
+            y: topCenter.y + thickness * 2 * self.controlRatios.leftY
         )
         path.addQuadCurve(to: topLeft, control: controlLeft)
 
         path.addArc(
             center: topCenter,
-            radius: thickness * drawStep,
+            radius: thickness,
             startAngle: .degrees(180),
             endAngle: .zero,
             clockwise: false
         )
 
         let controlRight = CGPoint(
-            x: rect.midX + width * self.controlRatios.rightX,
-            y: rect.midY + height * self.controlRatios.rightY
+            x: rect.midX + thickness * self.controlRatios.rightX,
+            y: topCenter.y + thickness * 2 * self.controlRatios.rightY
         )
         path.addQuadCurve(to: bottomRight, control: controlRight)
 
@@ -205,7 +187,6 @@ struct DrawnIndicators_Previews: PreviewProvider {
         ZStack {
             Circle().stroke()
             DrawnIndicators()
-                .environment(\.clockIsAnimationEnabled, false)
         }.padding()
     }
 }
@@ -220,8 +201,11 @@ struct DrawnIndicatorsAnimatedElements_Previews: PreviewProvider {
 
         var body: some View {
             VStack {
+                Spacer()
                 DrawnIndicator(drawStep: drawStep, controlRatios: .init(random: .fixed))
-                Slider(value: $drawStep)
+                    .frame(width: 10, height: 200)
+                Spacer()
+                Slider(value: $drawStep).padding()
             }.padding()
         }
     }
