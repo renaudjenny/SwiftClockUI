@@ -6,37 +6,33 @@ import SwiftUI
 class ArmTests: XCTestCase {
     #if !os(macOS)
     func testMinuteArms() {
-        let arms = ArmMinute_Previews.previews.environment(\.clockIsAnimationEnabled, false)
-        assertSnapshot(matching: arms, as: .default)
+        assertSnapshot(matching: ArmMinute_Previews.previews, as: .default)
     }
 
     func testHourArm() {
-        let arms = ArmHour_Previews.previews.environment(\.clockIsAnimationEnabled, false)
-        assertSnapshot(matching: arms, as: .default)
+        assertSnapshot(matching: ArmHour_Previews.previews, as: .default)
     }
 
     func testArmWith25MinuteAngle() {
-        let arms = ArmWith25MinuteAngle_Previews.previews.environment(\.clockIsAnimationEnabled, false)
-        assertSnapshot(matching: arms, as: .default)
+        assertSnapshot(matching: ArmWith25MinuteAngle_Previews.previews, as: .default)
     }
 
     func testArtNouveauArm() {
-        let arms = ArtNouveauDesignArm_Previews.previews.environment(\.clockIsAnimationEnabled, false)
-        assertSnapshot(matching: arms, as: .default)
+        assertSnapshot(matching: ArtNouveauDesignArm_Previews.previews, as: .default)
     }
 
     func testDrawningArm() {
-        let arms = DrawingDesignArm_Previews.previews
-            .environment(\.clockIsAnimationEnabled, false)
-            .environment(\.clockRandom, .fixed)
-        assertSnapshot(matching: arms, as: .default)
+        assertSnapshot(
+            matching: DrawingDesignArm_Previews.previews.environment(\.clockRandom, .fixed),
+            as: .default
+        )
     }
 
     func testDrawnArms() {
-        let arms = DrawnArm_Previews.previews
-            .environment(\.clockIsAnimationEnabled, false)
-            .environment(\.clockRandom, .fixed)
-        assertSnapshot(matching: arms, as: .default)
+        assertSnapshot(
+            matching: DrawnArm_Previews.previews.environment(\.clockRandom, .fixed),
+            as: .default
+        )
     }
     #endif
 }

@@ -6,13 +6,11 @@ import SwiftUI
 class ClassicClockBorderTests: XCTestCase {
     #if !os(macOS)
     func testClassicClockBorder() {
-        let clockBorder = ClassicClockBorder_Previews.previews.environment(\.clockIsAnimationEnabled, false)
-        assertSnapshot(matching: clockBorder, as: .default)
+        assertSnapshot(matching: ClassicClockBorder_Previews.previews, as: .default)
     }
     #else
     func testClassicClockBorderOnMac() {
-        let clockBorder = ClassicClockBorder_Previews.previews.environment(\.clockIsAnimationEnabled, false)
-        let view = NSHostingView(rootView: clockBorder)
+        let view = NSHostingView(rootView: ClassicClockBorder_Previews.previews)
         view.frame = CGRect(x: 0, y: 0, width: 800, height: 600)
         view.layer?.backgroundColor = .white
         assertSnapshot(matching: view, as: .image)
