@@ -6,15 +6,14 @@ import SwiftUI
 class SteampunkIndicatorsTests: XCTestCase {
     #if !os(macOS)
     func testSteampunkIndicators() {
-        let indicators = SteampunkIndicators_Previews.previews
-            .environment(\.clockIsAnimationEnabled, false)
-        assertSnapshot(matching: indicators, as: .default)
+        assertSnapshot(matching: SteampunkIndicators_Previews.previews, as: .default)
     }
 
     func testSteampunkIndicatorsWithLimitedHours() {
-        let indicators = SteampunkIndicatorsWithLimitedHours_Previews.previews
-            .environment(\.clockIsAnimationEnabled, false)
-        assertSnapshot(matching: indicators, as: .default)
+        assertSnapshot(
+            matching: SteampunkIndicatorsWithLimitedHours_Previews.previews,
+            as: .default
+        )
     }
     #endif
 }
