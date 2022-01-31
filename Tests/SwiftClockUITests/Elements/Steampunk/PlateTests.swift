@@ -6,8 +6,7 @@ import SwiftUI
 class PlateTests: XCTestCase {
     #if !os(macOS)
     func testPlate() {
-        let plates = Plate_Previews.previews.environment(\.clockIsAnimationEnabled, false)
-        assertSnapshot(matching: plates, as: .default)
+        assertSnapshot(matching: Plate_Previews.previews, as: .default)
     }
     #endif
 }

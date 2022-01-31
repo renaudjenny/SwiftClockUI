@@ -6,9 +6,10 @@ import SwiftUI
 class SteampunkHourArmTests: XCTestCase {
     #if !os(macOS)
     func testSteampunkHourArm() {
-        let arms = SteampunkHourArm_Previews.previews.environment(\.clockIsAnimationEnabled, false)
-        let hostingController = UIHostingController(rootView: arms)
-        assertSnapshot(matching: hostingController, as: .image(on: .iPhoneSe))
+        assertSnapshot(
+            matching: UIHostingController(rootView: SteampunkHourArm_Previews.previews),
+            as: .image(on: .iPhoneSe)
+        )
     }
     #endif
 }

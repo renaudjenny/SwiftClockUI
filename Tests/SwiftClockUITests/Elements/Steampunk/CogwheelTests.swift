@@ -6,15 +6,17 @@ import SwiftUI
 class CogwheelKeyTests: XCTestCase {
     #if !os(macOS)
     func testCogwheel() {
-        let arms = Cogwheel_Previews.previews.environment(\.clockIsAnimationEnabled, false)
-        let hostingController = UIHostingController(rootView: arms)
-        assertSnapshot(matching: hostingController, as: .image(on: .iPhoneSe))
+        assertSnapshot(
+            matching: UIHostingController(rootView: Cogwheel_Previews.previews),
+            as: .image(on: .iPhoneSe)
+        )
     }
 
     func testCogwheels() {
-        let arms = Cogwheels_Previews.previews.environment(\.clockIsAnimationEnabled, false)
-        let hostingController = UIHostingController(rootView: arms)
-        assertSnapshot(matching: hostingController, as: .image(on: .iPhoneSe))
+        assertSnapshot(
+            matching: UIHostingController(rootView: Cogwheels_Previews.previews),
+            as: .image(on: .iPhoneSe)
+        )
     }
     #endif
 }
