@@ -5,6 +5,7 @@ public struct ClockIsAnimationEnabledEnvironmentKey: EnvironmentKey {
 }
 
 public extension EnvironmentValues {
+    @available(*, deprecated, message: "Not used anymore. You can safely remove it.")
     var clockIsAnimationEnabled: Bool {
         get { self[ClockIsAnimationEnabledEnvironmentKey.self] }
         set { self[ClockIsAnimationEnabledEnvironmentKey.self] = newValue }

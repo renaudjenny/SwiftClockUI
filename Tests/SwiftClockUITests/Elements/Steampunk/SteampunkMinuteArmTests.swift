@@ -6,8 +6,7 @@ import SwiftUI
 class SteampunkMinuteArmTests: XCTestCase {
     #if !os(macOS)
     func testSteampunkMinuteArm() {
-        let arms = SteampunkMinuteArm_Previews.previews.environment(\.clockIsAnimationEnabled, false)
-        assertSnapshot(matching: arms, as: .default)
+        assertSnapshot(matching: SteampunkMinuteArm_Previews.previews, as: .default)
     }
     #endif
 }

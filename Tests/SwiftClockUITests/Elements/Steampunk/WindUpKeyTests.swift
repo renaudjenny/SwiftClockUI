@@ -6,8 +6,7 @@ import SwiftUI
 class WindUpKeyTests: XCTestCase {
     #if !os(macOS)
     func testWindUpKey() {
-        let arms = WindUpKey_Previews.previews.environment(\.clockIsAnimationEnabled, false)
-        assertSnapshot(matching: arms, as: .default)
+        assertSnapshot(matching: WindUpKey_Previews.previews, as: .default)
     }
     #endif
 }

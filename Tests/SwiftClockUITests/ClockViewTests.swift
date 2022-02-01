@@ -7,35 +7,30 @@ import Combine
 class ClockTests: XCTestCase {
     #if !os(macOS)
     func testDefaultClockView() {
-        let clockViews = ClockView_Previews.previews.environment(\.clockIsAnimationEnabled, false)
-        assertSnapshot(matching: clockViews, as: .default)
+        assertSnapshot(matching: ClockView_Previews.previews, as: .default)
     }
 
     func testClockViewWithFace() {
-        let clockViews = ClockViewWithFace_Previews.previews.environment(\.clockIsAnimationEnabled, false)
-        assertSnapshot(matching: clockViews, as: .default)
+        assertSnapshot(matching: ClockViewWithFace_Previews.previews, as: .default)
     }
 
     func testClockViewArtNouveauStyle() {
-        let clockViews = ClockViewArtNouveauStyle_Previews.previews.environment(\.clockIsAnimationEnabled, false)
-        assertSnapshot(matching: clockViews, as: .default)
+        assertSnapshot(matching: ClockViewArtNouveauStyle_Previews.previews, as: .default)
     }
 
     func testClockViewDrawingStyle() {
-        let clockViews = ClockViewDrawingStyle_Previews.previews
-            .environment(\.clockIsAnimationEnabled, false)
-            .environment(\.clockRandom, .fixed)
-        assertSnapshot(matching: clockViews, as: .default)
+        assertSnapshot(
+            matching: ClockViewDrawingStyle_Previews.previews.environment(\.clockRandom, .fixed),
+            as: .default
+        )
     }
 
     func testClockViewSteampunkStyle() {
-        let clockViews = ClockViewSteampunkStyle_Previews.previews.environment(\.clockIsAnimationEnabled, false)
-        assertSnapshot(matching: clockViews, as: .default)
+        assertSnapshot(matching: ClockViewSteampunkStyle_Previews.previews, as: .default)
     }
 
     func testClockViewDifferentColors() {
-        let clockViews = ClockViewDifferentColors_Previews.previews.environment(\.clockIsAnimationEnabled, false)
-        assertSnapshot(matching: clockViews, as: .default)
+        assertSnapshot(matching: ClockViewDifferentColors_Previews.previews, as: .default)
     }
     #endif
 }

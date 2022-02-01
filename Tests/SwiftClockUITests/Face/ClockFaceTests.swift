@@ -6,9 +6,7 @@ import SwiftUI
 class ClockFaceTests: XCTestCase {
     #if !os(macOS)
     func testClockFaceSmiling() {
-        let clockFaces = ClockFaceSmiling_Previews.previews
-            .environment(\.clockIsAnimationEnabled, false)
-        assertSnapshot(matching: clockFaces, as: .default)
+        assertSnapshot(matching: ClockFaceSmiling_Previews.previews, as: .default)
     }
     #endif
 }
