@@ -7,8 +7,17 @@ struct SteampunkIndicators: View {
     static let lineWidthRatio: CGFloat = 1/100
     static let decorationLineWidthRatio: CGFloat = lineWidthRatio * 1/decorationScale
 
+    @State private var clowiseRotationAngle: Angle = .zero
+    @State private var counterClockwiseRotationAngle: Angle = .zero
+
     var body: some View {
         GeometryReader(content: content)
+            .onAppear {
+                withAnimation(.linear(duration: 4).repeatForever(autoreverses: false)) {
+                    clowiseRotationAngle += .fullRound
+                    counterClockwiseRotationAngle += -.fullRound
+                }
+            }
     }
 
     private func content(geometry: GeometryProxy) -> some View {
@@ -16,7 +25,7 @@ struct SteampunkIndicators: View {
             ZStack {
                 mainCogwheel(geometry: geometry)
                 moon(geometry: geometry)
-                Gears(strokeLineWidth: geometry.radius * Self.decorationLineWidthRatio).mask(moon(geometry: geometry))
+                gears(strokeLineWidth: geometry.radius * Self.decorationLineWidthRatio).mask(moon(geometry: geometry))
             }.scaleEffect(Self.decorationScale)
             circles(geometry: geometry)
             numbers
@@ -27,7 +36,7 @@ struct SteampunkIndicators: View {
         Cogwheel()
             .scale(0.8)
             .stroke(lineWidth: geometry.radius * Self.decorationLineWidthRatio)
-            .modifier(RotateOnAppear())
+            .rotationEffect(clowiseRotationAngle)
     }
 
     private func circles(geometry: GeometryProxy) -> some View {
@@ -45,7 +54,7 @@ struct SteampunkIndicators: View {
         ZStack {
             Moon().fill(Color.background)
             Moon().stroke(lineWidth: geometry.radius * Self.decorationLineWidthRatio)
-        }.modifier(BalanceOnAppear())
+        }
     }
 
     private var numbers: some View {
@@ -59,32 +68,26 @@ struct SteampunkIndicators: View {
     private func plateType(for romanNumber: String) -> Plate.PlateType {
         RomanNumber.limitedNumbers.contains(romanNumber) ? .hard : .soft
     }
-}
 
-struct Gears: View {
-    let strokeLineWidth: CGFloat
-
-    var body: some View {
-        GeometryReader(content: content)
-    }
-
-    private func content(geometry: GeometryProxy) -> some View {
-        Group {
-            Cogwheel(toothCount: 12, armCount: 3, addExtraHoles: false)
-                .scale(1/5)
-                .stroke(lineWidth: strokeLineWidth)
-                .modifier(RotateOnAppear(clockwise: false))
-                .position(GearPosition.first.position(geometry: geometry))
-            Cogwheel(toothCount: 8, armCount: 5, addExtraHoles: false)
-                .scale(1/6)
-                .fill(style: .init(eoFill: true, antialiased: true))
-                .modifier(RotateOnAppear(clockwise: true))
-                .position(GearPosition.second.position(geometry: geometry))
-            Cogwheel(toothCount: 12, armCount: 8, addExtraHoles: false)
-                .scale(1/4)
-                .stroke(lineWidth: strokeLineWidth)
-                .modifier(RotateOnAppear(clockwise: false))
-                .position(GearPosition.third.position(geometry: geometry))
+    private func gears(strokeLineWidth: CGFloat) -> some View {
+        GeometryReader { geometry in
+            Group {
+                Cogwheel(toothCount: 12, armCount: 3, addExtraHoles: false)
+                    .scale(1/5)
+                    .stroke(lineWidth: strokeLineWidth)
+                    .rotationEffect(counterClockwiseRotationAngle)
+                    .position(GearPosition.first.position(geometry: geometry))
+                Cogwheel(toothCount: 8, armCount: 5, addExtraHoles: false)
+                    .scale(1/6)
+                    .fill(style: .init(eoFill: true, antialiased: true))
+                    .rotationEffect(clowiseRotationAngle)
+                    .position(GearPosition.second.position(geometry: geometry))
+                Cogwheel(toothCount: 12, armCount: 8, addExtraHoles: false)
+                    .scale(1/4)
+                    .stroke(lineWidth: strokeLineWidth)
+                    .rotationEffect(counterClockwiseRotationAngle)
+                    .position(GearPosition.third.position(geometry: geometry))
+            }
         }
     }
 

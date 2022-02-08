@@ -115,10 +115,8 @@ struct Cogwheels_Previews: PreviewProvider {
             VStack(spacing: geometry.radius * -1/25) {
                 Cogwheel(toothCount: 10, armCount: 4, addExtraHoles: false)
                     .stroke()
-                    .modifier(RotateOnAppear())
                 Cogwheel(toothCount: 10, armCount: 4, addExtraHoles: false)
                     .stroke()
-                    .modifier(RotateOnAppear(clockwise: false))
             }
         }
     }
