@@ -1,11 +1,22 @@
 import SwiftUI
 
-struct WindUpKey: Shape {
+struct WindUpKey: Shape, Animatable {
+    var animationStep: Double
+
+    var animatableData: Double {
+        get { animationStep }
+        set { animationStep = newValue }
+    }
+
     func path(in rect: CGRect) -> Path {
         var path = Path()
         addOutline(to: &path, rect: rect)
         addCircles(to: &path, rect: rect)
-        return path
+        return path.applying(CGAffineTransform(
+            a: 1 - animationStep * 2, b: 0,
+            c: 0, d: 1,
+            tx: animationStep * 2 * rect.midX, ty: 0
+        ))
     }
 
     private func addOutline(to path: inout Path, rect: CGRect) {
@@ -60,8 +71,21 @@ struct WindUpKey: Shape {
 
 struct WindUpKey_Previews: PreviewProvider {
     static var previews: some View {
-        WindUpKey()
-            .stroke()
+        Preview()
+    }
+
+    private struct Preview: View {
+        @State private var animationStep: Double = 0
+
+        var body: some View {
+            VStack {
+                WindUpKey(animationStep: animationStep).stroke()
+
+                Text(String(format: "%.f", animationStep * 100))
+
+                Slider(value: $animationStep, in: 0...1)
+            }
             .padding()
+        }
     }
 }

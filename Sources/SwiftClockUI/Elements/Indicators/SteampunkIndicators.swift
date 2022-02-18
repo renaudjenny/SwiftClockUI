@@ -13,9 +13,11 @@ struct SteampunkIndicators: View {
     var body: some View {
         GeometryReader(content: content)
             .onAppear {
-                withAnimation(.linear(duration: 4).repeatForever(autoreverses: false)) {
-                    clowiseRotationAngle += .fullRound
-                    counterClockwiseRotationAngle += -.fullRound
+                DispatchQueue.main.async {
+                    withAnimation(.linear(duration: 4).repeatForever(autoreverses: false)) {
+                        clowiseRotationAngle += .fullRound
+                        counterClockwiseRotationAngle += -.fullRound
+                    }
                 }
             }
     }
