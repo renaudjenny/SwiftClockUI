@@ -3,14 +3,19 @@ import SwiftUI
 struct SteampunkClockBorder: View {
     static let borderWidthRatio: CGFloat = 1/80
 
-    var body: some View {
-        GeometryReader(content: content)
-    }
+    @State private var windUpKeyFlipAngle: Angle = .zero
 
-    private func content(geometry: GeometryProxy) -> some View {
-        ZStack {
-            windUpKey(geometry: geometry)
-            border(geometry: geometry)
+    var body: some View {
+        GeometryReader { geometry in
+            ZStack {
+                windUpKey(geometry: geometry)
+                border(geometry: geometry)
+            }
+        }
+        .onAppear {
+            withAnimation(.easeInOut(duration: 1).repeatForever(autoreverses: true)) {
+                windUpKeyFlipAngle += .fullRound
+            }
         }
     }
 
@@ -33,7 +38,7 @@ struct SteampunkClockBorder: View {
                     margin: -geometry.radius * 1/10
                 )
             )
-            .modifier(FlipOnAppear())
+            .rotation3DEffect(windUpKeyFlipAngle, axis: (x: 1, y: 1, z: 0))
     }
 }
 
