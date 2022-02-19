@@ -35,10 +35,9 @@ struct SteampunkIndicators: View {
     }
 
     private func mainCogwheel(geometry: GeometryProxy) -> some View {
-        Cogwheel()
+        Cogwheel(angle: clowiseRotationAngle)
             .scale(0.8)
             .stroke(lineWidth: geometry.radius * Self.decorationLineWidthRatio)
-            .rotationEffect(clowiseRotationAngle)
     }
 
     private func circles(geometry: GeometryProxy) -> some View {
@@ -74,20 +73,17 @@ struct SteampunkIndicators: View {
     private func gears(strokeLineWidth: CGFloat) -> some View {
         GeometryReader { geometry in
             Group {
-                Cogwheel(toothCount: 12, armCount: 3, addExtraHoles: false)
+                Cogwheel(toothCount: 12, armCount: 3, addExtraHoles: false, angle: -clowiseRotationAngle)
                     .scale(1/5)
                     .stroke(lineWidth: strokeLineWidth)
-                    .rotationEffect(counterClockwiseRotationAngle)
                     .position(GearPosition.first.position(geometry: geometry))
-                Cogwheel(toothCount: 8, armCount: 5, addExtraHoles: false)
+                Cogwheel(toothCount: 8, armCount: 5, addExtraHoles: false, angle: clowiseRotationAngle)
                     .scale(1/6)
                     .fill(style: .init(eoFill: true, antialiased: true))
-                    .rotationEffect(clowiseRotationAngle)
                     .position(GearPosition.second.position(geometry: geometry))
-                Cogwheel(toothCount: 12, armCount: 8, addExtraHoles: false)
+                Cogwheel(toothCount: 12, armCount: 8, addExtraHoles: false, angle: -clowiseRotationAngle)
                     .scale(1/4)
                     .stroke(lineWidth: strokeLineWidth)
-                    .rotationEffect(counterClockwiseRotationAngle)
                     .position(GearPosition.third.position(geometry: geometry))
             }
         }

@@ -1,9 +1,15 @@
 import SwiftUI
 
-struct Cogwheel: Shape {
-    var toothCount = 30
-    var armCount = 10
-    var addExtraHoles = true
+struct Cogwheel: Shape, Animatable {
+    private(set) var toothCount = 30
+    private(set) var armCount = 10
+    private(set) var addExtraHoles = true
+    private(set) var angle: Angle
+
+    var animatableData: Double {
+        get { angle.radians }
+        set { angle.radians = newValue }
+    }
 
     func path(in rect: CGRect) -> Path {
         var path = Path()
@@ -12,7 +18,12 @@ struct Cogwheel: Shape {
         path.move(to: CGPoint(x: rect.midX + rect.radius, y: rect.midY))
         addTeeth(to: &path, rect: rect)
         path.closeSubpath()
-        return path
+        return path.applying(CGAffineTransform(
+            a: cos(angle.radians), b: sin(angle.radians),
+            c: -sin(angle.radians), d: cos(angle.radians),
+            tx: rect.midX - rect.midX * cos(angle.radians) + rect.midY * sin(angle.radians),
+            ty: rect.midY - rect.midX * sin(angle.radians) - rect.midY * cos(angle.radians)
+        ))
     }
 
     private func addCenterCircle(to path: inout Path, rect: CGRect) {
@@ -95,28 +106,51 @@ struct Cogwheel: Shape {
 
 struct Cogwheel_Previews: PreviewProvider {
     static var previews: some View {
-        Cogwheel()
-            .stroke()
-            .padding()
+        Preview()
+    }
+
+    private struct Preview: View {
+        @State private var angle: Angle = .zero
+
+        var body: some View {
+            VStack {
+                Cogwheel(angle: angle).stroke().padding()
+                Spacer()
+                Text(String(format: "Degrees: %.f", angle.degrees))
+                Slider(value: $angle.degrees, in: 0...360).padding()
+            }
+        }
     }
 }
 
 struct Cogwheels_Previews: PreviewProvider {
     static var previews: some View {
-        Preview().padding()
+        Preview()
     }
 
     private struct Preview: View {
-        var body: some View {
-            GeometryReader(content: content)
-        }
+        @State private var angle: Angle = .zero
 
-        private func content(geometry: GeometryProxy) -> some View {
-            VStack(spacing: geometry.radius * -1/25) {
-                Cogwheel(toothCount: 10, armCount: 4, addExtraHoles: false)
-                    .stroke()
-                Cogwheel(toothCount: 10, armCount: 4, addExtraHoles: false)
-                    .stroke()
+        var body: some View {
+            VStack {
+                GeometryReader { geometry in
+                    VStack(spacing: geometry.radius * -1/25) {
+                        Cogwheel(toothCount: 10, armCount: 4, addExtraHoles: false, angle: angle)
+                            .stroke()
+                        Cogwheel(toothCount: 10, armCount: 4, addExtraHoles: false, angle: -angle)
+                            .stroke()
+                    }
+                    .padding()
+                }
+                Spacer()
+                Text(String(format: "Degrees: %.f", angle.degrees)).animation(nil)
+                Slider(value: $angle.degrees, in: 0...360).padding()
+                Button("Start animation") {
+                    guard angle == .zero else { return }
+                    withAnimation(.linear(duration: 5).repeatForever(autoreverses: false)) {
+                        angle += .fullRound
+                    }
+                }.padding()
             }
         }
     }
