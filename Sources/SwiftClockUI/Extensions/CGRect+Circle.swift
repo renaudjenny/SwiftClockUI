@@ -7,4 +7,7 @@ extension CGRect {
 
     var center: CGPoint { .init(x: midX, y: midY) }
     var radius: CGFloat { min(width, height)/2 }
+    var circle: CGRect {
+        CGRect(origin: origin, size: CGSize(width: radius * 2, height: radius * 2))
+    }
 }

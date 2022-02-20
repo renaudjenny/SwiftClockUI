@@ -27,7 +27,7 @@ struct SteampunkIndicators: View {
             ZStack {
                 mainCogwheel(geometry: geometry)
                 moon(geometry: geometry)
-                gears(strokeLineWidth: geometry.radius * Self.decorationLineWidthRatio).mask(moon(geometry: geometry))
+                gears().mask(moon(geometry: geometry))
             }.scaleEffect(Self.decorationScale)
             circles(geometry: geometry)
             numbers
@@ -70,44 +70,28 @@ struct SteampunkIndicators: View {
         RomanNumber.limitedNumbers.contains(romanNumber) ? .hard : .soft
     }
 
-    private func gears(strokeLineWidth: CGFloat) -> some View {
-        GeometryReader { geometry in
-            Group {
-                Cogwheel(toothCount: 12, armCount: 3, addExtraHoles: false, angle: -clowiseRotationAngle)
-                    .scale(1/5)
-                    .stroke(lineWidth: strokeLineWidth)
-                    .position(GearPosition.first.position(geometry: geometry))
-                Cogwheel(toothCount: 8, armCount: 5, addExtraHoles: false, angle: clowiseRotationAngle)
-                    .scale(1/6)
-                    .fill(style: .init(eoFill: true, antialiased: true))
-                    .position(GearPosition.second.position(geometry: geometry))
-                Cogwheel(toothCount: 12, armCount: 8, addExtraHoles: false, angle: -clowiseRotationAngle)
-                    .scale(1/4)
-                    .stroke(lineWidth: strokeLineWidth)
-                    .position(GearPosition.third.position(geometry: geometry))
-            }
-        }
-    }
-
-    private enum GearPosition {
-        case first, second, third
-
-        func position(geometry: GeometryProxy) -> CGPoint {
-            switch self {
-            case .first: return CGPoint(
-                x: geometry.frame(in: .local).midX - geometry.radius * 4/5,
-                y: geometry.frame(in: .local).midY + geometry.radius * 1/4
+    private func gears() -> some View {
+        Cogwheels(
+            data: [
+                .init(
+                    cogwheel: (toothCount: 12, armCount: 3),
+                    relativeOffset: (x: 11.0/100, y: 61.0/100),
+                    scale: 1.0/5
+                ),
+                .init(
+                    cogwheel: (toothCount: 8, armCount: 5),
+                    relativeOffset: (x: 26.0/100, y: 71.0/100),
+                    scale: 1.0/6,
+                    isClockwise: false
+                ),
+                .init(
+                    cogwheel: (toothCount: 12, armCount: 8),
+                    relativeOffset: (x: 38.0/100, y: 87.0/100),
+                    scale: 1.0/4
                 )
-            case .second: return CGPoint(
-                x: geometry.frame(in: .local).midX - geometry.radius * 2/4,
-                y: geometry.frame(in: .local).midY + geometry.radius * 4/10
-                )
-            case .third: return CGPoint(
-                x: geometry.frame(in: .local).midX - geometry.radius * 1/4,
-                y: geometry.frame(in: .local).midY + geometry.radius * 7/10
-                )
-            }
-        }
+            ],
+            angle: clowiseRotationAngle
+        ).stroke()
     }
 }
 
