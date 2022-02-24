@@ -31,29 +31,10 @@ struct Plate: View {
     private var rivets: some View {
         Group {
             if self.type == .soft {
-                softRivets
+                SoftRivets()
             } else {
-                hardRivets
+                HardRivets()
             }
-        }
-    }
-
-    private var softRivets: some View {
-        ZStack {
-            Circle()
-                .scale(1/20)
-                .modifier(PositionInCircle(angle: .degrees(-45), marginRatio: 2/5))
-            Circle()
-                .scale(1/20)
-                .modifier(PositionInCircle(angle: .degrees(135), marginRatio: 2/5))
-        }
-    }
-
-    private var hardRivets: some View {
-        ForEach(0..<20) { rivet in
-            Circle()
-                .scale(1/20)
-            .modifier(PositionInCircle(angle: .degrees(Double(rivet) * 360/20), marginRatio: 1/11))
         }
     }
 }
@@ -64,11 +45,51 @@ extension Plate {
     }
 }
 
+struct SoftRivets: Shape {
+    func path(in rect: CGRect) -> Path {
+        var path = Path()
+        let radius = rect.radius * 1/20
+
+        let center1 = CGPoint.inCircle(
+            rect,
+            for: .radians(7/4 * .pi),
+            margin: rect.radius * 40/100
+        )
+        let center2 = CGPoint.inCircle(
+            rect,
+            for: .radians(3/4 * .pi),
+            margin: rect.radius * 40/100
+        )
+        path.addCircle(CGRect.circle(center: center1, radius: radius))
+        path.addCircle(CGRect.circle(center: center2, radius: radius))
+
+        return path
+    }
+}
+
+struct HardRivets: Shape {
+    func path(in rect: CGRect) -> Path {
+        var path = Path()
+        let radius = rect.radius * 1/20
+        for rivet in 0..<20 {
+            let rivet = CGFloat(rivet)
+            let center = CGPoint.inCircle(
+                rect,
+                for: .radians(.pi/10 * rivet),
+                margin: rect.radius * 1/12
+            )
+            let circleRect = CGRect.circle(center: center, radius: radius)
+            path.addCircle(circleRect)
+        }
+        return path
+    }
+}
+
 struct Plate_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
             Plate(type: .soft, text: "I")
-            Plate(type: .hard, text: "XII")
+            Plate(type: .hard, text: "XII").frame(width: 450, height: 200)
         }.padding()
     }
 }
