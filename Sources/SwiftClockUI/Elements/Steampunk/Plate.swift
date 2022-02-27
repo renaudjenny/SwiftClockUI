@@ -4,12 +4,9 @@ struct Plate: View {
     static let lineWidth: CGFloat = 6
     let type: PlateType
     let text: String
+    @State private var rect: CGRect = .zero
 
     var body: some View {
-        GeometryReader(content: content)
-    }
-
-    private func content(geometry: GeometryProxy) -> some View {
         ZStack {
             if type == .hard {
                 Circle().fill(Color.background)
@@ -24,8 +21,12 @@ struct Plate: View {
                 .scale(10/12)
             rivets
             Text(text)
-                .font(.system(size: geometry.radius.rounded(), design: .serif))
+                .font(.system(size: rect.radius.rounded(), design: .serif))
         }
+        .background(GeometryReader { geometry in
+            Color.clear.preference(key: RectPreferenceKey.self, value: geometry.circle)
+        })
+        .onPreferenceChange(RectPreferenceKey.self) { rect = $0 }
     }
 
     private var rivets: some View {
@@ -45,7 +46,7 @@ extension Plate {
     }
 }
 
-struct SoftRivets: Shape {
+private struct SoftRivets: Shape {
     func path(in rect: CGRect) -> Path {
         var path = Path()
         let radius = rect.radius * 1/20
@@ -67,7 +68,7 @@ struct SoftRivets: Shape {
     }
 }
 
-struct HardRivets: Shape {
+private struct HardRivets: Shape {
     func path(in rect: CGRect) -> Path {
         var path = Path()
         let radius = rect.radius * 1/20
@@ -83,6 +84,11 @@ struct HardRivets: Shape {
         }
         return path
     }
+}
+
+private struct RectPreferenceKey: PreferenceKey {
+    static var defaultValue: CGRect = .zero
+    static func reduce(value: inout CGRect, nextValue: () -> CGRect) {}
 }
 
 struct Plate_Previews: PreviewProvider {
