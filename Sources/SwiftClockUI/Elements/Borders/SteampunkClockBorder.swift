@@ -1,15 +1,13 @@
 import SwiftUI
 
 struct SteampunkClockBorder: View {
-    static let borderWidthRatio: CGFloat = 1/80
-
     @State private var windUpKeyAnimationStep = 0.0
 
     var body: some View {
         GeometryReader { geometry in
             ZStack {
                 windUpKey(geometry: geometry)
-                border(geometry: geometry)
+                border()
             }
         }
         .onAppear {
@@ -21,16 +19,16 @@ struct SteampunkClockBorder: View {
         }
     }
 
-    private func border(geometry: GeometryProxy) -> some View {
+    private func border() -> some View {
         ZStack {
             Circle().fill(Color.background)
-            Circle().strokeBorder(lineWidth: geometry.radius * Self.borderWidthRatio)
+            Circle().strokeBorder(lineWidth: 2)
         }
     }
 
     private func windUpKey(geometry: GeometryProxy) -> some View {
         WindUpKey(animationStep: windUpKeyAnimationStep)
-            .stroke(lineWidth: geometry.radius * Self.borderWidthRatio)
+            .stroke(lineWidth: 2)
             .rotation(.degrees(-45))
             .frame(width: geometry.radius * 1/4, height: geometry.radius * 1/4)
             .position(

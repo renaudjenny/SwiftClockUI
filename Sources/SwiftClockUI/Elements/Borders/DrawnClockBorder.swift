@@ -5,16 +5,9 @@ struct DrawnClockBorder: View {
     var drawStep: CGFloat?
     @State private var animate = false
 
-    private static let borderWidthRatio: CGFloat = 1/35
-
-
     var body: some View {
-        GeometryReader(content: content)
-    }
-
-    private func content(geometry: GeometryProxy) -> some View {
         DrawnCircle(drawStep: drawStep ?? (animate ? 1 : 0), random: random)
-            .strokeBorder(lineWidth: geometry.radius * Self.borderWidthRatio)
+            .strokeBorder(lineWidth: 2)
             .onAppear {
                 withAnimation(.easeInOut(duration: 1)) {
                     self.animate = true
