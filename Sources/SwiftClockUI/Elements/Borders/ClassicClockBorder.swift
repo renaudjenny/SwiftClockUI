@@ -2,7 +2,7 @@ import SwiftUI
 
 struct ClassicClockBorder: View {
     var body: some View {
-        Circle().stroke(lineWidth: 2)
+        Circle().strokeBorder(lineWidth: 2)
     }
 }
 

@@ -6,10 +6,8 @@ import SwiftUI
 class DrawnClockBorderTests: XCTestCase {
     #if !os(macOS)
     func testDrawnClockBorder() {
-        assertSnapshot(
-            matching: DrawnClockBorder_Previews.previews.environment(\.clockRandom, .fixed),
-            as: .default
-        )
+        let preview = DrawnClockBorder_Previews.previews.environment(\.clockRandom, .fixed)
+        assertSnapshot(matching: preview, as: .default)
     }
     #endif
 }

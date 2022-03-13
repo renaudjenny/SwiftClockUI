@@ -2,6 +2,7 @@ import SwiftUI
 
 struct DrawnArm: View {
     @Environment(\.clockRandom) var random
+    @Environment(\.accessibilityReduceMotion) var reduceMotion
     private static let widthRatio: CGFloat = 1/20
     let type: ArmType
     @State private var drawStep: CGFloat = 1
@@ -9,6 +10,7 @@ struct DrawnArm: View {
     var body: some View {
         DrawnArmShape(type: type, drawStep: drawStep, controlRatios: .init(random: self.random))
             .onAppear {
+                guard !reduceMotion else { return }
                 self.drawStep = 0.01
                 withAnimation(Animation.easeInOut.delay(0.01)) {
                     self.drawStep = 1
