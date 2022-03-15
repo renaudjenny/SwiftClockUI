@@ -6,9 +6,6 @@ on:
   pull_request:
     branches: [ main ]
 
-env:
-  SNAPSHOT_ARTIFACTS: "SnapshotTesting/"
-
 jobs:
   build-ios:
     runs-on: macOS-11
@@ -35,11 +32,14 @@ jobs:
       if: failure()
       with:
         name: failed-screenshots
-        path: '/tmp/SnapshotTesting'
+        path: '~/Library/Developer/CoreSimulator/Devices/*/data/Containers/Data/Application/*/tmp'
         retention-days: 5
 
   build-macos:
     runs-on: macOS-11.0
+
+    env:
+      SNAPSHOT_ARTIFACTS: "SnapshotTesting/"
 
     steps:
     - uses: actions/checkout@v2
