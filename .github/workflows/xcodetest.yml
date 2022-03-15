@@ -32,11 +32,11 @@ jobs:
       if: failure()
       with:
         name: failed-screenshots
-        path: '~/Library/Developer/CoreSimulator/Devices/*/data/Containers/Data/Application/*/tmp'
+        path: '~/Library/Developer/CoreSimulator/Devices/*/data'
         retention-days: 5
 
   build-macos:
-    runs-on: macOS-11.0
+    runs-on: macOS-11
 
     env:
       SNAPSHOT_ARTIFACTS: "SnapshotTesting/"
