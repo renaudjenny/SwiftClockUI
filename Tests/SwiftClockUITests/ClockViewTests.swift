@@ -19,7 +19,9 @@ class ClockTests: XCTestCase {
     }
 
     func testClockViewDrawingStyle() {
-        let preview = ClockViewDrawingStyle_Previews.previews.environment(\.clockRandom, .fixed)
+        let preview = ClockViewDrawingStyle_Previews.previews
+            .environment(\.clockRandom, .fixed)
+            .environment(\.clockAnimationEnabled, false)
         assertSnapshot(matching: preview, as: .default)
     }
 

@@ -22,12 +22,16 @@ class ArmTests: XCTestCase {
     }
 
     func testDrawningArm() {
-        let preview = DrawingDesignArm_Previews.previews.environment(\.clockRandom, .fixed)
+        let preview = DrawingDesignArm_Previews.previews
+            .environment(\.clockRandom, .fixed)
+            .environment(\.clockAnimationEnabled, false)
         assertSnapshot(matching: preview, as: .default)
     }
 
     func testDrawnArms() {
-        let preview = DrawnArm_Previews.previews.environment(\.clockRandom, .fixed)
+        let preview = DrawnArm_Previews.previews
+            .environment(\.clockRandom, .fixed)
+            .environment(\.clockAnimationEnabled, false)
         assertSnapshot(matching: preview, as: .default)
     }
     #endif

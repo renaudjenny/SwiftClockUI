@@ -32,7 +32,7 @@ jobs:
       if: failure()
       with:
         name: failed-screenshots
-        path: '~/Library/Developer/CoreSimulator/Devices/*/data'
+        path: '~/Library/Developer/CoreSimulator/Devices/*/data/tmp'
         retention-days: 5
 
   build-macos:

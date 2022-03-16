@@ -18,7 +18,8 @@ struct DrawnIndicators: View {
 
 private struct Hours: View {
     @Environment(\.clockRandom) var random
-    @State private var drawStep: CGFloat = 0
+    @Environment(\.clockAnimationEnabled) var isAnimationEnabled
+    @State private var drawStep: CGFloat = 1
 
     var body: some View {
         GeometryReader { geometry in
@@ -31,8 +32,10 @@ private struct Hours: View {
                         marginRatio: 1/10
                     ))
                     .onAppear {
+                        guard isAnimationEnabled else { return }
+                        drawStep = 0.01
                         withAnimation(.default.delay(0.01)) {
-                            self.drawStep = 1
+                            drawStep = 1
                         }
                     }
             }
@@ -43,7 +46,8 @@ private struct Hours: View {
 private struct Minutes: View {
     @Environment(\.clockConfiguration) var configuration
     @Environment(\.clockRandom) var random
-    @State private var drawStep: CGFloat = 0
+    @Environment(\.clockAnimationEnabled) var isAnimationEnabled
+    @State private var drawStep: CGFloat = 1
 
     var body: some View {
         ForEach(1...60, id: \.self) { minute in
@@ -55,8 +59,10 @@ private struct Minutes: View {
                 }
             }
             .onAppear {
+                guard isAnimationEnabled else { return }
+                drawStep = 0.01
                 withAnimation(.default.delay(0.01)) {
-                    self.drawStep = 1
+                    drawStep = 1
                 }
             }
         }
