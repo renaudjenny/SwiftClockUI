@@ -10,10 +10,8 @@ class SteampunkIndicatorsTests: XCTestCase {
     }
 
     func testSteampunkIndicatorsWithLimitedHours() {
-        assertSnapshot(
-            matching: SteampunkIndicatorsWithLimitedHours_Previews.previews,
-            as: .default
-        )
+        let preview = SteampunkIndicatorsWithLimitedHours_Previews.previews
+        assertSnapshot(matching: preview, as: .default)
     }
     #endif
 }

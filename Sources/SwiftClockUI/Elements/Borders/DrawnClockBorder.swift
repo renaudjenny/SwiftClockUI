@@ -2,15 +2,17 @@ import SwiftUI
 
 struct DrawnClockBorder: View {
     @Environment(\.clockRandom) var random
-    var drawStep: CGFloat?
-    @State private var animate = false
+    @Environment(\.clockAnimationEnabled) var isAnimationEnabled
+    @State private var drawStep: CGFloat = 1
 
     var body: some View {
-        DrawnCircle(drawStep: drawStep ?? (animate ? 1 : 0), random: random)
-            .strokeBorder(lineWidth: 2)
+        DrawnCircle(drawStep: drawStep, random: random)
+            .strokeBorder(lineWidth: 4)
             .onAppear {
-                withAnimation(.easeInOut(duration: 1)) {
-                    self.animate = true
+                guard isAnimationEnabled else { return }
+                drawStep = 0.01
+                withAnimation(.easeInOut(duration: 1).delay(0.01)) {
+                    drawStep = 1
                 }
             }
     }
@@ -69,21 +71,22 @@ extension DrawnCircle: InsettableShape {
 #if DEBUG
 struct DrawnClockBorder_Previews: PreviewProvider {
     static var previews: some View {
-        DrawnClockBorder(drawStep: 1)
+        DrawnClockBorder()
     }
 }
 
-struct DrawnClockBorderAnimation_Previews: PreviewProvider {
+struct DrawnCircleAnimation_Previews: PreviewProvider {
     static var previews: some View {
         Preview()
     }
 
     private struct Preview: View {
+        @Environment(\.clockRandom) var random
         @State private var drawStep: CGFloat = 1
 
         var body: some View {
             VStack {
-                DrawnClockBorder(drawStep: drawStep)
+                DrawnCircle(drawStep: drawStep, random: random).strokeBorder(lineWidth: 4)
                 Slider(value: $drawStep)
             }
         }
