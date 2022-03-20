@@ -2,44 +2,51 @@ import SwiftUI
 
 struct DrawnIndicators: View {
     @Environment(\.clockConfiguration) var configuration
+    @Environment(\.clockAnimationEnabled) var isAnimationEnabled
+    @State private var drawStep: CGFloat = 1
 
     var body: some View {
         ZStack {
             if configuration.isHourIndicatorsShown {
-                Hours()
+                HoursShape(drawStep: 1)
             }
             if configuration.isMinuteIndicatorsShown {
                 Minutes()
             }
             DrawnNumbers()
         }
+        .onAppear {
+            guard isAnimationEnabled else { return }
+            drawStep = 0.01
+            withAnimation(.default.delay(0.01)) {
+                drawStep = 1
+            }
+        }
     }
 }
 
-private struct Hours: View {
+private struct HoursShape: Shape {
     @Environment(\.clockRandom) var random
-    @Environment(\.clockAnimationEnabled) var isAnimationEnabled
-    @State private var drawStep: CGFloat = 1
+    var drawStep: CGFloat
 
-    var body: some View {
-        GeometryReader { geometry in
-            ForEach(1...12, id: \.self) { hour in
-                DrawnIndicator(drawStep: self.drawStep, controlRatios: .init(random: self.random))
-                    .rotation(Angle(degrees: Double(hour) * .hourInDegree))
-                    .frame(width: geometry.radius/50, height: geometry.radius/10)
-                    .modifier(PositionInCircle(
-                        angle: .degrees(Double(hour) * .hourInDegree),
-                        marginRatio: 1/10
-                    ))
-                    .onAppear {
-                        guard isAnimationEnabled else { return }
-                        drawStep = 0.01
-                        withAnimation(.default.delay(0.01)) {
-                            drawStep = 1
-                        }
-                    }
-            }
-        }
+    func path(in rect: CGRect) -> Path {
+        var path = Path()
+        (1...12).map { hour in
+            let position: CGPoint = .inCircle(
+                rect,
+                for: .degrees(Double(hour) * .hourInDegree),
+                margin: rect.radius * 1/10
+            )
+            return DrawnIndicator(drawStep: drawStep, controlRatios: .init(random: random))
+                .rotation(Angle(degrees: Double(hour) * .hourInDegree))
+                .path(in: CGRect(
+                    x: position.x - rect.radius/100,
+                    y: position.y - rect.radius/20,
+                    width: rect.radius/50,
+                    height: rect.radius/10
+                ))
+        }.forEach { path.addPath($0) }
+        return path
     }
 }
 
