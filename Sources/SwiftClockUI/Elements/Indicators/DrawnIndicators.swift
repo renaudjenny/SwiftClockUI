@@ -8,7 +8,7 @@ struct DrawnIndicators: View {
     var body: some View {
         ZStack {
             if configuration.isHourIndicatorsShown {
-                HoursShape(drawStep: 1)
+                HoursShape(drawStep: drawStep)
             }
             if configuration.isMinuteIndicatorsShown {
                 Minutes()
@@ -111,7 +111,8 @@ private struct DrawnIndicator: Shape {
     func path(in rect: CGRect) -> Path {
         var path = Path()
         let thickness = rect.width
-        let bottomCenter = CGPoint(x: rect.midX, y: rect.maxY  - (rect.maxY * (1 - drawStep)))
+        let maxY = rect.maxY - (rect.maxY - rect.minY) * (1 - drawStep)
+        let bottomCenter = CGPoint(x: rect.midX, y: maxY)
         let bottomRight = CGPoint(
             x: bottomCenter.x + thickness,
             y: bottomCenter.y
@@ -201,6 +202,30 @@ struct DrawnIndicators_Previews: PreviewProvider {
             Circle().stroke()
             DrawnIndicators()
         }.padding()
+    }
+}
+
+struct DrawnIndicatorsAnimated_Previews: PreviewProvider {
+    static var previews: some View {
+        Preview()
+    }
+
+    private struct Preview: View {
+        @State private var drawStep: CGFloat = 1
+
+        var body: some View {
+            VStack {
+                Spacer()
+                ZStack {
+                    Circle().stroke()
+                    HoursShape(drawStep: drawStep)
+                    Minutes()
+                    DrawnNumbers()
+                }.padding()
+                Spacer()
+                Slider(value: $drawStep).padding()
+            }.padding()
+        }
     }
 }
 
