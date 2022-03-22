@@ -11,7 +11,7 @@ struct DrawnIndicators: View {
                 HoursShape(drawStep: drawStep)
             }
             if configuration.isMinuteIndicatorsShown {
-                Minutes()
+                MinutesShape(drawStep: drawStep)
             }
             DrawnNumbers()
         }
@@ -50,47 +50,30 @@ private struct HoursShape: Shape {
     }
 }
 
-private struct Minutes: View {
+private struct MinutesShape: Shape {
     @Environment(\.clockConfiguration) var configuration
     @Environment(\.clockRandom) var random
-    @Environment(\.clockAnimationEnabled) var isAnimationEnabled
-    @State private var drawStep: CGFloat = 1
+    var drawStep: CGFloat
 
-    var body: some View {
-        ForEach(1...60, id: \.self) { minute in
-            Group {
-                if self.isOverlapingHour(minute: minute) {
-                    EmptyView()
-                } else {
-                    self.indicator(minute: minute)
-                }
-            }
-            .onAppear {
-                guard isAnimationEnabled else { return }
-                drawStep = 0.01
-                withAnimation(.default.delay(0.01)) {
-                    drawStep = 1
-                }
-            }
-        }
-    }
-
-    private func indicator(minute: Int) -> some View {
-        Group {
-            if self.isOverlapingHour(minute: minute) {
-                EmptyView()
-            } else {
-                GeometryReader { geometry in
-                    DrawnIndicator(drawStep: drawStep, controlRatios: .init(random: random))
-                        .rotation(Angle(degrees: Double(minute) * .minuteInDegree))
-                        .frame(width: geometry.circle.radius/70, height: geometry.circle.radius/20)
-                        .modifier(PositionInCircle(
-                            angle: .degrees(Double(minute) * .minuteInDegree),
-                            marginRatio: 1/15
-                        ))
-                }
-            }
-        }
+    func path(in rect: CGRect) -> Path {
+        var path = Path()
+        (1...60).map { minute in
+            guard !isOverlapingHour(minute: minute) else { return nil }
+            let position: CGPoint = .inCircle(
+                rect,
+                for: .degrees(Double(minute) * .minuteInDegree),
+                margin: rect.radius * 1/15
+            )
+            return DrawnIndicator(drawStep: drawStep, controlRatios: .init(random: random))
+                .rotation(Angle(degrees: Double(minute) * .minuteInDegree))
+                .path(in: CGRect(
+                    x: position.x - rect.radius/140,
+                    y: position.y - rect.radius/40,
+                    width: rect.radius/70,
+                    height: rect.radius/20
+                ))
+        }.compactMap { $0 }.forEach { path.addPath($0) }
+        return path
     }
 
     private func isOverlapingHour(minute: Int) -> Bool {
@@ -219,7 +202,7 @@ struct DrawnIndicatorsAnimated_Previews: PreviewProvider {
                 ZStack {
                     Circle().stroke()
                     HoursShape(drawStep: drawStep)
-                    Minutes()
+                    MinutesShape(drawStep: drawStep)
                     DrawnNumbers()
                 }.padding()
                 Spacer()
