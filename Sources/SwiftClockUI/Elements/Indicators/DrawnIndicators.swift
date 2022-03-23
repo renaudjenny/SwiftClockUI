@@ -29,6 +29,11 @@ private struct HoursShape: Shape {
     @Environment(\.clockRandom) var random
     var drawStep: CGFloat
 
+    var animatableData: CGFloat {
+        get { drawStep }
+        set { drawStep = newValue }
+    }
+
     func path(in rect: CGRect) -> Path {
         var path = Path()
         (1...12).map { hour in
@@ -54,6 +59,11 @@ private struct MinutesShape: Shape {
     @Environment(\.clockConfiguration) var configuration
     @Environment(\.clockRandom) var random
     var drawStep: CGFloat
+
+    var animatableData: CGFloat {
+        get { drawStep }
+        set { drawStep = newValue }
+    }
 
     func path(in rect: CGRect) -> Path {
         var path = Path()

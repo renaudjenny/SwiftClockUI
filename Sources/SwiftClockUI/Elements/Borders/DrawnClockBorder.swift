@@ -7,7 +7,7 @@ struct DrawnClockBorder: View {
 
     var body: some View {
         DrawnCircle(drawStep: drawStep, random: random)
-            .strokeBorder(lineWidth: 4)
+            .strokeBorder(lineWidth: 2)
             .onAppear {
                 guard isAnimationEnabled else { return }
                 drawStep = 0.01
@@ -86,7 +86,7 @@ struct DrawnCircleAnimation_Previews: PreviewProvider {
 
         var body: some View {
             VStack {
-                DrawnCircle(drawStep: drawStep, random: random).strokeBorder(lineWidth: 4)
+                DrawnCircle(drawStep: drawStep, random: random).strokeBorder(lineWidth: 2)
                 Slider(value: $drawStep)
             }
         }
