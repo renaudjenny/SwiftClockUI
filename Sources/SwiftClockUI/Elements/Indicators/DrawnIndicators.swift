@@ -158,7 +158,6 @@ struct DrawnNumbers: View {
     @Environment(\.clockRandom) var random
     private static let hours = [12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
     private static let limitedHours = [12, 3, 6, 9]
-    private static let marginRatio: CGFloat = 2/7
     private static let textFontRatio: CGFloat = 1/5
 
     var body: some View {
@@ -170,17 +169,16 @@ struct DrawnNumbers: View {
     private func hourText(_ hour: Int) -> some View {
         Text("\(hour)")
             .modifier(PositionInCircle(
-                angle: .degrees(Double(hour) * .hourInDegree), marginRatio: self.marginRatio
+                angle: .degrees(Double(hour) * .hourInDegree),
+                marginRatio: isIndicatorsShown ? 30/100 : 20/100
             ))
             .modifier(FontProportional(ratio: Self.textFontRatio))
             .rotationEffect(random.angle() ?? .zero, anchor: .center)
             .scaleEffect(random.scale() ?? 1, anchor: .center)
     }
 
-    private var marginRatio: CGFloat {
+    private var isIndicatorsShown: Bool {
         configuration.isHourIndicatorsShown || configuration.isMinuteIndicatorsShown
-            ? Self.marginRatio
-            : Self.marginRatio/2
     }
 
     private var configurationHours: [Int] {
@@ -239,6 +237,26 @@ struct DrawnIndicatorsAnimatedElements_Previews: PreviewProvider {
                 Slider(value: $drawStep).padding()
             }.padding()
         }
+    }
+}
+
+struct DrawnNumbers_Previews: PreviewProvider {
+    static var previews: some View {
+        VStack {
+            ZStack {
+                Circle().strokeBorder()
+                DrawnIndicators()
+            }
+            ZStack {
+                Circle().strokeBorder()
+                DrawnIndicators()
+            }
+            .environment(\.clockConfiguration, ClockConfiguration(
+                isLimitedHoursShown: false,
+                isMinuteIndicatorsShown: false,
+                isHourIndicatorsShown: false
+            ))
+        }.padding()
     }
 }
 #endif
