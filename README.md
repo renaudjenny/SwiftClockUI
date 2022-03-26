@@ -11,6 +11,8 @@ This library has been tested
 * ✅📱 iOS 14
 * ✅📱 iOS 15
 
+*For compatibility with Xcode version older than 13.3, I would recommend to checkout the 1.4.x tag, it should compile with Xcode 11 and greater*
+
 ## Bind a date
 
 ```swift
@@ -106,7 +108,7 @@ Edit your `Package.swift` to add this library.
 let package = Package(
     ...
     dependencies: [
-        .package(url: "https://github.com/renaudjenny/SwiftClockUI", from: "1.4.0"),
+        .package(url: "https://github.com/renaudjenny/SwiftClockUI", from: "2.0.0"),
         ...
     ],
     targets: [
