@@ -183,7 +183,7 @@ struct Cogwheels_Previews: PreviewProvider {
                             relativeOffset: (x: 1/2, y: 74/100),
                             scale: 1/2,
                             isClockwise: false
-                        )
+                        ),
                     ],
                     angle: angle
                 ).stroke()

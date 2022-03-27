@@ -123,3 +123,15 @@ let package = Package(
 ## App using this library
 
 * [📲 Tell Time UK](https://apps.apple.com/gb/app/tell-time-uk/id1496541173): https://github.com/renaudjenny/telltime
+
+## For maintainers
+
+If you want to help maintaining this library, I would suggest to add this **git hooks** on `pre-commit`
+
+In a terminal opened in the repo folder, executes these commands
+
+```bash
+echo '#!/bin/sh' > .git/hooks/pre-commit
+echo '' >> .git/hooks/pre-commit
+echo 'swiftlint' >> .git/hooks/pre-commit
+```

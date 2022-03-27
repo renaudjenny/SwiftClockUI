@@ -67,7 +67,7 @@ struct SteampunkIndicators: View {
                     cogwheel: (toothCount: 12, armCount: 8),
                     relativeOffset: (x: 38.0/100, y: 87.0/100),
                     scale: 1.0/4
-                )
+                ),
             ],
             angle: animationRotationAngle
         ).scale(70/100).stroke()
