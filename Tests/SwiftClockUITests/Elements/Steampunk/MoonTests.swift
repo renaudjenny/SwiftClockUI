@@ -6,10 +6,7 @@ import SwiftUI
 class MoonTests: XCTestCase {
     #if !os(macOS)
     func testMoon() {
-        assertSnapshot(
-            matching: UIHostingController(rootView: Moon_Previews.previews),
-            as: .image(on: .iPhoneSe)
-        )
+        assertSnapshot(matching: Moon_Previews.previews, as: .default)
     }
     #endif
 }
