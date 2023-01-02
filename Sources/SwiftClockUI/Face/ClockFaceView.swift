@@ -53,6 +53,16 @@ struct ClockFaceView: View {
 #if DEBUG
 struct ClockFaceSmiling_Previews: PreviewProvider {
     static var previews: some View {
+        ZStack {
+            Circle().strokeBorder()
+            ClockFaceView()
+        }
+        .environment(\.clockFaceShown, true)
+    }
+}
+
+struct ClockFaceSmilingHideShow_Previews: PreviewProvider {
+    static var previews: some View {
         Group {
             Preview()
             Preview().previewLayout(.fixed(width: 800, height: 400))

@@ -141,7 +141,16 @@ struct Cogwheels: Shape, Animatable {
     }
 }
 
+#if DEBUG
 struct Cogwheel_Previews: PreviewProvider {
+    static var previews: some View {
+        Cogwheel(angle: .zero)
+            .stroke()
+            .padding(1)
+    }
+}
+
+struct CogwheelWithRotation_Previews: PreviewProvider {
     static var previews: some View {
         Preview()
     }
@@ -161,6 +170,30 @@ struct Cogwheel_Previews: PreviewProvider {
 }
 
 struct Cogwheels_Previews: PreviewProvider {
+    static var previews: some View {
+        Cogwheels(
+            data: [
+                .init(
+                    cogwheel: (toothCount: 10, armCount: 4),
+                    relativeOffset: (x: 1/2, y: 26/100),
+                    scale: 1/2,
+                    isClockwise: true
+                ),
+                .init(
+                    cogwheel: (toothCount: 10, armCount: 4),
+                    relativeOffset: (x: 1/2, y: 74/100),
+                    scale: 1/2,
+                    isClockwise: false
+                ),
+            ],
+            angle: .zero
+        )
+        .stroke()
+        .padding(1)
+    }
+}
+
+struct CogwheelsWithRotation_Previews: PreviewProvider {
     static var previews: some View {
         Preview()
     }
@@ -200,3 +233,4 @@ struct Cogwheels_Previews: PreviewProvider {
         }
     }
 }
+#endif

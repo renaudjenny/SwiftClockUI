@@ -44,11 +44,7 @@ struct SteampunkClockBorder: View {
 #if DEBUG
 struct SteampunkClockBorder_Previews: PreviewProvider {
     static var previews: some View {
-        Group {
-            SteampunkClockBorder()
-            SteampunkClockBorder()
-                .previewLayout(.fixed(width: 400, height: 200))
-        }
+        SteampunkClockBorder()
     }
 }
 #endif

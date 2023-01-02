@@ -5,7 +5,7 @@ import SwiftUI
 
 class SteampunkClockBorderTests: XCTestCase {
     #if !os(macOS)
-    func testSteampunkClockBorderBorder() {
+    func testSteampunkClockBorder() {
         assertSnapshot(matching: SteampunkClockBorder_Previews.previews, as: .default)
     }
     #endif

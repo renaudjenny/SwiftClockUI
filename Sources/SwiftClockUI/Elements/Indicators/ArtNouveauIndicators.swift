@@ -14,7 +14,9 @@ struct ArtNouveauIndicators: View {
                 self.romanHour(for: romanNumber, geometry: geometry)
             }
             if configuration.isMinuteIndicatorsShown {
-                Sun().stroke()
+                Sun()
+                    .stroke()
+                    .padding(2)
             }
         }
     }
@@ -87,9 +89,9 @@ struct ArtNouveauIndicators: View {
 struct ArtNouveauIndicators_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
-            Circle().stroke()
+            Circle().strokeBorder()
             ArtNouveauIndicators()
-        }.padding()
+        }
     }
 }
 #endif
