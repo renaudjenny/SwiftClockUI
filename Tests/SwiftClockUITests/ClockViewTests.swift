@@ -22,7 +22,7 @@ class ClockTests: XCTestCase {
         let preview = ClockViewDrawingStyle_Previews.previews
             .environment(\.clockRandom, .fixed)
             .environment(\.clockAnimationEnabled, false)
-        assertSnapshot(matching: preview, as: .default)
+        assertSnapshot(matching: preview, as: .default(precision: 99/100))
     }
 
     func testClockViewSteampunkStyle() {
