@@ -134,4 +134,5 @@ In a terminal opened in the repo folder, executes these commands
 echo '#!/bin/sh' > .git/hooks/pre-commit
 echo '' >> .git/hooks/pre-commit
 echo 'swiftlint' >> .git/hooks/pre-commit
+chmod +x .git/hooks/pre-commit
 ```

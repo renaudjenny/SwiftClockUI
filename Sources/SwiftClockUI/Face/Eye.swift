@@ -70,6 +70,19 @@ extension ClockFaceView {
 #if DEBUG
 struct Eye_Previews: PreviewProvider {
     static var previews: some View {
+        VStack {
+            ClockFaceView.Eye(move: false, position: .left).padding(2)
+            HStack {
+                ClockFaceView.Eye(move: true, position: .left).padding(2)
+                ClockFaceView.Eye(move: true, position: .right).padding(2)
+            }
+        }
+        .padding(4)
+    }
+}
+
+struct EyeWithMove_Previews: PreviewProvider {
+    static var previews: some View {
         Preview()
     }
 

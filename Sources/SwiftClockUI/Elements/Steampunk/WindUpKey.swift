@@ -69,7 +69,16 @@ struct WindUpKey: Shape, Animatable {
     }
 }
 
+#if DEBUG
 struct WindUpKey_Previews: PreviewProvider {
+    static var previews: some View {
+        WindUpKey(animationStep: .zero)
+            .stroke()
+            .padding(1)
+    }
+}
+
+struct WindUpKeyWithSteps_Previews: PreviewProvider {
     static var previews: some View {
         Preview()
     }
@@ -89,3 +98,4 @@ struct WindUpKey_Previews: PreviewProvider {
         }
     }
 }
+#endif

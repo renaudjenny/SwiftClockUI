@@ -91,11 +91,18 @@ private struct RectPreferenceKey: PreferenceKey {
     static func reduce(value: inout CGRect, nextValue: () -> CGRect) {}
 }
 
-struct Plate_Previews: PreviewProvider {
+#if DEBUG
+struct PlateSoftI_Previews: PreviewProvider {
     static var previews: some View {
-        VStack {
-            Plate(type: .soft, text: "I")
-            Plate(type: .hard, text: "XII").frame(width: 450, height: 200)
-        }.padding()
+        Plate(type: .soft, text: "I")
+            .padding(1)
     }
 }
+
+struct PlateHardXII_Previews: PreviewProvider {
+    static var previews: some View {
+        Plate(type: .hard, text: "XII")
+            .padding(4)
+    }
+}
+#endif

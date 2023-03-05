@@ -8,10 +8,13 @@ on:
 
 jobs:
   build-ios:
-    runs-on: macOS-11
+    runs-on: macOS-12
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
+
+    - name: Select Xcode
+      run: sudo xcode-select -switch /Applications/Xcode_14.2.app
 
     - name: Linter
       run: swiftlint
@@ -22,13 +25,13 @@ jobs:
     - name: List all available build targets and schemes
       run: xcodebuild -list
 
-    - name: Create iPhone SE Simulator
-      run: xcrun simctl create "iPhone SE (1st generation)" "iPhone SE (1st generation)"
+    - name: List available devices
+      run: xcrun simctl list
 
-    - name: Xcode test on iPhone SE
-      run: xcodebuild clean test -scheme SwiftClockUI -destination 'platform=iOS Simulator,name=iPhone SE (1st generation)'
+    - name: Xcode test on specific device
+      run: xcodebuild clean test -scheme SwiftClockUI -destination 'platform=iOS Simulator,name=iPhone 14 Pro'
 
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v3
       if: failure()
       with:
         name: failed-screenshots
@@ -36,23 +39,13 @@ jobs:
         retention-days: 5
 
   build-macos:
-    runs-on: macOS-11
-
-    env:
-      SNAPSHOT_ARTIFACTS: "SnapshotTesting/"
+    runs-on: macOS-12
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: List all available build targets and schemes
       run: xcodebuild -list
 
     - name: Xcode test on Mac
       run: xcodebuild clean test -scheme SwiftClockUI -destination 'platform=OS X'
-
-    - uses: actions/upload-artifact@v2
-      if: failure()
-      with:
-        name: failed-screenshots
-        path: '/tmp/SnapshotTesting'
-        retention-days: 5

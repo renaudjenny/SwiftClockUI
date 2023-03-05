@@ -3,6 +3,9 @@ import SnapshotTesting
 
 #if !os(macOS)
 extension Snapshotting where Value: SwiftUI.View, Format == UIImage {
-    static var `default`: Self { image(precision: 99.9/100, layout: .device(config: .iPhoneSe)) }
+    static func `default`(precision: Float) -> Self {
+        image(precision: precision, layout: .fixed(width: 200, height: 200))
+    }
+    static var `default`: Self { .default(precision: 1) }
 }
 #endif

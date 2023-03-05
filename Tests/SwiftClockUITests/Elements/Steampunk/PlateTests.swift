@@ -5,8 +5,11 @@ import SwiftUI
 
 class PlateTests: XCTestCase {
     #if !os(macOS)
-    func testPlate() {
-        assertSnapshot(matching: Plate_Previews.previews, as: .default)
+    func testPlateSoftI() {
+        assertSnapshot(matching: PlateSoftI_Previews.previews, as: .default)
+    }
+    func testPlateHardXII() {
+        assertSnapshot(matching: PlateHardXII_Previews.previews, as: .default)
     }
     #endif
 }
